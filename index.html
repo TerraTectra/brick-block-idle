@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Брик Блок Idle</title>
     <link rel="stylesheet" href="./site.css" />
+    <link rel="stylesheet" href="./site-tabs.css" />
   </head>
   <body>
     <main class="page">
@@ -22,6 +23,15 @@
       </section>
       <aside class="side">
         <section class="card">
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="summary">Сводка</button>
+            <button class="tab-btn" data-tab="upgrades">Улучшения</button>
+            <button class="tab-btn" data-tab="balls">Шары</button>
+            <button class="tab-btn" data-tab="blocks">Блоки</button>
+            <button class="tab-btn" data-tab="log">Журнал</button>
+          </div>
+        </section>
+        <section class="card" data-tab-panel="summary">
           <h2>Сектор</h2>
           <div class="grid">
             <div class="stat"><small>Этап</small><b id="level">1</b></div>
@@ -30,12 +40,13 @@
             <div class="stat"><small>Осколки</small><b id="frags">0</b></div>
           </div>
         </section>
-        <section class="card"><h2>Улучшения</h2><div id="upgrades" class="log"></div></section>
-        <section class="card"><h2>Типы блоков</h2><div id="types" class="log"></div></section>
-        <section class="card"><h2>Шары</h2><div id="balls" class="log"></div></section>
-        <section class="card"><h2>Журнал</h2><div id="log" class="log"></div></section>
+        <section class="card" data-tab-panel="upgrades"><h2>Улучшения</h2><div id="upgrades" class="log"></div></section>
+        <section class="card" data-tab-panel="balls"><h2>Шары</h2><div id="balls" class="log"></div></section>
+        <section class="card" data-tab-panel="blocks"><h2>Типы блоков</h2><div id="types" class="log"></div></section>
+        <section class="card" data-tab-panel="log"><h2>Журнал</h2><div id="log" class="log"></div></section>
       </aside>
     </main>
     <script src="./site-app.js"></script>
+    <script src="./site-tabs.js"></script>
   </body>
 </html>
