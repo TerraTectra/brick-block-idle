@@ -4,9 +4,33 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Брик Блок Idle</title>
+    <link rel="stylesheet" href="./site.css" />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <main class="page">
+      <section class="panel">
+        <header class="head">
+          <span class="tag">BRICK BLOCK IDLE</span>
+          <h1>Брик Блок Idle</h1>
+          <p>Автозачистка блоков, прокачка шаров, эволюции и новые типы блоков.</p>
+        </header>
+        <canvas id="game" width="980" height="650"></canvas>
+      </section>
+      <aside class="side">
+        <section class="card">
+          <h2>Сектор</h2>
+          <div class="grid">
+            <div class="stat"><small>Этап</small><b id="level">1</b></div>
+            <div class="stat"><small>HP блока</small><b id="hp">1</b></div>
+            <div class="stat"><small>Блоков</small><b id="count">0</b></div>
+            <div class="stat"><small>Осколки</small><b id="frags">0</b></div>
+          </div>
+        </section>
+        <section class="card"><h2>Типы блоков</h2><div id="types" class="log"></div></section>
+        <section class="card"><h2>Шары</h2><div id="balls" class="log"></div></section>
+        <section class="card"><h2>Журнал</h2><div id="log" class="log"></div></section>
+      </aside>
+    </main>
+    <script src="./site.js"></script>
   </body>
 </html>
