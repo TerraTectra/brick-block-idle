@@ -3,10 +3,6 @@ import type { Upgrades, UpgradeKey } from "./types";
 
 export const UPGRADE_KEYS: UpgradeKey[] = ["coreDamage", "speedDrive", "xpMatrix"];
 
-export function clamp(value: number, min: number, max: number): number {
-  return Math.max(min, Math.min(max, value));
-}
-
 export function xpToNext(level: number): number {
   if (level <= 1) return 10;
   const earlyRamp = level * 7;
@@ -27,4 +23,20 @@ export function damageFor(level: number, baseDamage: number, upgrades: Upgrades,
   const evolutionBonus = 1 + evolutionRank * 0.24 + Math.pow(evolutionRank, 1.28) * 0.06;
   const levelPower = baseDamage + (level - 1) * 0.55 + Math.pow(level - 1, 1.2) * 0.14;
   return Number((levelPower * globalBonus * evolutionBonus).toFixed(2));
+}
+
+export function speedMultiplier(upgrades: Upgrades): number {
+  return upgradePower(upgrades.speedDrive ?? 0);
+}
+
+export function xpMultiplier(upgrades: Upgrades): number {
+  return upgradePower(upgrades.xpMatrix ?? 0);
+}
+
+export function newBallCost(ballCount: number): number {
+  return Math.floor(150 * Math.pow(1.7, Math.max(0, ballCount - 2)));
+}
+
+export function trainCost(gameLevel: number): number {
+  return 90 + gameLevel * 22;
 }
