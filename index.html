@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./site-meta.css" />
     <link rel="stylesheet" href="./site-stats.css" />
     <link rel="stylesheet" href="./site-bosses.css" />
+    <link rel="stylesheet" href="./site-archetype.css" />
   </head>
   <body>
     <main class="page">
@@ -31,6 +32,7 @@
           <div class="tabs">
             <button class="tab-btn active" data-tab="summary">Сводка</button>
             <button class="tab-btn" data-tab="upgrades">Улучшения</button>
+            <button class="tab-btn" data-tab="archetype">Архетип</button>
             <button class="tab-btn" data-tab="balls">Шары</button>
             <button class="tab-btn" data-tab="blocks">Блоки</button>
             <button class="tab-btn" data-tab="meta">Мета</button>
@@ -49,6 +51,7 @@
           </div>
         </section>
         <section class="card" data-tab-panel="upgrades"><h2>Улучшения</h2><div id="upgrades" class="log upgrade-wrap"></div></section>
+        <section class="card" data-tab-panel="archetype"><h2>Архетип</h2><div id="archetype" class="log"></div></section>
         <section class="card" data-tab-panel="balls"><h2>Шары</h2><div id="balls" class="log"></div></section>
         <section class="card" data-tab-panel="blocks"><h2>Типы блоков</h2><div id="types" class="log"></div></section>
         <section class="card" data-tab-panel="meta"><h2>Мета-прогрессия</h2><div id="meta" class="log"></div></section>
@@ -57,9 +60,10 @@
         <section class="card" data-tab-panel="log"><h2>Журнал</h2><div id="log" class="log"></div></section>
       </aside>
     </main>
-    <script src="./site-speed-guard.js?v=1"></script>
+    <script src="./site-speed-guard.js?v=2"></script>
     <script src="./site-app-v10.js?v=10"></script>
     <script src="./site-bosses.js?v=1"></script>
+    <script src="./site-archetype.js?v=1"></script>
     <script src="./site-stats.js?v=1"></script>
     <script src="./site-tabs.js"></script>
   </body>
