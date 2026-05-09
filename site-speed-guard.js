@@ -7,8 +7,8 @@
   const originalSplice = Array.prototype.splice;
   const originalSetItem = Storage.prototype.setItem;
   const RUN_KEY = "brick_block_idle_run_v10";
-  const TEST_SPEED_MULTIPLIER = 1;
-  const MIN_KEEP_RATIO = 0.92;
+  const TEST_SPEED_MULTIPLIER = 5;
+  const MIN_KEEP_RATIO = 0.97;
   const HARD_MIN_NATURAL_SPEED = 0.8;
   const EDGE_MARGIN = 34;
   const WALL_NUDGE = 0.085;
@@ -34,7 +34,7 @@
   function naturalSpeedOf(ball, currentSpeed) {
     const observed = Math.max(currentSpeed, HARD_MIN_NATURAL_SPEED);
     const lastTarget = ball.__bbSpeedTarget || 0;
-    const looksLikeGuardedSpeed = lastTarget > 0 && observed > lastTarget * 0.65;
+    const looksLikeGuardedSpeed = lastTarget > 0 && observed > lastTarget * 0.72;
     if (!looksLikeGuardedSpeed) {
       ball.__bbNaturalSpeed = Math.max(ball.__bbNaturalSpeed || 0, observed);
     }
