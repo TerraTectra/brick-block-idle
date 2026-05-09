@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="./site-archetype.css" />
     <link rel="stylesheet" href="./site-unlimited.css" />
     <link rel="stylesheet" href="./site-version.css" />
+    <link rel="stylesheet" href="./site-space.css" />
   </head>
   <body>
     <main class="page">
@@ -33,38 +34,81 @@
       <aside class="side">
         <section class="card">
           <div class="tabs">
-            <button class="tab-btn active" data-tab="combat">Бой</button>
-            <button class="tab-btn" data-tab="growth">Прокачка</button>
-            <button class="tab-btn" data-tab="collection">Шары</button>
-            <button class="tab-btn" data-tab="system">Система</button>
+            <button class="tab-btn active" data-tab="play">Игра</button>
+            <button class="tab-btn" data-tab="growth">Развитие</button>
+            <button class="tab-btn" data-tab="collection">Коллекция</button>
+            <button class="tab-btn" data-tab="settings">Настройки</button>
           </div>
         </section>
-        <section class="card" data-tab-panel="combat">
-          <h2>Бой</h2>
+        <section class="card" data-tab-panel="play">
+          <div class="side-title">
+            <h2>Игра</h2>
+            <p>Главное состояние забега без лишней технической информации.</p>
+          </div>
           <div class="grid">
             <div class="stat"><small>Этап</small><b id="level">1</b></div>
             <div class="stat"><small>HP блока</small><b id="hp">1</b></div>
             <div class="stat"><small>Блоков</small><b id="count">0</b></div>
             <div class="stat"><small>Осколки</small><b id="frags">0</b></div>
           </div>
-          <div id="bosses" class="log"></div>
-          <div id="stats" class="log"></div>
+          <div class="ui-divider"></div>
+          <div class="ui-block">
+            <div class="ui-block-title">Босс <span>каждые 100 этапов</span></div>
+            <div id="bosses" class="log"></div>
+          </div>
         </section>
         <section class="card" data-tab-panel="growth">
-          <h2>Прокачка</h2>
-          <div id="upgrades" class="log upgrade-wrap"></div>
-          <div id="archetype" class="log"></div>
-          <div id="unlimited" class="log"></div>
-          <div id="meta" class="log"></div>
+          <div class="side-title">
+            <h2>Развитие</h2>
+            <p>Прокачка, эволюционный выбор и долгосрочная сила.</p>
+          </div>
+          <div class="ui-block">
+            <div class="ui-block-title">Улучшения <span>покупаются за осколки</span></div>
+            <div id="upgrades" class="log upgrade-wrap"></div>
+          </div>
+          <div class="ui-divider"></div>
+          <div class="ui-block">
+            <div class="ui-block-title">Эволюции архетипа <span>выпадают при порогах уровня</span></div>
+            <div id="archetype" class="log"></div>
+          </div>
         </section>
         <section class="card" data-tab-panel="collection">
-          <h2>Шары и блоки</h2>
-          <div id="balls" class="log"></div>
-          <div id="types" class="log"></div>
+          <div class="side-title">
+            <h2>Коллекция</h2>
+            <p>Что уже есть в забеге и какие типы объектов встречаются.</p>
+          </div>
+          <div class="ui-block">
+            <div class="ui-block-title">Шары <span>активные архетипы</span></div>
+            <div id="balls" class="log"></div>
+          </div>
+          <div class="ui-divider"></div>
+          <div class="ui-block">
+            <div class="ui-block-title">Блоки <span>типы препятствий</span></div>
+            <div id="types" class="log"></div>
+          </div>
         </section>
-        <section class="card" data-tab-panel="system">
-          <h2>Система</h2>
-          <div id="log" class="log"></div>
+        <section class="card" data-tab-panel="settings">
+          <div class="side-title">
+            <h2>Настройки</h2>
+            <p>Всё, что не нужно обычному игроку каждую секунду.</p>
+          </div>
+          <details class="settings-box">
+            <summary>Статистика забега</summary>
+            <div id="stats" class="log"></div>
+          </details>
+          <details class="settings-box">
+            <summary>Безлимитный режим</summary>
+            <div id="unlimited" class="log"></div>
+          </details>
+          <details class="settings-box">
+            <summary>Мета-прогрессия</summary>
+            <div id="meta" class="log"></div>
+          </details>
+          <details class="settings-box">
+            <summary>Журнал событий</summary>
+            <div id="log" class="log"></div>
+          </details>
+          <div class="soft-note">Служебные панели спрятаны сюда, чтобы основной экран не превращался в свалку. Игроку на виду остаются только бой, развитие и коллекция.</div>
         </section>
       </aside>
     </main>
