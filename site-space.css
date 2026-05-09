@@ -1,0 +1,102 @@
+.side .card[data-tab-panel] {
+  display: grid;
+  gap: 12px;
+}
+
+.side-title {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+
+.side-title h2 {
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+.side-title p {
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.ui-block {
+  display: grid;
+  gap: 8px;
+}
+
+.ui-block-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 2px;
+  color: #e2e8f0;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.ui-block-title span {
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.ui-divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.28), rgba(34, 211, 238, 0));
+  margin: 2px 0;
+}
+
+.settings-box {
+  border-radius: 16px;
+  border: 1px solid rgba(51, 65, 85, 0.9);
+  background: rgba(15, 23, 42, 0.62);
+  padding: 12px;
+}
+
+.settings-box summary {
+  cursor: pointer;
+  color: #e2e8f0;
+  font-weight: 900;
+  list-style: none;
+}
+
+.settings-box summary::-webkit-details-marker {
+  display: none;
+}
+
+.settings-box summary::after {
+  content: "▾";
+  float: right;
+  color: #67e8f9;
+}
+
+.settings-box[open] summary::after {
+  content: "▴";
+}
+
+.settings-box > div {
+  margin-top: 10px;
+}
+
+.soft-note {
+  border-radius: 14px;
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  background: rgba(8, 47, 73, 0.28);
+  padding: 10px;
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.45;
+  font-weight: 750;
+}
+
+@media (min-width: 1281px) {
+  .side {
+    align-content: start;
+  }
+
+  .tabs {
+    gap: 8px;
+  }
+}
