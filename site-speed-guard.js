@@ -3,8 +3,9 @@
 
   const trackedBalls = new Set();
   const originalPush = Array.prototype.push;
-  const MIN_KEEP_RATIO = 0.92;
-  const HARD_MIN_SPEED = 0.8;
+  const TEST_SPEED_MULTIPLIER = 5;
+  const MIN_KEEP_RATIO = 0.94;
+  const HARD_MIN_NATURAL_SPEED = 0.8;
   const EDGE_MARGIN = 34;
   const WALL_NUDGE = 0.085;
   const MIN_AXIS_RATIO = 0.16;
@@ -27,13 +28,29 @@
     return Math.hypot(ball.vx || 0, ball.vy || 0);
   }
 
+  function naturalSpeedOf(ball, currentSpeed) {
+    const observed = Math.max(currentSpeed, HARD_MIN_NATURAL_SPEED);
+    const lastTarget = ball.__bbSpeedTarget || 0;
+    const looksLikeGuardedSpeed = lastTarget > 0 && observed > lastTarget * 0.72;
+    if (!looksLikeGuardedSpeed) {
+      ball.__bbNaturalSpeed = Math.max(ball.__bbNaturalSpeed || 0, observed);
+    }
+    return Math.max(ball.__bbNaturalSpeed || observed, HARD_MIN_NATURAL_SPEED);
+  }
+
+  function targetSpeedOf(ball) {
+    const natural = naturalSpeedOf(ball, speedOf(ball));
+    const external = Math.max(1, Number(ball.__bbExternalSpeedMult || 1));
+    const target = natural * TEST_SPEED_MULTIPLIER * external;
+    ball.__bbSpeedTarget = target;
+    return target;
+  }
+
   function rememberBall(ball) {
     if (!isBallLike(ball)) return;
     trackedBalls.add(ball);
     const speed = speedOf(ball);
-    if (speed > HARD_MIN_SPEED) {
-      ball.__bbStableSpeed = Math.max(ball.__bbStableSpeed || 0, speed);
-    }
+    naturalSpeedOf(ball, speed);
   }
 
   function preserveSpeed(ball, targetSpeed) {
@@ -58,7 +75,7 @@
     const nearHorizontalWall = nearTop || nearBottom;
 
     if (!nearVerticalWall && !nearHorizontalWall) return;
-    if (now - (ball.__bbLastWallNudge || 0) < 180) return;
+    if (now - (ball.__bbLastWallNudge || 0) < 160) return;
 
     const sx = Math.abs(ball.vx) / speed;
     const sy = Math.abs(ball.vy) / speed;
@@ -86,26 +103,24 @@
 
   function stabilizeBall(ball) {
     if (!isBallLike(ball)) return;
-    const speed = speedOf(ball);
-    const stable = Math.max(ball.__bbStableSpeed || 0, HARD_MIN_SPEED);
-
     nudgeFromWalls(ball);
+    const speed = speedOf(ball);
+    const target = targetSpeedOf(ball);
 
-    const nextSpeed = speedOf(ball);
-    if (nextSpeed > stable) {
-      ball.__bbStableSpeed = nextSpeed;
+    if (speed > target * 1.08) {
+      ball.__bbNaturalSpeed = speed / TEST_SPEED_MULTIPLIER;
       return;
     }
 
-    if (nextSpeed > 0.01 && nextSpeed < stable * MIN_KEEP_RATIO) {
-      preserveSpeed(ball, stable);
+    if (speed > 0.01 && speed < target * MIN_KEEP_RATIO) {
+      preserveSpeed(ball, target);
       return;
     }
 
-    if (nextSpeed <= 0.01) {
+    if (speed <= 0.01) {
       const angle = Math.random() * Math.PI * 2;
-      ball.vx = Math.cos(angle) * stable;
-      ball.vy = Math.sin(angle) * stable;
+      ball.vx = Math.cos(angle) * target;
+      ball.vy = Math.sin(angle) * target;
     }
   }
 
@@ -114,14 +129,19 @@
     return originalPush.apply(this, items);
   };
 
+  function tick() {
+    trackedBalls.forEach(stabilizeBall);
+    requestAnimationFrame(tick);
+  }
+
   window.__brickBlockSpeedGuard = {
     trackedBalls,
+    testSpeedMultiplier: TEST_SPEED_MULTIPLIER,
+    rememberBall,
     stabilizeNow() {
       trackedBalls.forEach(stabilizeBall);
     },
   };
 
-  setInterval(() => {
-    trackedBalls.forEach(stabilizeBall);
-  }, 90);
+  requestAnimationFrame(tick);
 })();
