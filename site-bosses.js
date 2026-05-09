@@ -14,6 +14,13 @@
     { id: "legendGate", name: "Легендарные врата", cost: 8, desc: "Позже откроет легендарные стартовые условия и особые формы." },
   ];
 
+  let lastRenderedSignature = "";
+
+  function isBossTabVisible() {
+    const panel = document.querySelector('[data-tab-panel="boss"]');
+    return !panel || !panel.classList.contains("hidden");
+  }
+
   function readLevel() {
     const node = document.getElementById("level");
     const value = Number((node?.textContent || "1").replace(/[^0-9]/g, ""));
@@ -95,7 +102,7 @@
     const fight = { active: true, stage, hp: maxHp, maxHp, lastLevel: stage, lastHitAt: Date.now() };
     setFight(fight);
     toast(`Босс этапа ${stage} появился. HP: ${maxHp}`);
-    renderBossPanel();
+    renderBossPanel(true);
   }
 
   function killBoss(fight) {
@@ -108,19 +115,16 @@
     setBossMeta(meta);
     setFight({ active: false, stage: 0, hp: 0, maxHp: 0, lastLevel: readLevel(), lastHitAt: Date.now() });
     toast(`Босс этапа ${fight.stage} уничтожен: +${reward} очк. босса`);
-    renderBossPanel();
+    renderBossPanel(true);
   }
 
-  function damageBoss(amount, reason = "hit") {
+  function damageBoss(amount) {
     const fight = getFight();
     if (!fight.active || fight.hp <= 0) return false;
     fight.hp = Math.max(0, fight.hp - Math.max(0, amount));
     fight.lastHitAt = Date.now();
-    if (fight.hp <= 0) {
-      killBoss(fight);
-    } else {
-      setFight(fight);
-    }
+    if (fight.hp <= 0) killBoss(fight);
+    else setFight(fight);
     return true;
   }
 
@@ -134,7 +138,7 @@
     setBossMeta(meta);
     applyEarlyBoost(true);
     toast(`Капитальный апгрейд куплен: ${node.name}`);
-    renderBossPanel();
+    renderBossPanel(true);
   }
 
   function nextBoss(level, meta) {
@@ -153,13 +157,21 @@
     return (8 + Math.sqrt(Math.max(0, frags)) * 0.13 + level * 0.18) * count * auto;
   }
 
-  function renderBossPanel() {
+  function bossSignature(level, meta, fight, next) {
+    return JSON.stringify({ level, points: meta.points, earned: meta.earned, nodes: meta.nodes, fight: { active: fight.active, stage: fight.stage, hp: Math.ceil(fight.hp), maxHp: fight.maxHp }, next });
+  }
+
+  function renderBossPanel(force = false) {
     const box = document.getElementById("bosses");
-    if (!box) return;
+    if (!box || (!force && !isBossTabVisible())) return;
     const level = readLevel();
     const meta = getBossMeta();
     const fight = getFight();
     const next = nextBoss(level, meta);
+    const signature = bossSignature(level, meta, fight, next);
+    if (!force && signature === lastRenderedSignature) return;
+    lastRenderedSignature = signature;
+
     const hpPct = fight.maxHp > 0 ? Math.max(0, Math.min(100, (fight.hp / fight.maxHp) * 100)) : 0;
     const fightHtml = fight.active ? `<div class="boss-fight"><h3>Активный босс: этап ${fight.stage}</h3><p>Шары наносят пассивный урон. Клик по полю дополнительно снимает 1 HP.</p><div class="boss-hpbar" style="--boss-hp:${hpPct}%"><span></span></div><p>${Math.ceil(fight.hp)} / ${fight.maxHp} HP</p></div>` : `<div class="boss-fight"><h3>Босс не активен</h3><p>Следующий настоящий босс появится на этапе ${next}. Награда выдаётся только после убийства.</p></div>`;
     const nodes = bossNodes.map((node) => {
@@ -201,17 +213,17 @@
     const level = readLevel();
     if (level >= 100 && level % 100 === 0) activateBoss(level);
     const fight = getFight();
-    if (fight.active) damageBoss(passiveBossDps() / 2.5, "passive");
-    renderBossPanel();
+    if (fight.active) damageBoss(passiveBossDps() / 2.5);
+    renderBossPanel(false);
   }
 
-  window.__brickBlockBosses = { getBossMeta, getFight, damageBoss, activateBoss };
+  window.__brickBlockBosses = { getBossMeta, getFight, damageBoss, activateBoss, renderBossPanel };
 
   window.addEventListener("DOMContentLoaded", () => {
     applyEarlyBoost(false);
     const canvas = document.getElementById("game");
-    if (canvas) canvas.addEventListener("pointerdown", () => damageBoss(1, "manual"), true);
-    renderBossPanel();
+    if (canvas) canvas.addEventListener("pointerdown", () => damageBoss(1), true);
+    renderBossPanel(true);
     setInterval(tickBosses, 1400);
   });
 })();
