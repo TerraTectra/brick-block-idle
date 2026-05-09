@@ -3,8 +3,12 @@
 
   const trackedBalls = new Set();
   const originalPush = Array.prototype.push;
+  const originalUnshift = Array.prototype.unshift;
+  const originalSplice = Array.prototype.splice;
+  const originalSetItem = Storage.prototype.setItem;
+  const RUN_KEY = "brick_block_idle_run_v10";
   const TEST_SPEED_MULTIPLIER = 5;
-  const MIN_KEEP_RATIO = 0.94;
+  const MIN_KEEP_RATIO = 0.985;
   const HARD_MIN_NATURAL_SPEED = 0.8;
   const EDGE_MARGIN = 34;
   const WALL_NUDGE = 0.085;
@@ -19,9 +23,8 @@
       typeof value.y === "number" &&
       typeof value.vx === "number" &&
       typeof value.vy === "number" &&
-      (typeof value.level === "number" || typeof value.xp === "number" || typeof value.evo === "number") &&
-      !Object.prototype.hasOwnProperty.call(value, "hp") &&
-      !Object.prototype.hasOwnProperty.call(value, "maxHp");
+      !Object.prototype.hasOwnProperty.call(value, "w") &&
+      !Object.prototype.hasOwnProperty.call(value, "h");
   }
 
   function speedOf(ball) {
@@ -31,7 +34,7 @@
   function naturalSpeedOf(ball, currentSpeed) {
     const observed = Math.max(currentSpeed, HARD_MIN_NATURAL_SPEED);
     const lastTarget = ball.__bbSpeedTarget || 0;
-    const looksLikeGuardedSpeed = lastTarget > 0 && observed > lastTarget * 0.72;
+    const looksLikeGuardedSpeed = lastTarget > 0 && observed > lastTarget * 0.65;
     if (!looksLikeGuardedSpeed) {
       ball.__bbNaturalSpeed = Math.max(ball.__bbNaturalSpeed || 0, observed);
     }
@@ -49,8 +52,11 @@
   function rememberBall(ball) {
     if (!isBallLike(ball)) return;
     trackedBalls.add(ball);
-    const speed = speedOf(ball);
-    naturalSpeedOf(ball, speed);
+    naturalSpeedOf(ball, speedOf(ball));
+  }
+
+  function scanItems(items) {
+    for (const item of items) rememberBall(item);
   }
 
   function preserveSpeed(ball, targetSpeed) {
@@ -75,7 +81,7 @@
     const nearHorizontalWall = nearTop || nearBottom;
 
     if (!nearVerticalWall && !nearHorizontalWall) return;
-    if (now - (ball.__bbLastWallNudge || 0) < 160) return;
+    if (now - (ball.__bbLastWallNudge || 0) < 130) return;
 
     const sx = Math.abs(ball.vx) / speed;
     const sy = Math.abs(ball.vy) / speed;
@@ -107,7 +113,7 @@
     const speed = speedOf(ball);
     const target = targetSpeedOf(ball);
 
-    if (speed > target * 1.08) {
+    if (speed > target * 1.18) {
       ball.__bbNaturalSpeed = speed / TEST_SPEED_MULTIPLIER;
       return;
     }
@@ -124,24 +130,60 @@
     }
   }
 
+  function patchSavedRun(key, value) {
+    if (key !== RUN_KEY || typeof value !== "string") return value;
+    try {
+      const run = JSON.parse(value);
+      if (!run || typeof run !== "object" || !Array.isArray(run.balls)) return value;
+      for (const ball of run.balls) {
+        if (!isBallLike(ball)) continue;
+        const speed = speedOf(ball);
+        const natural = Math.max(ball.__bbNaturalSpeed || speed, HARD_MIN_NATURAL_SPEED);
+        if (speed > 0.01 && speed < natural * TEST_SPEED_MULTIPLIER * 0.9) preserveSpeed(ball, natural * TEST_SPEED_MULTIPLIER);
+      }
+      return JSON.stringify(run);
+    } catch {
+      return value;
+    }
+  }
+
   Array.prototype.push = function (...items) {
-    for (const item of items) rememberBall(item);
+    scanItems(items);
     return originalPush.apply(this, items);
   };
 
-  function tick() {
+  Array.prototype.unshift = function (...items) {
+    scanItems(items);
+    return originalUnshift.apply(this, items);
+  };
+
+  Array.prototype.splice = function (...args) {
+    scanItems(args.slice(2));
+    return originalSplice.apply(this, args);
+  };
+
+  Storage.prototype.setItem = function (key, value) {
+    return originalSetItem.call(this, key, patchSavedRun(key, value));
+  };
+
+  function stabilizeAll() {
     trackedBalls.forEach(stabilizeBall);
-    requestAnimationFrame(tick);
+  }
+
+  function tick() {
+    setTimeout(() => {
+      stabilizeAll();
+      requestAnimationFrame(tick);
+    }, 0);
   }
 
   window.__brickBlockSpeedGuard = {
     trackedBalls,
     testSpeedMultiplier: TEST_SPEED_MULTIPLIER,
     rememberBall,
-    stabilizeNow() {
-      trackedBalls.forEach(stabilizeBall);
-    },
+    stabilizeNow: stabilizeAll,
   };
 
-  requestAnimationFrame(tick);
+  window.addEventListener("load", () => requestAnimationFrame(tick));
+  setInterval(stabilizeAll, 25);
 })();
