@@ -167,7 +167,18 @@
     }
   }
 
+  function pendingThreshold(ball) {
+    const pending = ball && ball.pendingEvolution;
+    if (!pending) return 0;
+    if (typeof pending === "number") return pending;
+    if (typeof pending === "object") return Number(pending.level || pending.threshold || pending.stage || 0) || 0;
+    return 0;
+  }
+
   function nextThreshold(ball, id, state) {
+    const pending = pendingThreshold(ball);
+    if (pending && !state.chosen[`${id}:${pending}`]) return pending;
+
     const level = ballLevel(ball);
     const evolved = Array.isArray(ball.evolved) ? ball.evolved : [];
     for (const threshold of EVO_LEVELS) {
@@ -236,7 +247,7 @@
       if (card.key === "bossDamage") ball.stagePower = Math.max(Number(ball.stagePower || 0), Number(ball.stagePower || 0) + value);
       ball.evolved = Array.isArray(ball.evolved) ? ball.evolved : [];
       if (!ball.evolved.includes(card.threshold)) ball.evolved.push(card.threshold);
-      if (ball.pendingEvolution && Number(ball.pendingEvolution.level || ball.pendingEvolution) === card.threshold) ball.pendingEvolution = null;
+      if (pendingThreshold(ball) === card.threshold) ball.pendingEvolution = null;
     }
     state.chosen[`${card.ballId}:${card.threshold}`] = card;
     state.opened = null;
@@ -260,13 +271,24 @@
     return `<div class="bb-ball-summary"><b>Шар #${index + 1}</b><span>Ур. ${level} · XP ${xp} · Evo ${evo} · ${form} · speed ${speed}</span></div>`;
   }
 
+  function expectedEvoCount(balls, state) {
+    return balls.reduce((sum, ball, index) => {
+      const id = ballKey(ball, index);
+      return sum + (nextThreshold(ball, id, state) ? 1 : 0);
+    }, 0);
+  }
+
   function renderEvolutionFallback(force = false) {
     const box = document.getElementById("balls");
     if (!box) return;
     const balls = Array.from(tracked).filter(isBallLike);
     const state = liveState();
     const signature = balls.map((ball, index) => `${ballKey(ball, index)}:${ballLevel(ball)}:${Math.floor(ballXp(ball))}:${Math.floor(ballEvo(ball))}:${speedOf(ball).toFixed(1)}:${nextThreshold(ball, ballKey(ball, index), state)}`).join("|") + JSON.stringify(state.opened || {});
-    if (!force && box.dataset.livefixSignature === signature) return;
+    const expected = expectedEvoCount(balls, state);
+    const existing = box.querySelectorAll(".bb-livefix-evo").length;
+    const summaries = box.querySelectorAll(".bb-ball-summary").length;
+    const uiWasWiped = existing < expected || summaries < Math.min(balls.length, box.children.length);
+    if (!force && !uiWasWiped && box.dataset.livefixSignature === signature) return;
     box.dataset.livefixSignature = signature;
 
     box.querySelectorAll(".bb-livefix-evo").forEach((node) => node.remove());
