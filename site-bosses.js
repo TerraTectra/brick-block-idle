@@ -7,11 +7,13 @@
   const FIGHT_KEY = "brick_block_idle_boss_fight_v1";
 
   const bossNodes = [
-    { id: "autoBoss", name: "Автобой с боссом", cost: 1, desc: "Босс получает +25% пассивного урона от шаров. Позже станет основой автофарма." },
-    { id: "evoMaster", name: "Мастер эволюции", cost: 2, desc: "Капитальный задел под повышение редкости выбора эволюций." },
-    { id: "deepStart", name: "Глубокий старт", cost: 3, desc: "Новый забег стартует бодрее: больше ранних ресурсов и меньше мёртвого ожидания." },
-    { id: "bossCore", name: "Ядро босса", cost: 5, desc: "Каждый убитый босс даёт +1 дополнительное очко босса." },
-    { id: "legendGate", name: "Легендарные врата", cost: 8, desc: "Позже откроет легендарные стартовые условия и особые формы." },
+    { id: "autoBoss", name: "Автобой с боссом", cost: 2, desc: "Пассивный урон по боссу +20%." },
+    { id: "bossPierce", name: "Пробитие босса", cost: 3, desc: "Пассивный урон по боссам +35%." },
+    { id: "deepStart", name: "Глубокий старт", cost: 4, desc: "Новый забег стартует бодрее: больше ранних ресурсов и меньше мёртвого ожидания." },
+    { id: "bossCore", name: "Ядро босса", cost: 6, desc: "Каждый убитый босс даёт +1 дополнительное очко босса." },
+    { id: "evoMaster", name: "Мастер эволюции", cost: 8, desc: "Задел под повышение качества эволюционного выбора." },
+    { id: "hundredBreaker", name: "Пробой рубежа 100+", cost: 10, desc: "Снижает давление боссов после 100 этапа." },
+    { id: "legendGate", name: "Легендарные врата", cost: 16, desc: "Позже откроет легендарные стартовые условия и особые формы." },
   ];
 
   let lastRenderedSignature = "";
@@ -81,7 +83,8 @@
   }
 
   function bossHp(stage) {
-    return Math.floor(700 + stage * 18 + Math.pow(stage / 100, 2.15) * 1400);
+    const tier = Math.max(1, stage / 100);
+    return Math.floor(45000 + stage * 620 + Math.pow(tier, 2.45) * 65000);
   }
 
   function toast(text) {
@@ -97,11 +100,11 @@
     const meta = getBossMeta();
     if (stage < 100 || stage % 100 !== 0 || meta.killed[stage]) return;
     const current = getFight();
-    if (current.active && current.stage === stage) return;
+    if (current.active) return;
     const maxHp = bossHp(stage);
     const fight = { active: true, stage, hp: maxHp, maxHp, lastLevel: stage, lastHitAt: Date.now() };
     setFight(fight);
-    toast(`Босс этапа ${stage} появился. HP: ${maxHp}`);
+    toast(`Босс рубежа ${stage} появился. HP: ${maxHp}`);
     renderBossPanel(true);
   }
 
@@ -114,7 +117,7 @@
     meta.earned += reward;
     setBossMeta(meta);
     setFight({ active: false, stage: 0, hp: 0, maxHp: 0, lastLevel: readLevel(), lastHitAt: Date.now() });
-    toast(`Босс этапа ${fight.stage} уничтожен: +${reward} очк. босса`);
+    toast(`Босс рубежа ${fight.stage} уничтожен: +${reward} очк. босса`);
     renderBossPanel(true);
   }
 
@@ -147,14 +150,25 @@
     return next + 100;
   }
 
+  function missedBoss(level, meta, fight) {
+    if (fight.active || level < 100) return 0;
+    const reached = Math.floor(level / 100) * 100;
+    for (let stage = 100; stage <= reached; stage += 100) {
+      if (!meta.killed[stage]) return stage;
+    }
+    return 0;
+  }
+
   function passiveBossDps() {
     const ballsText = document.getElementById("balls")?.textContent || "";
     const count = Math.max(1, (ballsText.match(/Ур\./g) || []).length || 1);
     const level = readLevel();
     const frags = readNumber("frags");
     const meta = getBossMeta();
-    const auto = meta.nodes.autoBoss ? 1.25 : 1;
-    return (8 + Math.sqrt(Math.max(0, frags)) * 0.13 + level * 0.18) * count * auto;
+    const auto = meta.nodes.autoBoss ? 1.2 : 1;
+    const pierce = meta.nodes.bossPierce ? 1.35 : 1;
+    const breaker = meta.nodes.hundredBreaker ? 1.18 : 1;
+    return (2.5 + Math.sqrt(Math.max(0, frags)) * 0.012 + level * 0.035) * count * auto * pierce * breaker;
   }
 
   function bossSignature(level, meta, fight, next) {
@@ -173,7 +187,7 @@
     lastRenderedSignature = signature;
 
     const hpPct = fight.maxHp > 0 ? Math.max(0, Math.min(100, (fight.hp / fight.maxHp) * 100)) : 0;
-    const fightHtml = fight.active ? `<div class="boss-fight"><h3>Активный босс: этап ${fight.stage}</h3><p>Шары наносят пассивный урон. Клик по полю дополнительно снимает 1 HP.</p><div class="boss-hpbar" style="--boss-hp:${hpPct}%"><span></span></div><p>${Math.ceil(fight.hp)} / ${fight.maxHp} HP</p></div>` : `<div class="boss-fight"><h3>Босс не активен</h3><p>Следующий настоящий босс появится на этапе ${next}. Награда выдаётся только после убийства.</p></div>`;
+    const fightHtml = fight.active ? `<div class="boss-fight"><h3>Активный босс: рубеж ${fight.stage}</h3><p>После 100 этапа босс — настоящий рубеж. Очки выдаются только после убийства.</p><div class="boss-hpbar" style="--boss-hp:${hpPct}%"><span></span></div><p>${Math.ceil(fight.hp)} / ${fight.maxHp} HP</p></div>` : `<div class="boss-fight"><h3>Босс не активен</h3><p>Следующий настоящий босс появится на этапе ${next}. Награда выдаётся только после убийства.</p></div>`;
     const nodes = bossNodes.map((node) => {
       const owned = Boolean(meta.nodes[node.id]);
       const canBuy = !owned && meta.points >= node.cost;
@@ -211,9 +225,12 @@
 
   function tickBosses() {
     const level = readLevel();
-    if (level >= 100 && level % 100 === 0) activateBoss(level);
+    const meta = getBossMeta();
     const fight = getFight();
-    if (fight.active) damageBoss(passiveBossDps() / 2.5);
+    const missed = missedBoss(level, meta, fight);
+    if (missed) activateBoss(missed);
+    const current = getFight();
+    if (current.active) damageBoss(passiveBossDps() / 2.5);
     renderBossPanel(false);
   }
 
@@ -224,6 +241,6 @@
     const canvas = document.getElementById("game");
     if (canvas) canvas.addEventListener("pointerdown", () => damageBoss(1), true);
     renderBossPanel(true);
-    setInterval(tickBosses, 1400);
+    setInterval(tickBosses, 800);
   });
 })();
