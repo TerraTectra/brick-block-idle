@@ -6,6 +6,8 @@
   const originalUnshift = Array.prototype.unshift;
   const originalSplice = Array.prototype.splice;
   const originalSetItem = Storage.prototype.setItem;
+  const originalRaf = window.requestAnimationFrame.bind(window);
+  const originalCancelRaf = window.cancelAnimationFrame.bind(window);
   const RUN_KEY = "brick_block_idle_run_v10";
   const TEST_SPEED_MULTIPLIER = 5;
   const MIN_KEEP_RATIO = 0.985;
@@ -15,6 +17,33 @@
   const MIN_AXIS_RATIO = 0.16;
   const FIELD_W = 1120;
   const FIELD_H = 720;
+  const guardedRafIds = new Map();
+  let rafIdSeq = 1;
+
+  function installGameLoopMultiplier() {
+    window.__bbOriginalRequestAnimationFrame = originalRaf;
+    window.__bbSpeedMultiplier = TEST_SPEED_MULTIPLIER;
+
+    window.requestAnimationFrame = function (callback) {
+      const virtualId = rafIdSeq++;
+      const nativeId = originalRaf((time) => {
+        if (!guardedRafIds.has(virtualId)) return;
+        guardedRafIds.delete(virtualId);
+        const step = 1000 / 60;
+        for (let i = 0; i < TEST_SPEED_MULTIPLIER; i++) {
+          callback(time + i * step);
+        }
+      });
+      guardedRafIds.set(virtualId, nativeId);
+      return virtualId;
+    };
+
+    window.cancelAnimationFrame = function (virtualId) {
+      const nativeId = guardedRafIds.get(virtualId);
+      guardedRafIds.delete(virtualId);
+      if (nativeId) originalCancelRaf(nativeId);
+    };
+  }
 
   function isBallLike(value) {
     return value &&
@@ -147,6 +176,8 @@
     }
   }
 
+  installGameLoopMultiplier();
+
   Array.prototype.push = function (...items) {
     scanItems(items);
     return originalPush.apply(this, items);
@@ -173,7 +204,7 @@
   function tick() {
     setTimeout(() => {
       stabilizeAll();
-      requestAnimationFrame(tick);
+      originalRaf(tick);
     }, 0);
   }
 
@@ -184,6 +215,6 @@
     stabilizeNow: stabilizeAll,
   };
 
-  window.addEventListener("load", () => requestAnimationFrame(tick));
+  window.addEventListener("load", () => originalRaf(tick));
   setInterval(stabilizeAll, 25);
 })();
