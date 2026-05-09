@@ -6,6 +6,7 @@
   const SPEED_BONUS = 4;
   const VECTOR_MULT = 5;
   const SPEED_CLAMP_MAX = 3.2;
+  const SPEED_CLAMP_MIN = 0.55;
   const originalGetItem = Storage.prototype.getItem;
   const originalSetItem = Storage.prototype.setItem;
   const originalPush = Array.prototype.push;
@@ -15,8 +16,14 @@
   const tracked = new Set();
 
   Math.min = function (...args) {
-    if (args.length === 2 && args[0] === SPEED_CLAMP_MAX && args[1] > SPEED_CLAMP_MAX) {
-      return args[1];
+    if (
+      args.length === 2 &&
+      args[0] === SPEED_CLAMP_MAX &&
+      typeof args[1] === "number" &&
+      args[1] >= SPEED_CLAMP_MIN &&
+      args[1] < 20
+    ) {
+      return args[1] * VECTOR_MULT;
     }
     return originalMathMin.apply(Math, args);
   };
