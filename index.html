@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Брик Блок Idle v0.10.6-speed-ui</title>
+    <title>Брик Блок Idle v0.10.7-real-speed-x2</title>
     <link rel="stylesheet" href="./site.css" />
     <link rel="stylesheet" href="./site-tabs.css" />
     <link rel="stylesheet" href="./site-upgrades.css" />
@@ -20,8 +20,8 @@
         <header class="head">
           <span class="tag">BRICK BLOCK IDLE</span>
           <h1>Брик Блок Idle</h1>
-          <p>Старый визуальный стиль: базовая скорость шаров x2, компактная вкладка эволюции.</p>
-          <span class="version-badge">Версия игры: <b>v0.10.6-speed-ui</b> · base speed x2 + compact evolution</span>
+          <p>Старый визуальный стиль: реальное ускорение шаров x2 через внутренний speed-бонус v10.</p>
+          <span class="version-badge">Версия игры: <b>v0.10.7-real-speed-x2</b> · real base speed x2</span>
         </header>
         <div class="controls">
           <button id="pauseBtn" class="control">Пауза</button>
@@ -116,10 +116,11 @@
             <summary>Журнал событий</summary>
             <div id="log" class="log"></div>
           </details>
-          <div class="soft-note">Livefix активен: базовая скорость шаров x2, удержание скорости после смены этапа, компактная вкладка эволюции.</div>
+          <div class="soft-note">Speed x2 теперь идёт через infiniteSpeed — поле, которое v10 реально учитывает в формуле скорости.</div>
         </section>
       </aside>
     </main>
+    <script src="./site-v10-speed-x2.js?v=1"></script>
     <script src="./site-stage-speed-fix.js?v=4"></script>
     <script src="./site-app-v10.js?v=10-debug-clean"></script>
     <script src="./site-bosses.js?v=3"></script>
