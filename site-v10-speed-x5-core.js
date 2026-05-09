@@ -20,8 +20,7 @@
       args.length === 2 &&
       args[0] === SPEED_CLAMP_MAX &&
       typeof args[1] === "number" &&
-      args[1] >= SPEED_CLAMP_MIN &&
-      args[1] < 20
+      args[1] >= SPEED_CLAMP_MIN
     ) {
       return args[1] * VECTOR_MULT;
     }
@@ -108,6 +107,7 @@
   window.__brickBlockSpeedX5Core = {
     speedBonus: SPEED_BONUS,
     vectorMult: VECTOR_MULT,
+    unlimitedSpeed: true,
     tracked,
     applyBoost,
   };
