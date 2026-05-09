@@ -4,6 +4,12 @@
   const META_KEY = "brick_block_idle_meta_v4";
   const started = Date.now();
   const base = { level: 1, fragments: 0, total: 0, peak: 1 };
+  let lastSignature = "";
+
+  function statsVisible() {
+    const panel = document.querySelector('[data-tab-panel="settings"]');
+    return !panel || !panel.classList.contains("hidden");
+  }
 
   function num(id) {
     const node = document.getElementById(id);
@@ -28,9 +34,9 @@
     return Math.max(1, Math.floor(Math.pow(level - 8, 1.18) / 2.7));
   }
 
-  function render() {
+  function render(force = false) {
     const box = document.getElementById("stats");
-    if (!box) return;
+    if (!box || (!force && !statsVisible())) return;
     const level = num("level") || 1;
     const hp = num("hp") || 1;
     const blocks = num("count");
@@ -45,6 +51,9 @@
     const fragsPerMin = Math.max(0, fragments - base.fragments) / minutes;
     const total = Number(run.total || 0);
     const nextCores = coresFor(level);
+    const signature = JSON.stringify({ level, hp, blocks, fragments: Math.floor(fragments), total: Math.floor(total), cores: Number(meta.cores || 0), peak: base.peak });
+    if (!force && signature === lastSignature) return;
+    lastSignature = signature;
 
     box.innerHTML = `
       <div class="stats-wrap">
@@ -63,8 +72,10 @@
       </div>`;
   }
 
+  window.__brickBlockStats = { render };
+
   window.addEventListener("DOMContentLoaded", () => {
-    setInterval(render, 1000);
-    render();
+    setInterval(() => render(false), 1500);
+    render(true);
   });
 })();
