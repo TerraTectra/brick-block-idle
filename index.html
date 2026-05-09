@@ -20,7 +20,7 @@
         <header class="head">
           <span class="tag">BRICK BLOCK IDLE</span>
           <h1>Брик Блок Idle</h1>
-          <p>Автозачистка блоков, прокачка шаров, эволюции и новые типы блоков.</p>
+          <p>Автозачистка блоков, бесконечная прокачка шаров, боссы и архетипы.</p>
         </header>
         <div class="controls">
           <button id="pauseBtn" class="control">Пауза</button>
@@ -31,39 +31,43 @@
       <aside class="side">
         <section class="card">
           <div class="tabs">
-            <button class="tab-btn active" data-tab="summary">Сводка</button>
-            <button class="tab-btn" data-tab="upgrades">Улучшения</button>
-            <button class="tab-btn" data-tab="archetype">Архетип</button>
-            <button class="tab-btn" data-tab="unlimited">Без лимитов</button>
-            <button class="tab-btn" data-tab="balls">Шары</button>
-            <button class="tab-btn" data-tab="blocks">Блоки</button>
-            <button class="tab-btn" data-tab="meta">Мета</button>
-            <button class="tab-btn" data-tab="bosses">Боссы</button>
-            <button class="tab-btn" data-tab="stats">Статистика</button>
-            <button class="tab-btn" data-tab="log">Журнал</button>
+            <button class="tab-btn active" data-tab="combat">Бой</button>
+            <button class="tab-btn" data-tab="growth">Прокачка</button>
+            <button class="tab-btn" data-tab="collection">Шары</button>
+            <button class="tab-btn" data-tab="system">Система</button>
           </div>
         </section>
-        <section class="card" data-tab-panel="summary">
-          <h2>Сектор</h2>
+        <section class="card" data-tab-panel="combat">
+          <h2>Бой</h2>
           <div class="grid">
             <div class="stat"><small>Этап</small><b id="level">1</b></div>
             <div class="stat"><small>HP блока</small><b id="hp">1</b></div>
             <div class="stat"><small>Блоков</small><b id="count">0</b></div>
             <div class="stat"><small>Осколки</small><b id="frags">0</b></div>
           </div>
+          <div id="bosses" class="log"></div>
+          <div id="stats" class="log"></div>
         </section>
-        <section class="card" data-tab-panel="upgrades"><h2>Улучшения</h2><div id="upgrades" class="log upgrade-wrap"></div></section>
-        <section class="card" data-tab-panel="archetype"><h2>Архетип</h2><div id="archetype" class="log"></div></section>
-        <section class="card" data-tab-panel="unlimited"><h2>Без лимитов</h2><div id="unlimited" class="log"></div></section>
-        <section class="card" data-tab-panel="balls"><h2>Шары</h2><div id="balls" class="log"></div></section>
-        <section class="card" data-tab-panel="blocks"><h2>Типы блоков</h2><div id="types" class="log"></div></section>
-        <section class="card" data-tab-panel="meta"><h2>Мета-прогрессия</h2><div id="meta" class="log"></div></section>
-        <section class="card" data-tab-panel="bosses"><h2>Боссы</h2><div id="bosses" class="log"></div></section>
-        <section class="card" data-tab-panel="stats"><h2>Статистика</h2><div id="stats" class="log"></div></section>
-        <section class="card" data-tab-panel="log"><h2>Журнал</h2><div id="log" class="log"></div></section>
+        <section class="card" data-tab-panel="growth">
+          <h2>Прокачка</h2>
+          <div id="upgrades" class="log upgrade-wrap"></div>
+          <div id="archetype" class="log"></div>
+          <div id="unlimited" class="log"></div>
+          <div id="meta" class="log"></div>
+        </section>
+        <section class="card" data-tab-panel="collection">
+          <h2>Шары и блоки</h2>
+          <div id="balls" class="log"></div>
+          <div id="types" class="log"></div>
+        </section>
+        <section class="card" data-tab-panel="system">
+          <h2>Система</h2>
+          <div id="log" class="log"></div>
+        </section>
       </aside>
     </main>
-    <script src="./site-speed-guard.js?v=2"></script>
+    <script src="./site-speed-guard.js?v=3"></script>
+    <script src="./site-object-unlimiter.js?v=1"></script>
     <script src="./site-app-v10.js?v=10"></script>
     <script src="./site-bosses.js?v=1"></script>
     <script src="./site-archetype.js?v=1"></script>
