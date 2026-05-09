@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Брик Блок Idle v0.10.4-debug-pass</title>
+    <title>Брик Блок Idle v0.10.5-livefix</title>
     <link rel="stylesheet" href="./site.css" />
     <link rel="stylesheet" href="./site-tabs.css" />
     <link rel="stylesheet" href="./site-upgrades.css" />
@@ -20,8 +20,8 @@
         <header class="head">
           <span class="tag">BRICK BLOCK IDLE</span>
           <h1>Брик Блок Idle</h1>
-          <p>Стабильный старый визуальный стиль: эволюции идут через систему шаров v10, тяжёлые внешние обвязки отключены.</p>
-          <span class="version-badge">Версия игры: <b>v0.10.4-debug-pass</b> · optimized debug pass</span>
+          <p>Старый визуальный стиль: livefix чинит выбор эволюции шара и сохранение скорости после этапа.</p>
+          <span class="version-badge">Версия игры: <b>v0.10.5-livefix</b> · evolution + speed fix</span>
         </header>
         <div class="controls">
           <button id="pauseBtn" class="control">Пауза</button>
@@ -66,7 +66,7 @@
         <section class="card" data-tab-panel="evolution">
           <div class="side-title">
             <h2>Эволюция</h2>
-            <p>Эволюция находится напротив конкретного шара. На нужном уровне кнопка открывает 3 варианта выбора.</p>
+            <p>Эволюция находится напротив конкретного шара. На нужном уровне кнопка открывает 3 карты.</p>
           </div>
           <div class="ui-block">
             <div class="ui-block-title">Шары <span>эволюция появляется здесь</span></div>
@@ -116,11 +116,11 @@
             <summary>Журнал событий</summary>
             <div id="log" class="log"></div>
           </details>
-          <div class="soft-note">Сборка очищена от тяжёлых monkey-patch обвязок. Босс-панель и статистика рендерятся только когда нужны. Фикс скорости после этапа работает только через сохранение забега.</div>
+          <div class="soft-note">Livefix активен: отслеживает реальные шары v10, держит скорость после этапа и даёт fallback-карты эволюции, если встроенный выбор не отрисовался.</div>
         </section>
       </aside>
     </main>
-    <script src="./site-stage-speed-fix.js?v=2"></script>
+    <script src="./site-stage-speed-fix.js?v=3"></script>
     <script src="./site-app-v10.js?v=10-debug-clean"></script>
     <script src="./site-bosses.js?v=3"></script>
     <script src="./site-stats.js?v=2"></script>
