@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Брик Блок Idle v0.10.3-speedfix</title>
+    <title>Брик Блок Idle v0.10.4-debug-pass</title>
     <link rel="stylesheet" href="./site.css" />
     <link rel="stylesheet" href="./site-tabs.css" />
     <link rel="stylesheet" href="./site-upgrades.css" />
     <link rel="stylesheet" href="./site-evolution.css" />
     <link rel="stylesheet" href="./site-meta.css" />
-    <link rel="stylesheet" href="./site-stats.css" />
+    <link rel="stylesheet" href="./site-stats.css?v=2" />
     <link rel="stylesheet" href="./site-bosses.css" />
     <link rel="stylesheet" href="./site-version.css" />
     <link rel="stylesheet" href="./site-space.css?v=2" />
@@ -20,8 +20,8 @@
         <header class="head">
           <span class="tag">BRICK BLOCK IDLE</span>
           <h1>Брик Блок Idle</h1>
-          <p>Стабильный старый визуальный стиль: эволюции идут через систему шаров v10, скорость сохраняется после смены этапа.</p>
-          <span class="version-badge">Версия игры: <b>v0.10.3-speedfix</b> · stage speed fix</span>
+          <p>Стабильный старый визуальный стиль: эволюции идут через систему шаров v10, тяжёлые внешние обвязки отключены.</p>
+          <span class="version-badge">Версия игры: <b>v0.10.4-debug-pass</b> · optimized debug pass</span>
         </header>
         <div class="controls">
           <button id="pauseBtn" class="control">Пауза</button>
@@ -116,14 +116,14 @@
             <summary>Журнал событий</summary>
             <div id="log" class="log"></div>
           </details>
-          <div class="soft-note">Активно только лёгкое сохранение скорости после смены этапа. Без x5, без тяжёлых перехватов и без дублирующей эволюции.</div>
+          <div class="soft-note">Сборка очищена от тяжёлых monkey-patch обвязок. Босс-панель и статистика рендерятся только когда нужны. Фикс скорости после этапа работает только через сохранение забега.</div>
         </section>
       </aside>
     </main>
-    <script src="./site-stage-speed-fix.js?v=1"></script>
+    <script src="./site-stage-speed-fix.js?v=2"></script>
     <script src="./site-app-v10.js?v=10-debug-clean"></script>
-    <script src="./site-bosses.js?v=2"></script>
-    <script src="./site-stats.js?v=1"></script>
+    <script src="./site-bosses.js?v=3"></script>
+    <script src="./site-stats.js?v=2"></script>
     <script src="./site-tabs.js?v=2"></script>
   </body>
 </html>
