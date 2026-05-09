@@ -5,6 +5,7 @@
   const LIVE_KEY = "brick_block_idle_livefix_v1";
   const EVO_LEVELS = [10, 25, 50, 100, 200, 500, 1000];
   const SPEED_FIELDS = ["berserkSpeed", "stageSpeed", "speedBonus", "bonusSpeed", "infiniteSpeed"];
+  const BASE_SPEED_MULTIPLIER = 2;
   const originalPush = Array.prototype.push;
   const originalSetItem = Storage.prototype.setItem;
   const tracked = new Set();
@@ -64,6 +65,18 @@
     return Math.max(1, Number(ball.level || ball.lvl || ball.rank || 1));
   }
 
+  function ballXp(ball) {
+    return Math.max(0, Number(ball.xp || ball.exp || 0));
+  }
+
+  function ballForm(ball) {
+    return String(ball.form || ball.type || ball.name || "шар");
+  }
+
+  function ballEvo(ball) {
+    return Math.max(0, Number(ball.evo || 0));
+  }
+
   function ballKey(ball, index = 0) {
     if (!ball.__bbLiveFixId) {
       ball.__bbLiveFixId = String(ball.id ?? `${ball.form || ball.type || "ball"}_${index}_${Math.random().toString(36).slice(2)}`);
@@ -84,11 +97,22 @@
     return true;
   }
 
+  function applyBaseSpeed(ball, index = 0) {
+    if (!isBallLike(ball) || ball.__bbBaseSpeedX2Applied) return;
+    const speed = speedOf(ball);
+    if (speed <= 0.001) return;
+    ball.__bbBaseSpeedX2Applied = true;
+    preserveVectorSpeed(ball, speed * BASE_SPEED_MULTIPLIER);
+    stableVectorByBall.set(ballKey(ball, index), speed * BASE_SPEED_MULTIPLIER);
+  }
+
   function remember(ball) {
     if (!isBallLike(ball)) return;
     if (tracked.size >= MAX_TRACKED && !tracked.has(ball)) return;
     tracked.add(ball);
-    const key = ballKey(ball, tracked.size);
+    const index = tracked.size;
+    applyBaseSpeed(ball, index);
+    const key = ballKey(ball, index);
     const speed = speedOf(ball);
     if (speed > HARD_MIN_VECTOR_SPEED) stableVectorByBall.set(key, Math.max(stableVectorByBall.get(key) || 0, speed));
   }
@@ -98,6 +122,8 @@
       tracked.delete(ball);
       return;
     }
+
+    applyBaseSpeed(ball, index);
 
     const key = ballKey(ball, index);
     const speed = speedOf(ball);
@@ -225,12 +251,21 @@
     return `<div class="evo-choice" style="border-color:${info.color}"><b style="color:${info.color}">${card.name} · ${info.label}</b><p>${card.desc}</p><small>Сила: ${power}</small><button class="evo-btn" data-live-evo-pick="${index}">Выбрать</button></div>`;
   }
 
+  function compactSummary(ball, index) {
+    const level = ballLevel(ball);
+    const xp = Math.floor(ballXp(ball));
+    const evo = Math.floor(ballEvo(ball));
+    const form = ballForm(ball);
+    const speed = speedOf(ball).toFixed(2);
+    return `<div class="bb-ball-summary"><b>Шар #${index + 1}</b><span>Ур. ${level} · XP ${xp} · Evo ${evo} · ${form} · speed ${speed}</span></div>`;
+  }
+
   function renderEvolutionFallback(force = false) {
     const box = document.getElementById("balls");
     if (!box) return;
     const balls = Array.from(tracked).filter(isBallLike);
     const state = liveState();
-    const signature = balls.map((ball, index) => `${ballKey(ball, index)}:${ballLevel(ball)}:${nextThreshold(ball, ballKey(ball, index), state)}`).join("|") + JSON.stringify(state.opened || {});
+    const signature = balls.map((ball, index) => `${ballKey(ball, index)}:${ballLevel(ball)}:${Math.floor(ballXp(ball))}:${Math.floor(ballEvo(ball))}:${speedOf(ball).toFixed(1)}:${nextThreshold(ball, ballKey(ball, index), state)}`).join("|") + JSON.stringify(state.opened || {});
     if (!force && box.dataset.livefixSignature === signature) return;
     box.dataset.livefixSignature = signature;
 
@@ -240,13 +275,18 @@
     balls.forEach((ball, index) => {
       const row = rows[index];
       if (!row) return;
+      row.classList.add("bb-compact-ball-row");
+      const oldSummary = row.querySelector(".bb-ball-summary");
+      if (oldSummary) oldSummary.remove();
+      row.insertAdjacentHTML("afterbegin", compactSummary(ball, index));
+
       const id = ballKey(ball, index);
       const threshold = nextThreshold(ball, id, state);
       if (!threshold) return;
       const opened = state.opened && state.opened.ballId === id && state.opened.threshold === threshold;
       const wrap = document.createElement("div");
       wrap.className = "bb-livefix-evo entry";
-      wrap.innerHTML = `<b>Эволюция шара · ур. ${threshold}</b><p>Открой 3 карты и выбери одну. Шансы: обычная 68%, редкая 23%, эпическая 7%, легендарная 2%.</p><button class="evo-btn" data-live-evo-open="${id}" data-live-evo-threshold="${threshold}">${opened ? "Карты открыты" : "Эволюция"}</button>${opened ? `<div class="evo-choices">${state.opened.cards.map(cardHtml).join("")}</div>` : ""}`;
+      wrap.innerHTML = `<b>Эволюция · ур. ${threshold}</b><p>3 карты на выбор. Шансы: 68% / 23% / 7% / 2%.</p><button class="evo-btn" data-live-evo-open="${id}" data-live-evo-threshold="${threshold}">${opened ? "Карты открыты" : "Эволюция"}</button>${opened ? `<div class="evo-choices">${state.opened.cards.map(cardHtml).join("")}</div>` : ""}`;
       row.after(wrap);
     });
   }
