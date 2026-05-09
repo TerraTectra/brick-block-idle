@@ -4,7 +4,8 @@
 }
 
 .boss-banner,
-.boss-node {
+.boss-node,
+.boss-fight {
   border-radius: 16px;
   border: 1px solid rgba(250, 204, 21, 0.28);
   background: linear-gradient(135deg, rgba(120, 53, 15, 0.45), rgba(15, 23, 42, 0.82));
@@ -12,14 +13,16 @@
 }
 
 .boss-banner h3,
-.boss-node h3 {
+.boss-node h3,
+.boss-fight h3 {
   margin: 0 0 8px;
   color: #fde68a;
   font-size: 15px;
 }
 
 .boss-banner p,
-.boss-node p {
+.boss-node p,
+.boss-fight p {
   margin: 0;
   color: #cbd5e1;
   font-size: 12px;
@@ -50,6 +53,25 @@
   margin-top: 3px;
   color: #facc15;
   font-size: 16px;
+}
+
+.boss-hpbar {
+  overflow: hidden;
+  height: 14px;
+  margin: 10px 0 8px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(250, 204, 21, 0.18);
+}
+
+.boss-hpbar span {
+  display: block;
+  height: 100%;
+  width: var(--boss-hp, 0%);
+  border-radius: inherit;
+  background: linear-gradient(90deg, #fb7185, #facc15);
+  box-shadow: 0 0 18px rgba(250, 204, 21, 0.45);
+  transition: width 160ms linear;
 }
 
 .boss-node.locked {
