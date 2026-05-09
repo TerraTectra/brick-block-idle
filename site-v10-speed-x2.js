@@ -2,11 +2,15 @@
   "use strict";
 
   const RUN_KEY = "brick_block_idle_run_v10";
-  const BOOST_FIELD = "__bbBaseSpeedX2Applied";
-  const BOOST_AMOUNT = 1;
+  const BOOST_FIELD = "__bbBaseSpeedX10Applied";
+  const BOOST_AMOUNT = 9;
+  const VECTOR_MULT = 10;
   const originalGetItem = Storage.prototype.getItem;
   const originalSetItem = Storage.prototype.setItem;
   const originalPush = Array.prototype.push;
+  const originalUnshift = Array.prototype.unshift;
+  const originalSplice = Array.prototype.splice;
+  const tracked = new Set();
 
   function isBallLike(value) {
     return value &&
@@ -19,10 +23,29 @@
       !Object.prototype.hasOwnProperty.call(value, "h");
   }
 
+  function speedOf(ball) {
+    return Math.hypot(ball.vx || 0, ball.vy || 0);
+  }
+
+  function scaleVector(ball, mult) {
+    const speed = speedOf(ball);
+    if (speed <= 0.001) return;
+    ball.vx *= mult;
+    ball.vy *= mult;
+  }
+
   function applyBoost(ball) {
-    if (!isBallLike(ball) || ball[BOOST_FIELD]) return;
-    ball[BOOST_FIELD] = true;
-    ball.infiniteSpeed = Math.max(0, Number(ball.infiniteSpeed || 0)) + BOOST_AMOUNT;
+    if (!isBallLike(ball)) return;
+    tracked.add(ball);
+
+    ball.infiniteSpeed = Math.max(Number(ball.infiniteSpeed || 0), BOOST_AMOUNT);
+    ball.speedBonus = Math.max(Number(ball.speedBonus || 0), BOOST_AMOUNT);
+    ball.bonusSpeed = Math.max(Number(ball.bonusSpeed || 0), BOOST_AMOUNT);
+
+    if (!ball[BOOST_FIELD]) {
+      ball[BOOST_FIELD] = true;
+      scaleVector(ball, VECTOR_MULT);
+    }
   }
 
   function patchRun(raw) {
@@ -51,8 +74,24 @@
     return originalPush.apply(this, items);
   };
 
-  window.__brickBlockSpeedX2 = {
+  Array.prototype.unshift = function (...items) {
+    items.forEach(applyBoost);
+    return originalUnshift.apply(this, items);
+  };
+
+  Array.prototype.splice = function (...args) {
+    args.slice(2).forEach(applyBoost);
+    return originalSplice.apply(this, args);
+  };
+
+  setInterval(() => {
+    tracked.forEach(applyBoost);
+  }, 250);
+
+  window.__brickBlockSpeedX10 = {
     boostAmount: BOOST_AMOUNT,
+    vectorMult: VECTOR_MULT,
+    tracked,
     applyBoost,
   };
 })();
