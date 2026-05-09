@@ -1,11 +1,11 @@
 (() => {
   "use strict";
 
-  const tracked = new Set();
-  const originalPush = Array.prototype.push;
+  const RUN_KEY = "brick_block_idle_run_v10";
+  const originalSetItem = Storage.prototype.setItem;
   const MIN_KEEP_RATIO = 0.92;
   const HARD_MIN_SPEED = 0.35;
-  const MAX_TRACKED = 128;
+  const stableByBall = new Map();
 
   function isBallLike(value) {
     return value &&
@@ -18,18 +18,12 @@
       !Object.prototype.hasOwnProperty.call(value, "h");
   }
 
-  function speedOf(ball) {
-    return Math.hypot(ball.vx || 0, ball.vy || 0);
+  function ballKey(ball, index) {
+    return String(ball.id ?? ball.form ?? ball.type ?? index);
   }
 
-  function remember(ball) {
-    if (!isBallLike(ball)) return;
-    if (tracked.size >= MAX_TRACKED && !tracked.has(ball)) return;
-    tracked.add(ball);
-    const speed = speedOf(ball);
-    if (speed > HARD_MIN_SPEED) {
-      ball.__bbStableStageSpeed = Math.max(ball.__bbStableStageSpeed || 0, speed);
-    }
+  function speedOf(ball) {
+    return Math.hypot(ball.vx || 0, ball.vy || 0);
   }
 
   function preserveSpeed(ball, target) {
@@ -41,46 +35,60 @@
     return true;
   }
 
-  function stabilize(ball) {
-    if (!isBallLike(ball)) {
-      tracked.delete(ball);
-      return;
-    }
+  function stabilizeRun(run) {
+    if (!run || typeof run !== "object" || !Array.isArray(run.balls)) return run;
 
-    const speed = speedOf(ball);
-    const stable = Math.max(ball.__bbStableStageSpeed || 0, HARD_MIN_SPEED);
+    run.balls.forEach((ball, index) => {
+      if (!isBallLike(ball)) return;
+      const key = ballKey(ball, index);
+      const speed = speedOf(ball);
+      const stable = Math.max(stableByBall.get(key) || 0, HARD_MIN_SPEED);
 
-    if (speed > stable) {
-      ball.__bbStableStageSpeed = speed;
-      return;
-    }
+      if (speed > stable) {
+        stableByBall.set(key, speed);
+        return;
+      }
 
-    if (speed > 0.001 && speed < stable * MIN_KEEP_RATIO) {
-      preserveSpeed(ball, stable);
-      return;
-    }
+      if (speed > 0.001 && speed < stable * MIN_KEEP_RATIO) {
+        preserveSpeed(ball, stable);
+        return;
+      }
 
-    if (speed <= 0.001) {
-      const angle = Math.random() * Math.PI * 2;
-      ball.vx = Math.cos(angle) * stable;
-      ball.vy = Math.sin(angle) * stable;
+      if (speed <= 0.001) {
+        const angle = Math.random() * Math.PI * 2;
+        ball.vx = Math.cos(angle) * stable;
+        ball.vy = Math.sin(angle) * stable;
+      }
+    });
+
+    return run;
+  }
+
+  function patchRunPayload(key, value) {
+    if (key !== RUN_KEY || typeof value !== "string") return value;
+    try {
+      return JSON.stringify(stabilizeRun(JSON.parse(value)));
+    } catch {
+      return value;
     }
   }
 
-  Array.prototype.push = function (...items) {
-    for (const item of items) remember(item);
-    return originalPush.apply(this, items);
+  Storage.prototype.setItem = function (key, value) {
+    return originalSetItem.call(this, key, patchRunPayload(key, value));
   };
 
   window.__brickBlockStageSpeedFix = {
-    tracked,
-    remember,
-    stabilizeNow() {
-      tracked.forEach(stabilize);
+    stableByBall,
+    stabilizeSavedRun() {
+      try {
+        const raw = localStorage.getItem(RUN_KEY);
+        if (!raw) return false;
+        const next = patchRunPayload(RUN_KEY, raw);
+        if (next !== raw) localStorage.setItem(RUN_KEY, next);
+        return true;
+      } catch {
+        return false;
+      }
     },
   };
-
-  setInterval(() => {
-    tracked.forEach(stabilize);
-  }, 140);
 })();
