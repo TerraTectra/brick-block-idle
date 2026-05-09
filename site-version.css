@@ -1,0 +1,19 @@
+.version-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-top: 10px;
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: #bae6fd;
+  background: rgba(8, 47, 73, 0.64);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.version-badge b {
+  color: #facc15;
+  margin-left: 5px;
+}
