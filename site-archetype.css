@@ -1,0 +1,82 @@
+.arch-wrap {
+  display: grid;
+  gap: 12px;
+}
+
+.arch-card {
+  border-radius: 16px;
+  border: 1px solid rgba(56, 189, 248, 0.24);
+  background: linear-gradient(135deg, rgba(8, 47, 73, 0.52), rgba(15, 23, 42, 0.82));
+  padding: 12px;
+}
+
+.arch-card h3 {
+  margin: 0 0 8px;
+  color: #bae6fd;
+  font-size: 15px;
+}
+
+.arch-card p {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.arch-options {
+  display: grid;
+  gap: 10px;
+}
+
+.arch-option {
+  border-radius: 14px;
+  padding: 11px;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  background: rgba(15, 23, 42, 0.72);
+}
+
+.arch-option.common { border-color: rgba(203, 213, 225, 0.28); }
+.arch-option.rare { border-color: rgba(56, 189, 248, 0.38); }
+.arch-option.epic { border-color: rgba(192, 132, 252, 0.42); }
+.arch-option.legendary { border-color: rgba(250, 204, 21, 0.48); }
+
+.arch-option h4 {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 6px;
+  color: #f8fafc;
+  font-size: 13px;
+}
+
+.arch-pill {
+  border-radius: 999px;
+  padding: 2px 7px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #0f172a;
+  background: #cbd5e1;
+}
+
+.arch-option.rare .arch-pill { background: #38bdf8; }
+.arch-option.epic .arch-pill { background: #c084fc; }
+.arch-option.legendary .arch-pill { background: #facc15; }
+
+.arch-buy {
+  width: 100%;
+  margin-top: 9px;
+  border: 0;
+  border-radius: 12px;
+  padding: 9px;
+  cursor: pointer;
+  color: #06111f;
+  font-weight: 900;
+  background: linear-gradient(135deg, #67e8f9, #38bdf8);
+}
+
+.arch-buy:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  background: #475569;
+  color: #cbd5e1;
+}
