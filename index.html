@@ -3,16 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Брик Блок Idle v0.12-core</title>
+    <title>Брик Блок Idle v0.10-restored</title>
     <link rel="stylesheet" href="./site.css" />
     <link rel="stylesheet" href="./site-tabs.css" />
     <link rel="stylesheet" href="./site-upgrades.css" />
     <link rel="stylesheet" href="./site-evolution.css" />
     <link rel="stylesheet" href="./site-meta.css" />
-    <link rel="stylesheet" href="./site-stats.css" />
-    <link rel="stylesheet" href="./site-bosses.css" />
-    <link rel="stylesheet" href="./site-archetype.css" />
-    <link rel="stylesheet" href="./site-unlimited.css" />
     <link rel="stylesheet" href="./site-version.css" />
   </head>
   <body>
@@ -21,8 +17,8 @@
         <header class="head">
           <span class="tag">BRICK BLOCK IDLE</span>
           <h1>Брик Блок Idle</h1>
-          <p>Цельный v0.12-core: бесконечная прокачка, боссы, архетипы и скорость x5 внутри ядра.</p>
-          <span class="version-badge">Версия игры: <b>v0.12-core</b> · core speed x5</span>
+          <p>Восстановленная стабильная сборка со старым визуальным стилем шаров и блоков.</p>
+          <span class="version-badge">Версия игры: <b>v0.10-restored</b> · old visual style</span>
         </header>
         <div class="controls">
           <button id="pauseBtn" class="control">Пауза</button>
@@ -33,42 +29,31 @@
       <aside class="side">
         <section class="card">
           <div class="tabs">
-            <button class="tab-btn active" data-tab="combat">Бой</button>
-            <button class="tab-btn" data-tab="growth">Прокачка</button>
-            <button class="tab-btn" data-tab="collection">Шары</button>
-            <button class="tab-btn" data-tab="system">Система</button>
+            <button class="tab-btn active" data-tab="summary">Сводка</button>
+            <button class="tab-btn" data-tab="upgrades">Улучшения</button>
+            <button class="tab-btn" data-tab="balls">Шары</button>
+            <button class="tab-btn" data-tab="blocks">Блоки</button>
+            <button class="tab-btn" data-tab="meta">Мета</button>
+            <button class="tab-btn" data-tab="log">Журнал</button>
           </div>
         </section>
-        <section class="card" data-tab-panel="combat">
-          <h2>Бой</h2>
+        <section class="card" data-tab-panel="summary">
+          <h2>Сектор</h2>
           <div class="grid">
             <div class="stat"><small>Этап</small><b id="level">1</b></div>
             <div class="stat"><small>HP блока</small><b id="hp">1</b></div>
             <div class="stat"><small>Блоков</small><b id="count">0</b></div>
             <div class="stat"><small>Осколки</small><b id="frags">0</b></div>
           </div>
-          <div id="bosses" class="log"></div>
-          <div id="stats" class="log"></div>
         </section>
-        <section class="card" data-tab-panel="growth">
-          <h2>Прокачка</h2>
-          <div id="upgrades" class="log upgrade-wrap"></div>
-          <div id="archetype" class="log"></div>
-          <div id="unlimited" class="log"></div>
-          <div id="meta" class="log"></div>
-        </section>
-        <section class="card" data-tab-panel="collection">
-          <h2>Шары и блоки</h2>
-          <div id="balls" class="log"></div>
-          <div id="types" class="log"></div>
-        </section>
-        <section class="card" data-tab-panel="system">
-          <h2>Система</h2>
-          <div id="log" class="log"></div>
-        </section>
+        <section class="card" data-tab-panel="upgrades"><h2>Улучшения</h2><div id="upgrades" class="log upgrade-wrap"></div></section>
+        <section class="card" data-tab-panel="balls"><h2>Шары</h2><div id="balls" class="log"></div></section>
+        <section class="card" data-tab-panel="blocks"><h2>Типы блоков</h2><div id="types" class="log"></div></section>
+        <section class="card" data-tab-panel="meta"><h2>Мета-прогрессия</h2><div id="meta" class="log"></div></section>
+        <section class="card" data-tab-panel="log"><h2>Журнал</h2><div id="log" class="log"></div></section>
       </aside>
     </main>
-    <script src="./site-app-v12.js?v=12"></script>
-    <script src="./site-tabs.js"></script>
+    <script src="./site-app-v10.js?v=10-restored"></script>
+    <script src="./site-tabs.js?v=2"></script>
   </body>
 </html>
