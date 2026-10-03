@@ -1,49 +1,34 @@
-name: Deploy GitHub Pages
+name: Validate public preview
 
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
 
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build
-        run: npm run build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v4
+          node-version: 22
+      - name: Check JavaScript and offline package
+        run: |
+          node --check site-app-v10.js
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json, zipfile
+          root = Path('downloads')
+          build = json.loads((root / 'BUILD.json').read_text())
+          html = (root / 'Brick-Block-Idle.html').read_bytes()
+          assert build['tested'] is True
+          assert hashlib.sha256(html).hexdigest() == build['sha256']
+          with zipfile.ZipFile(root / 'Brick-Block-Idle-preview.zip') as archive:
+              assert archive.read('Brick-Block-Idle/Brick-Block-Idle.html') == html
+          print('Validated offline package and public preview source')
+          PY

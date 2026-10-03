@@ -1,0 +1,1829 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Брик Блок Idle — превью TerraTectra</title>
+    <style>
+*{box-sizing:border-box}body{margin:0;background:#070b18;color:#e5e7eb;font-family:Inter,system-ui,Segoe UI,sans-serif;overflow-x:hidden}.page{min-height:100vh;padding:24px 16px 16px;display:grid;grid-template-columns:minmax(0,1120px)360px;gap:14px;max-width:1540px;margin:0 auto}.panel,.side{background:rgba(15,23,42,.9);border:1px solid rgba(34,211,238,.22);border-radius:26px;box-shadow:0 22px 70px rgba(0,0,0,.45)}.panel{padding:14px;display:grid;grid-template-rows:auto auto minmax(0,1fr);min-height:calc(100vh - 48px)}.head{margin-bottom:8px}.tag{display:inline-block;padding:5px 10px;border-radius:999px;background:rgba(34,211,238,.12);border:1px solid rgba(103,232,249,.25);color:#a5f3fc;font-size:12px;font-weight:900;letter-spacing:.08em}h1,h2,p{margin:0}h1{margin-top:6px;color:#fff;font-size:28px;line-height:1.05}p,small{color:#94a3b8;font-weight:700}.controls{margin:8px 0 10px;display:flex;gap:8px}.control{border:1px solid rgba(34,211,238,.38);background:rgba(34,211,238,.1);color:#e0f2fe;border-radius:12px;padding:9px 12px;font-weight:900;cursor:pointer}.control.danger{border-color:rgba(248,113,113,.45);background:rgba(248,113,113,.1);color:#fecaca}canvas{width:100%;height:min(calc(100vh - 225px),650px);min-height:500px;display:block;border-radius:22px;border:1px solid rgba(34,211,238,.22);background:#020617}.side{padding:14px;height:calc(100vh - 48px);display:grid;gap:10px;overflow:auto}.card{background:rgba(2,6,23,.72);border:1px solid rgba(51,65,85,.8);border-radius:18px;padding:12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stat{background:rgba(15,23,42,.9);border:1px solid rgba(51,65,85,.8);border-radius:14px;padding:10px}.stat b{display:block;color:#fff;font-size:22px}.log{display:grid;gap:8px}.dot{display:inline-block;width:11px;height:11px;border-radius:99px;margin-right:8px;vertical-align:-1px}.buy,.evo-btn,.prestige-btn,.meta-node button{user-select:none}.buy:hover,.evo-btn:hover,.prestige-btn:hover,.meta-node button:hover{filter:brightness(1.08)}@media(max-width:1280px){.page{grid-template-columns:1fr;padding:18px 12px}.panel{min-height:auto}.side{height:auto}canvas{height:auto;min-height:0}}@media(max-height:780px) and (min-width:1281px){.page{padding-top:18px;grid-template-columns:minmax(0,1040px)340px}.panel{min-height:calc(100vh - 36px)}.side{height:calc(100vh - 36px)}h1{font-size:26px}.tag{font-size:11px}.version-badge{margin-top:7px}canvas{height:calc(100vh - 215px);min-height:450px}}
+</style>
+    <style>
+.tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.tab-btn{border:1px solid rgba(51,65,85,.9);background:rgba(2,6,23,.78);color:#94a3b8;border-radius:14px;padding:10px 12px;font-weight:900;cursor:pointer}.tab-btn.active{background:#22d3ee;color:#020617;border-color:#67e8f9;box-shadow:0 0 18px rgba(34,211,238,.28)}.card.hidden{display:none}.controls{display:flex;gap:10px;margin:12px 0}.control,.buy{border:1px solid rgba(51,65,85,.9);background:rgba(15,23,42,.95);color:#e5e7eb;border-radius:14px;padding:10px 12px;font-weight:900;cursor:pointer}.control:hover,.buy:hover{border-color:#67e8f9}.control.danger{color:#fecaca;border-color:rgba(248,113,113,.4)}.buy{width:100%;text-align:left}.buy:active,.control:active,.tab-btn:active{transform:scale(.98)}
+</style>
+    <style>
+.upgrade-wrap{display:grid;gap:8px}.upgrade-note{display:block;margin-top:6px;color:#64748b;font-size:12px;line-height:1.35}.buy.locked{opacity:.45;cursor:not-allowed;border-color:rgba(51,65,85,.6)}.buy.ready{border-color:rgba(34,211,238,.55);box-shadow:0 0 14px rgba(34,211,238,.12)}.buy strong{color:#fff}.buy .price{float:right;color:#a5f3fc}.buy.locked .price{color:#fca5a5}.upgrade-title{display:block;color:#fff;font-weight:900}.upgrade-meta{display:block;color:#94a3b8;font-size:12px;margin-top:4px}
+</style>
+    <style>
+.evo-modal{position:fixed;inset:0;z-index:20;background:rgba(2,6,23,.78);display:grid;place-items:center;padding:24px}.evo-box{width:min(760px,100%);background:#0f172a;border:1px solid rgba(34,211,238,.35);border-radius:28px;padding:20px;box-shadow:0 28px 90px rgba(0,0,0,.6)}.evo-box h2{margin-bottom:6px}.evo-box p{margin-bottom:16px}.evo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.evo-choice{padding:14px;border-radius:18px;border:1px solid rgba(51,65,85,.9);background:rgba(2,6,23,.75);color:#e5e7eb;text-align:left;cursor:pointer}.evo-choice:hover{border-color:#67e8f9;box-shadow:0 0 18px rgba(34,211,238,.16)}.evo-choice b{display:block;color:#fff;margin-bottom:6px}.evo-choice small{line-height:1.35}.evo-close{margin-top:14px}.evo-needed{border-color:rgba(250,204,21,.45);box-shadow:0 0 14px rgba(250,204,21,.1)}.evo-btn{margin-top:8px;width:100%;border:1px solid rgba(250,204,21,.55);background:rgba(250,204,21,.12);color:#fef3c7;border-radius:12px;padding:8px 10px;font-weight:900;cursor:pointer}@media(max-width:720px){.evo-grid{grid-template-columns:1fr}}
+</style>
+    <style>
+.meta-tree{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px 12px;padding:10px 0 4px}.meta-tree::before{content:"";position:absolute;top:22px;bottom:22px;left:50%;width:2px;background:linear-gradient(180deg,rgba(34,211,238,.08),rgba(34,211,238,.38),rgba(250,204,21,.26));transform:translateX(-50%);pointer-events:none}.meta-node{position:relative;z-index:1;border:1px solid rgba(51,65,85,.9);background:linear-gradient(180deg,rgba(15,23,42,.92),rgba(2,6,23,.78));border-radius:16px;padding:12px;min-height:132px;box-shadow:0 10px 30px rgba(0,0,0,.18)}.meta-node::before{content:"";position:absolute;top:50%;left:-13px;width:12px;height:2px;background:rgba(34,211,238,.24)}.meta-node:nth-child(3n+1)::before{left:auto;right:-13px}.meta-node b{display:block;color:#fff;font-size:13px;line-height:1.25}.meta-node small{display:block;margin-top:6px;line-height:1.35;color:#94a3b8}.meta-node button{margin-top:10px;width:100%;border:1px solid rgba(34,211,238,.45);background:rgba(34,211,238,.1);color:#e0f2fe;border-radius:12px;padding:8px 10px;font-weight:900;cursor:pointer}.meta-node.extra{border-color:rgba(250,204,21,.45);box-shadow:0 0 18px rgba(250,204,21,.1),0 10px 30px rgba(0,0,0,.18)}.meta-node.extra::after{content:"EXTRA";position:absolute;top:8px;right:9px;font-size:9px;font-weight:1000;color:#fef3c7;background:rgba(250,204,21,.14);border:1px solid rgba(250,204,21,.3);border-radius:999px;padding:3px 6px}.meta-node.locked{opacity:.42;filter:saturate(.55)}.meta-node.maxed{border-color:rgba(34,197,94,.45)}.meta-node[data-row="1"],.meta-node[data-row="4"],.meta-node[data-row="7"],.meta-node[data-row="10"],.meta-node[data-row="13"]{grid-column:2}.meta-node[data-row="2"],.meta-node[data-row="5"],.meta-node[data-row="8"],.meta-node[data-row="11"],.meta-node[data-row="14"]{grid-column:1}.meta-node[data-row="3"],.meta-node[data-row="6"],.meta-node[data-row="9"],.meta-node[data-row="12"],.meta-node[data-row="15"]{grid-column:3}.prestige-box{display:grid;gap:8px}.prestige-btn{border:1px solid rgba(250,204,21,.55);background:rgba(250,204,21,.12);color:#fef3c7;border-radius:14px;padding:10px 12px;font-weight:900;cursor:pointer}.prestige-btn:disabled{opacity:.45;cursor:not-allowed}.meta-badge{display:inline-flex;margin-top:8px;padding:6px 10px;border-radius:999px;background:rgba(250,204,21,.12);border:1px solid rgba(250,204,21,.32);color:#fef3c7;font-size:12px;font-weight:900}.meta-branch-title{grid-column:1/-1;display:flex;align-items:center;gap:8px;color:#e0f2fe;font-size:12px;font-weight:1000;text-transform:uppercase;letter-spacing:.08em}.meta-branch-title::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,rgba(34,211,238,.28),rgba(34,211,238,0))}.meta-launch{display:grid;gap:12px}.meta-launch-card{border:1px solid rgba(34,211,238,.22);background:linear-gradient(180deg,rgba(8,47,73,.35),rgba(2,6,23,.82));border-radius:18px;padding:14px}.meta-launch-card h3{margin:0 0 6px;color:#fff;font-size:18px}.meta-launch-card p{margin:0;color:#94a3b8;line-height:1.4;font-size:13px}.meta-open-btn{width:100%;border:1px solid rgba(250,204,21,.55);background:linear-gradient(180deg,rgba(250,204,21,.22),rgba(250,204,21,.1));color:#fef3c7;border-radius:16px;padding:13px 14px;font-size:14px;font-weight:1000;cursor:pointer;box-shadow:0 0 22px rgba(250,204,21,.08)}.meta-open-btn:hover{filter:brightness(1.08)}body.meta-modal-open{overflow:hidden}.meta-modal{position:fixed;inset:0;z-index:1000;display:none;background:rgba(2,6,23,.82);backdrop-filter:blur(10px)}.meta-modal.open{display:grid;grid-template-rows:auto minmax(0,1fr)}.meta-modal-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 22px;border-bottom:1px solid rgba(34,211,238,.22);background:linear-gradient(180deg,rgba(15,23,42,.96),rgba(2,6,23,.92))}.meta-modal-head h2{margin:0;color:#fff;font-size:24px}.meta-modal-head p{margin:4px 0 0;color:#94a3b8;font-size:13px}.meta-close-btn{border:1px solid rgba(248,113,113,.45);background:rgba(248,113,113,.12);color:#fecaca;border-radius:14px;padding:10px 14px;font-weight:1000;cursor:pointer}.meta-modal-body{overflow:auto;padding:22px}.meta-modal-canvas{min-width:1180px;min-height:720px;border:1px solid rgba(34,211,238,.18);border-radius:24px;background:radial-gradient(circle at top,rgba(34,211,238,.08),transparent 35%),linear-gradient(180deg,rgba(15,23,42,.72),rgba(2,6,23,.92));padding:20px}.meta-modal #meta{display:block}.meta-modal .meta-tree{grid-template-columns:repeat(5,minmax(170px,1fr));gap:24px 20px;padding:20px 16px 30px}.meta-modal .meta-tree::before{left:50%;width:3px;top:34px;bottom:34px;background:linear-gradient(180deg,rgba(34,211,238,.16),rgba(34,211,238,.52),rgba(250,204,21,.36))}.meta-modal .meta-node{min-height:150px;padding:14px}.meta-modal .meta-node b{font-size:14px}.meta-modal .meta-node small{font-size:12px}.meta-modal .meta-node[data-row="1"],.meta-modal .meta-node[data-row="6"],.meta-modal .meta-node[data-row="11"]{grid-column:3!important}.meta-modal .meta-node[data-row="2"],.meta-modal .meta-node[data-row="7"],.meta-modal .meta-node[data-row="12"]{grid-column:2!important}.meta-modal .meta-node[data-row="3"],.meta-modal .meta-node[data-row="8"],.meta-modal .meta-node[data-row="13"]{grid-column:4!important}.meta-modal .meta-node[data-row="4"],.meta-modal .meta-node[data-row="9"],.meta-modal .meta-node[data-row="14"]{grid-column:1!important}.meta-modal .meta-node[data-row="5"],.meta-modal .meta-node[data-row="10"],.meta-modal .meta-node[data-row="15"]{grid-column:5!important}@media(max-width:720px){.meta-tree{grid-template-columns:1fr}.meta-tree::before{left:14px}.meta-node,.meta-node[data-row]{grid-column:1}.meta-node::before{left:-8px;right:auto;width:8px}.meta-modal-head{padding:14px}.meta-modal-body{padding:12px}.meta-modal-canvas{min-width:900px}.meta-modal .meta-tree{grid-template-columns:repeat(5,160px)}}
+</style>
+    <style>
+.stats-wrap {
+  display: grid;
+  gap: 12px;
+}
+
+.stat-section {
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 16px;
+  padding: 12px;
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.stat-section h3 {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: #e2e8f0;
+}
+
+.stat-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.stat-line {
+  border-radius: 12px;
+  padding: 9px 10px;
+  background: rgba(30, 41, 59, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.stat-line small {
+  display: block;
+  color: #94a3b8;
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.stat-line b {
+  display: block;
+  margin-top: 3px;
+  color: #f8fafc;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.stat-line.wide {
+  grid-column: 1 / -1;
+}
+
+.stat-hint {
+  margin-top: 10px;
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.stat-good b {
+  color: #67e8f9;
+}
+
+.stat-warn b {
+  color: #facc15;
+}
+
+</style>
+    <style>
+.boss-wrap {
+  display: grid;
+  gap: 12px;
+}
+
+.boss-banner,
+.boss-node,
+.boss-fight {
+  border-radius: 16px;
+  border: 1px solid rgba(250, 204, 21, 0.28);
+  background: linear-gradient(135deg, rgba(120, 53, 15, 0.45), rgba(15, 23, 42, 0.82));
+  padding: 12px;
+}
+
+.boss-banner h3,
+.boss-node h3,
+.boss-fight h3 {
+  margin: 0 0 8px;
+  color: #fde68a;
+  font-size: 15px;
+}
+
+.boss-banner p,
+.boss-node p,
+.boss-fight p {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.boss-currency {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.boss-stat {
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.76);
+  border: 1px solid rgba(250, 204, 21, 0.18);
+  padding: 10px;
+}
+
+.boss-stat small {
+  display: block;
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+.boss-stat b {
+  display: block;
+  margin-top: 3px;
+  color: #facc15;
+  font-size: 16px;
+}
+
+.boss-hpbar {
+  overflow: hidden;
+  height: 14px;
+  margin: 10px 0 8px;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(250, 204, 21, 0.18);
+}
+
+.boss-hpbar span {
+  display: block;
+  height: 100%;
+  width: var(--boss-hp, 0%);
+  border-radius: inherit;
+  background: linear-gradient(90deg, #fb7185, #facc15);
+  box-shadow: 0 0 18px rgba(250, 204, 21, 0.45);
+  transition: width 160ms linear;
+}
+
+.boss-node.locked {
+  opacity: 0.55;
+  border-color: rgba(148, 163, 184, 0.16);
+  background: rgba(15, 23, 42, 0.66);
+}
+
+.boss-node.owned {
+  border-color: rgba(34, 211, 238, 0.32);
+  background: linear-gradient(135deg, rgba(8, 47, 73, 0.58), rgba(15, 23, 42, 0.82));
+}
+
+.boss-buy {
+  width: 100%;
+  margin-top: 10px;
+  border: 0;
+  border-radius: 12px;
+  padding: 10px;
+  cursor: pointer;
+  color: #111827;
+  font-weight: 800;
+  background: linear-gradient(135deg, #facc15, #fb923c);
+}
+
+.boss-buy:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  background: #475569;
+  color: #cbd5e1;
+}
+
+</style>
+    <style>
+.version-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-top: 10px;
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: #bae6fd;
+  background: rgba(8, 47, 73, 0.64);
+  border: 1px solid rgba(56, 189, 248, 0.28);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.version-badge b {
+  color: #facc15;
+  margin-left: 5px;
+}
+
+</style>
+    <style>
+.side .card[data-tab-panel] {
+  display: grid;
+  gap: 12px;
+}
+
+.side .card.hidden[data-tab-panel] {
+  display: none !important;
+}
+
+.side-title {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+
+.side-title h2 {
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+.side-title p {
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.ui-block {
+  display: grid;
+  gap: 8px;
+}
+
+.ui-block-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 2px;
+  color: #e2e8f0;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.ui-block-title span {
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.ui-divider {
+  height: 1px;
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.28), rgba(34, 211, 238, 0));
+  margin: 2px 0;
+}
+
+.settings-box {
+  border-radius: 16px;
+  border: 1px solid rgba(51, 65, 85, 0.9);
+  background: rgba(15, 23, 42, 0.62);
+  padding: 12px;
+}
+
+.settings-box summary {
+  cursor: pointer;
+  color: #e2e8f0;
+  font-weight: 900;
+  list-style: none;
+}
+
+.settings-box summary::-webkit-details-marker {
+  display: none;
+}
+
+.settings-box summary::after {
+  content: "▾";
+  float: right;
+  color: #67e8f9;
+}
+
+.settings-box[open] summary::after {
+  content: "▴";
+}
+
+.settings-box > div {
+  margin-top: 10px;
+}
+
+.soft-note {
+  border-radius: 14px;
+  border: 1px solid rgba(34, 211, 238, 0.18);
+  background: rgba(8, 47, 73, 0.28);
+  padding: 10px;
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.45;
+  font-weight: 750;
+}
+
+.bb-compact-ball-row {
+  position: relative;
+  padding-top: 44px !important;
+}
+
+.bb-ball-summary {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  display: grid;
+  gap: 2px;
+  border-radius: 12px;
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  background: rgba(2, 6, 23, 0.82);
+  padding: 7px 9px;
+}
+
+.bb-ball-summary b {
+  color: #e0f2fe;
+  font-size: 12px;
+}
+
+.bb-ball-summary span {
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+[data-tab-panel="evolution"] #balls > .entry:not(.bb-livefix-evo) {
+  max-height: 92px;
+  overflow: hidden;
+  opacity: 0.96;
+}
+
+.bb-livefix-evo {
+  border-color: rgba(103, 232, 249, 0.26) !important;
+  background: rgba(8, 47, 73, 0.32) !important;
+}
+
+.bb-livefix-evo p {
+  margin: 4px 0 8px;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.evo-choices {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.evo-choice {
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: rgba(15, 23, 42, 0.76);
+  padding: 9px;
+}
+
+.evo-choice p {
+  margin: 5px 0;
+  color: #cbd5e1;
+}
+
+@media (min-width: 1281px) {
+  .side {
+    align-content: start;
+  }
+
+  .tabs {
+    gap: 8px;
+  }
+}
+
+</style>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20x%3D%228%22%20y%3D%228%22%20width%3D%2248%22%20height%3D%2248%22%20rx%3D%228%22%20fill%3D%22%23f97316%22%2F%3E%3C%2Fsvg%3E">
+</head>
+  <body>
+    <main class="page">
+      <section class="panel">
+        <header class="head">
+          <span class="tag">BRICK BLOCK IDLE</span>
+          <h1>Брик Блок Idle</h1>
+          <p>Разрушай блоки, усиливай шары и выбирай их эволюции. Каждый новый забег открывает путь к дальнейшей прокачке.</p>
+          <span class="version-badge">Версия игры: <b>v0.11.5</b> · превью от 03.10.2026</span>
+        </header>
+        <div class="controls">
+          <button id="pauseBtn" class="control">Пауза</button>
+          <button id="resetBtn" class="control danger">Сброс</button>
+        </div>
+        <canvas id="game" width="1120" height="720"></canvas>
+      </section>
+      <aside class="side">
+        <section class="card"><div class="tabs"><button class="tab-btn active" data-tab="play">Игра</button><button class="tab-btn" data-tab="growth">Прокачка</button><button class="tab-btn" data-tab="evolution">Эволюция</button><button class="tab-btn" data-tab="meta">Мета</button><button class="tab-btn" data-tab="boss">Боссы</button><button class="tab-btn" data-tab="collection">Блоки</button><button class="tab-btn" data-tab="settings">Настройки</button></div></section>
+        <section class="card" data-tab-panel="play"><div class="side-title"><h2>Игра</h2><p>Главное состояние забега без лишней технической информации.</p></div><div class="grid"><div class="stat"><small>Этап</small><b id="level">1</b></div><div class="stat"><small>HP блока</small><b id="hp">1</b></div><div class="stat"><small>Блоков</small><b id="count">0</b></div><div class="stat"><small>Осколки</small><b id="frags">0</b></div></div></section>
+        <section class="card" data-tab-panel="growth"><div class="side-title"><h2>Прокачка</h2><p>Трать осколки на урон, скорость, опыт и дополнительные шары.</p></div><div class="ui-block"><div class="ui-block-title">Улучшения <span>урон / скорость / опыт</span></div><div id="upgrades" class="log upgrade-wrap"></div></div></section>
+        <section class="card" data-tab-panel="evolution"><div class="side-title"><h2>Эволюция</h2><p>Когда шар достигнет нужного уровня, выбери его специализацию.</p></div><div class="ui-block"><div class="ui-block-title">Шары <span>3 карты на выбор</span></div><div id="balls" class="log"></div></div></section>
+        <section class="card" data-tab-panel="meta"><div class="side-title"><h2>Мета-прокачка</h2><p>Получай ядра за сингулярность и развивай долгосрочные улучшения.</p></div><div class="ui-block"><div class="ui-block-title">Мета-древо <span>полноэкранный режим</span></div><div id="metaLauncher" class="log"></div></div></section>
+        <section class="card" data-tab-panel="boss"><div class="side-title"><h2>Босс-прокачка</h2><p>Отдельный слой за редкие очки боссов.</p></div><div class="ui-block"><div class="ui-block-title">Боссы <span>каждые 100 этапов</span></div><div id="bosses" class="log"></div></div></section>
+        <section class="card" data-tab-panel="collection"><div class="side-title"><h2>Блоки</h2><p>Типы препятствий, которые появляются по мере роста этапов.</p></div><div class="ui-block"><div class="ui-block-title">Типы блоков <span>резисты и особенности</span></div><div id="types" class="log"></div></div></section>
+        <section class="card" data-tab-panel="settings"><div class="side-title"><h2>Настройки</h2><p>Служебная информация и журнал.</p></div><details class="settings-box"><summary>Как играть и где сохранение</summary><p>Шары разрушают блоки автоматически. Нажимай на блоки, чтобы помогать им. За осколки покупай улучшения во вкладке «Прокачка», а во вкладке «Эволюция» выбирай специализации шаров.</p><p>Сингулярность доступна с 10 этапа и даёт ядра для мета-древа. Перед новым забегом игра попросит подтверждение.</p><p>Прогресс сохраняется автоматически в этом браузере. Очистка данных браузера удалит сохранение. Сохранения веб-страницы и скачанного файла хранятся отдельно; оставляй файл по одному и тому же пути.</p></details><details class="settings-box"><summary>Статистика забега</summary><div id="stats" class="log"></div></details><details class="settings-box"><summary>Журнал событий</summary><div id="log" class="log"></div></details><div class="soft-note">Редкости: база примерно 82.5% / 15% / 2% / 0.5%. Мета-удача снижает обычный шанс и поднимает остальные.</div></section>
+      </aside>
+    </main>
+
+    <div class="meta-modal" id="metaTreeModal"><div class="meta-modal-head"><div><h2>Мета-древо прокачки</h2><p>Полноэкранное дерево: ветки, развилки и долгосрочные узлы.</p></div><button class="meta-close-btn" id="closeMetaTreeBtn">Закрыть</button></div><div class="meta-modal-body"><div class="meta-modal-canvas" id="metaTreeCanvas"><div id="meta" class="log"></div></div></div></div>
+
+    <script>
+(() => {
+  "use strict";
+
+  const RUN_KEY = "brick_block_idle_run_v10";
+  const BOOST_FIELD = "__bbBaseSpeedX5Applied";
+  const SPEED_BONUS = 4;
+  const VECTOR_MULT = 5;
+  const SPEED_CLAMP_MAX = 3.2;
+  const SPEED_CLAMP_MIN = 0.55;
+  const originalGetItem = Storage.prototype.getItem;
+  const originalSetItem = Storage.prototype.setItem;
+  const originalPush = Array.prototype.push;
+  const originalUnshift = Array.prototype.unshift;
+  const originalSplice = Array.prototype.splice;
+  const originalMathMin = Math.min;
+  const tracked = new Set();
+
+  Math.min = function (...args) {
+    if (
+      args.length === 2 &&
+      args[0] === SPEED_CLAMP_MAX &&
+      typeof args[1] === "number" &&
+      args[1] >= SPEED_CLAMP_MIN
+    ) {
+      return args[1] * VECTOR_MULT;
+    }
+    return originalMathMin.apply(Math, args);
+  };
+
+  function isBallLike(value) {
+    return value &&
+      typeof value === "object" &&
+      typeof value.x === "number" &&
+      typeof value.y === "number" &&
+      typeof value.vx === "number" &&
+      typeof value.vy === "number" &&
+      !Object.prototype.hasOwnProperty.call(value, "w") &&
+      !Object.prototype.hasOwnProperty.call(value, "h");
+  }
+
+  function speedOf(ball) {
+    return Math.hypot(ball.vx || 0, ball.vy || 0);
+  }
+
+  function scaleVector(ball, mult) {
+    const speed = speedOf(ball);
+    if (speed <= 0.001) return;
+    ball.vx *= mult;
+    ball.vy *= mult;
+  }
+
+  function applyBoost(ball) {
+    if (!isBallLike(ball)) return;
+    tracked.add(ball);
+
+    ball.infiniteSpeed = Math.max(Number(ball.infiniteSpeed || 0), SPEED_BONUS);
+    ball.speedBonus = Math.max(Number(ball.speedBonus || 0), SPEED_BONUS);
+    ball.bonusSpeed = Math.max(Number(ball.bonusSpeed || 0), SPEED_BONUS);
+    ball.__bbSpeedClampUnlocked = true;
+
+    if (!ball[BOOST_FIELD]) {
+      ball[BOOST_FIELD] = true;
+      scaleVector(ball, VECTOR_MULT);
+    }
+  }
+
+  function patchRun(raw) {
+    if (typeof raw !== "string") return raw;
+    try {
+      const run = JSON.parse(raw);
+      if (!run || typeof run !== "object" || !Array.isArray(run.balls)) return raw;
+      run.balls.forEach(applyBoost);
+      return JSON.stringify(run);
+    } catch {
+      return raw;
+    }
+  }
+
+  Storage.prototype.getItem = function (key) {
+    const value = originalGetItem.call(this, key);
+    return key === RUN_KEY ? patchRun(value) : value;
+  };
+
+  Storage.prototype.setItem = function (key, value) {
+    return originalSetItem.call(this, key, key === RUN_KEY ? patchRun(value) : value);
+  };
+
+  Array.prototype.push = function (...items) {
+    items.forEach(applyBoost);
+    return originalPush.apply(this, items);
+  };
+
+  Array.prototype.unshift = function (...items) {
+    items.forEach(applyBoost);
+    return originalUnshift.apply(this, items);
+  };
+
+  Array.prototype.splice = function (...args) {
+    args.slice(2).forEach(applyBoost);
+    return originalSplice.apply(this, args);
+  };
+
+  setInterval(() => {
+    tracked.forEach(applyBoost);
+  }, 250);
+
+  window.__brickBlockSpeedX5Core = {
+    speedBonus: SPEED_BONUS,
+    vectorMult: VECTOR_MULT,
+    unlimitedSpeed: true,
+    tracked,
+    applyBoost,
+  };
+})();
+
+</script>
+    <script>
+(() => {
+  "use strict";
+
+  const RUN_KEY = "brick_block_idle_run_v10";
+  const LIVE_KEY = "brick_block_idle_livefix_v1";
+  const EVO_LEVELS = [10, 25, 50, 100, 200, 500, 1000];
+  const SPEED_FIELDS = ["berserkSpeed", "stageSpeed", "speedBonus", "bonusSpeed", "infiniteSpeed"];
+  const BASE_SPEED_MULTIPLIER = 2;
+  const originalPush = Array.prototype.push;
+  const originalSetItem = Storage.prototype.setItem;
+  const tracked = new Set();
+  const stableVectorByBall = new Map();
+  const stableFieldByBall = new Map();
+  const MAX_TRACKED = 96;
+  const MIN_VECTOR_KEEP_RATIO = 0.92;
+  const HARD_MIN_VECTOR_SPEED = 0.35;
+
+  const rarity = {
+    common: { label: "Обычная", mult: 1, weight: 68, color: "#cbd5e1" },
+    rare: { label: "Редкая", mult: 1.8, weight: 23, color: "#38bdf8" },
+    epic: { label: "Эпическая", mult: 3, weight: 7, color: "#c084fc" },
+    legendary: { label: "Легендарная", mult: 5, weight: 2, color: "#facc15" },
+  };
+
+  const evoCards = [
+    { key: "damage", name: "Урон формы", desc: "Повышает постоянную силу удара этого шара." },
+    { key: "speed", name: "Импульс формы", desc: "Повышает постоянную скорость этого шара." },
+    { key: "xp", name: "Боевой опыт", desc: "Этот шар быстрее набирает следующие уровни." },
+    { key: "classPower", name: "Классовая техника", desc: "Усиливает архетип через дополнительный evo-ранг." },
+    { key: "bossDamage", name: "Охотник на боссов", desc: "Даёт запас силы против боссов и толстых целей." },
+  ];
+
+  function readJson(key, fallback) {
+    try {
+      const data = JSON.parse(localStorage.getItem(key) || "null");
+      return data && typeof data === "object" ? data : fallback;
+    } catch {
+      return fallback;
+    }
+  }
+
+  function saveJson(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  function liveState() {
+    const state = readJson(LIVE_KEY, { chosen: {}, opened: null });
+    state.chosen = state.chosen && typeof state.chosen === "object" ? state.chosen : {};
+    state.opened = state.opened && typeof state.opened === "object" ? state.opened : null;
+    return state;
+  }
+
+  function isBallLike(value) {
+    return value &&
+      typeof value === "object" &&
+      typeof value.x === "number" &&
+      typeof value.y === "number" &&
+      typeof value.vx === "number" &&
+      typeof value.vy === "number" &&
+      !Object.prototype.hasOwnProperty.call(value, "w") &&
+      !Object.prototype.hasOwnProperty.call(value, "h");
+  }
+
+  function ballLevel(ball) {
+    return Math.max(1, Number(ball.level || ball.lvl || ball.rank || 1));
+  }
+
+  function ballXp(ball) {
+    return Math.max(0, Number(ball.xp || ball.exp || 0));
+  }
+
+  function ballForm(ball) {
+    return String(ball.form || ball.type || ball.name || "шар");
+  }
+
+  function ballEvo(ball) {
+    return Math.max(0, Number(ball.evo || 0));
+  }
+
+  function ballKey(ball, index = 0) {
+    if (!ball.__bbLiveFixId) {
+      ball.__bbLiveFixId = String(ball.id ?? `${ball.form || ball.type || "ball"}_${index}_${Math.random().toString(36).slice(2)}`);
+    }
+    return ball.__bbLiveFixId;
+  }
+
+  function speedOf(ball) {
+    return Math.hypot(ball.vx || 0, ball.vy || 0);
+  }
+
+  function preserveVectorSpeed(ball, target) {
+    const speed = speedOf(ball);
+    if (speed <= 0.001) return false;
+    const scale = target / speed;
+    ball.vx *= scale;
+    ball.vy *= scale;
+    return true;
+  }
+
+  function applyBaseSpeed(ball, index = 0) {
+    if (!isBallLike(ball) || ball.__bbBaseSpeedX2Applied) return;
+    const speed = speedOf(ball);
+    if (speed <= 0.001) return;
+    ball.__bbBaseSpeedX2Applied = true;
+    preserveVectorSpeed(ball, speed * BASE_SPEED_MULTIPLIER);
+    stableVectorByBall.set(ballKey(ball, index), speed * BASE_SPEED_MULTIPLIER);
+  }
+
+  function remember(ball) {
+    if (!isBallLike(ball)) return;
+    if (tracked.size >= MAX_TRACKED && !tracked.has(ball)) return;
+    tracked.add(ball);
+    const index = tracked.size;
+    applyBaseSpeed(ball, index);
+    const key = ballKey(ball, index);
+    const speed = speedOf(ball);
+    if (speed > HARD_MIN_VECTOR_SPEED) stableVectorByBall.set(key, Math.max(stableVectorByBall.get(key) || 0, speed));
+  }
+
+  function stabilizeBall(ball, index = 0) {
+    if (!isBallLike(ball)) {
+      tracked.delete(ball);
+      return;
+    }
+
+    applyBaseSpeed(ball, index);
+
+    const key = ballKey(ball, index);
+    const speed = speedOf(ball);
+    const stableVector = Math.max(stableVectorByBall.get(key) || 0, HARD_MIN_VECTOR_SPEED);
+
+    if (speed > stableVector) stableVectorByBall.set(key, speed);
+    else if (speed > 0.001 && speed < stableVector * MIN_VECTOR_KEEP_RATIO) preserveVectorSpeed(ball, stableVector);
+    else if (speed <= 0.001) {
+      const angle = Math.random() * Math.PI * 2;
+      ball.vx = Math.cos(angle) * stableVector;
+      ball.vy = Math.sin(angle) * stableVector;
+    }
+
+    for (const field of SPEED_FIELDS) {
+      if (typeof ball[field] !== "number") continue;
+      const fieldKey = `${key}:${field}`;
+      const previous = stableFieldByBall.get(fieldKey) || 0;
+      if (ball[field] > previous) {
+        stableFieldByBall.set(fieldKey, ball[field]);
+      } else if (previous > 0 && ball[field] < previous * 0.85) {
+        ball[field] = previous;
+      }
+    }
+  }
+
+  function stabilizeRun(run) {
+    if (!run || typeof run !== "object" || !Array.isArray(run.balls)) return run;
+    run.balls.forEach((ball, index) => {
+      if (!isBallLike(ball)) return;
+      stabilizeBall(ball, index);
+    });
+    return run;
+  }
+
+  function patchRunPayload(key, value) {
+    if (key !== RUN_KEY || typeof value !== "string") return value;
+    try {
+      return JSON.stringify(stabilizeRun(JSON.parse(value)));
+    } catch {
+      return value;
+    }
+  }
+
+  function pendingThreshold(ball) {
+    const pending = ball && ball.pendingEvolution;
+    if (!pending) return 0;
+    if (typeof pending === "number") return pending;
+    if (typeof pending === "object") return Number(pending.level || pending.threshold || pending.stage || 0) || 0;
+    return 0;
+  }
+
+  function nextThreshold(ball, id, state) {
+    const pending = pendingThreshold(ball);
+    if (pending && !state.chosen[`${id}:${pending}`]) return pending;
+
+    const level = ballLevel(ball);
+    const evolved = Array.isArray(ball.evolved) ? ball.evolved : [];
+    for (const threshold of EVO_LEVELS) {
+      if (level >= threshold && !evolved.includes(threshold) && !state.chosen[`${id}:${threshold}`]) return threshold;
+    }
+    if (level > 1000) {
+      const threshold = Math.floor(level / 100) * 100;
+      if (!evolved.includes(threshold) && !state.chosen[`${id}:${threshold}`]) return threshold;
+    }
+    return 0;
+  }
+
+  function rollRarity() {
+    const total = Object.values(rarity).reduce((sum, item) => sum + item.weight, 0);
+    let roll = Math.random() * total;
+    for (const [key, item] of Object.entries(rarity)) {
+      roll -= item.weight;
+      if (roll <= 0) return key;
+    }
+    return "common";
+  }
+
+  function makeCard(ballId, threshold) {
+    const base = evoCards[Math.floor(Math.random() * evoCards.length)];
+    const tier = rollRarity();
+    return { ...base, tier, ballId, threshold, id: `${ballId}:${threshold}:${base.key}:${tier}:${Math.random().toString(36).slice(2)}` };
+  }
+
+  function openCards(ballId, threshold) {
+    const state = liveState();
+    const cards = [];
+    while (cards.length < 3) {
+      const card = makeCard(ballId, threshold);
+      if (!cards.some((item) => item.key === card.key)) cards.push(card);
+    }
+    state.opened = { ballId, threshold, cards };
+    saveJson(LIVE_KEY, state);
+    renderEvolutionFallback(true);
+  }
+
+  function effectValue(card) {
+    const mult = rarity[card.tier]?.mult || 1;
+    if (card.key === "damage") return 0.16 * mult;
+    if (card.key === "speed") return 0.08 * mult;
+    if (card.key === "xp") return 0.12 * mult;
+    if (card.key === "classPower") return 1 * mult;
+    if (card.key === "bossDamage") return 0.14 * mult;
+    return 0;
+  }
+
+  function findBall(id) {
+    return Array.from(tracked).find((ball, index) => ballKey(ball, index) === id);
+  }
+
+  function chooseCard(index) {
+    const state = liveState();
+    if (!state.opened || !state.opened.cards[index]) return;
+    const card = state.opened.cards[index];
+    const ball = findBall(card.ballId);
+    if (ball) {
+      const value = effectValue(card);
+      if (card.key === "damage") ball.infiniteDamage = Math.max(Number(ball.infiniteDamage || 0), Number(ball.infiniteDamage || 0) + value);
+      if (card.key === "speed") ball.infiniteSpeed = Math.max(Number(ball.infiniteSpeed || 0), Number(ball.infiniteSpeed || 0) + value);
+      if (card.key === "xp") ball.infiniteXp = Math.max(Number(ball.infiniteXp || 0), Number(ball.infiniteXp || 0) + value);
+      if (card.key === "classPower") ball.evo = Math.max(Number(ball.evo || 0), Number(ball.evo || 0) + Math.ceil(value));
+      if (card.key === "bossDamage") ball.stagePower = Math.max(Number(ball.stagePower || 0), Number(ball.stagePower || 0) + value);
+      ball.evolved = Array.isArray(ball.evolved) ? ball.evolved : [];
+      if (!ball.evolved.includes(card.threshold)) ball.evolved.push(card.threshold);
+      if (pendingThreshold(ball) === card.threshold) ball.pendingEvolution = null;
+    }
+    state.chosen[`${card.ballId}:${card.threshold}`] = card;
+    state.opened = null;
+    saveJson(LIVE_KEY, state);
+    renderEvolutionFallback(true);
+  }
+
+  function cardHtml(card, index) {
+    const info = rarity[card.tier] || rarity.common;
+    const pct = Math.round(effectValue(card) * (card.key === "classPower" ? 1 : 100));
+    const power = card.key === "classPower" ? `+${pct} evo` : `+${pct}%`;
+    return `<div class="evo-choice" style="border-color:${info.color}"><b style="color:${info.color}">${card.name} · ${info.label}</b><p>${card.desc}</p><small>Сила: ${power}</small><button class="evo-btn" data-live-evo-pick="${index}">Выбрать</button></div>`;
+  }
+
+  function compactSummary(ball, index) {
+    const level = ballLevel(ball);
+    const xp = Math.floor(ballXp(ball));
+    const evo = Math.floor(ballEvo(ball));
+    const form = ballForm(ball);
+    const speed = speedOf(ball).toFixed(2);
+    return `<div class="bb-ball-summary"><b>Шар #${index + 1}</b><span>Ур. ${level} · XP ${xp} · Evo ${evo} · ${form} · speed ${speed}</span></div>`;
+  }
+
+  function expectedEvoCount(balls, state) {
+    return balls.reduce((sum, ball, index) => {
+      const id = ballKey(ball, index);
+      return sum + (nextThreshold(ball, id, state) ? 1 : 0);
+    }, 0);
+  }
+
+  function renderEvolutionFallback(force = false) {
+    const box = document.getElementById("balls");
+    if (!box) return;
+    const balls = Array.from(tracked).filter(isBallLike);
+    const state = liveState();
+    const signature = balls.map((ball, index) => `${ballKey(ball, index)}:${ballLevel(ball)}:${Math.floor(ballXp(ball))}:${Math.floor(ballEvo(ball))}:${speedOf(ball).toFixed(1)}:${nextThreshold(ball, ballKey(ball, index), state)}`).join("|") + JSON.stringify(state.opened || {});
+    const expected = expectedEvoCount(balls, state);
+    const existing = box.querySelectorAll(".bb-livefix-evo").length;
+    const summaries = box.querySelectorAll(".bb-ball-summary").length;
+    const uiWasWiped = existing < expected || summaries < Math.min(balls.length, box.children.length);
+    if (!force && !uiWasWiped && box.dataset.livefixSignature === signature) return;
+    box.dataset.livefixSignature = signature;
+
+    box.querySelectorAll(".bb-livefix-evo").forEach((node) => node.remove());
+    const rows = Array.from(box.children).filter((node) => !node.classList.contains("bb-livefix-evo"));
+
+    balls.forEach((ball, index) => {
+      const row = rows[index];
+      if (!row) return;
+      row.classList.add("bb-compact-ball-row");
+      const oldSummary = row.querySelector(".bb-ball-summary");
+      if (oldSummary) oldSummary.remove();
+      row.insertAdjacentHTML("afterbegin", compactSummary(ball, index));
+
+      const id = ballKey(ball, index);
+      const threshold = nextThreshold(ball, id, state);
+      if (!threshold) return;
+      const opened = state.opened && state.opened.ballId === id && state.opened.threshold === threshold;
+      const wrap = document.createElement("div");
+      wrap.className = "bb-livefix-evo entry";
+      wrap.innerHTML = `<b>Эволюция · ур. ${threshold}</b><p>3 карты на выбор. Шансы: 68% / 23% / 7% / 2%.</p><button class="evo-btn" data-live-evo-open="${id}" data-live-evo-threshold="${threshold}">${opened ? "Карты открыты" : "Эволюция"}</button>${opened ? `<div class="evo-choices">${state.opened.cards.map(cardHtml).join("")}</div>` : ""}`;
+      row.after(wrap);
+    });
+  }
+
+  Array.prototype.push = function (...items) {
+    for (const item of items) remember(item);
+    return originalPush.apply(this, items);
+  };
+
+  Storage.prototype.setItem = function (key, value) {
+    return originalSetItem.call(this, key, patchRunPayload(key, value));
+  };
+
+  document.addEventListener("click", (event) => {
+    const openButton = event.target.closest?.("[data-live-evo-open]");
+    if (openButton) {
+      openCards(openButton.dataset.liveEvoOpen, Number(openButton.dataset.liveEvoThreshold));
+      return;
+    }
+    const pickButton = event.target.closest?.("[data-live-evo-pick]");
+    if (pickButton) chooseCard(Number(pickButton.dataset.liveEvoPick));
+  });
+
+  window.__brickBlockLiveFix = {
+    tracked,
+    stabilizeNow() {
+      Array.from(tracked).forEach(stabilizeBall);
+    },
+    renderEvolutionFallback,
+  };
+
+  setInterval(() => {
+    Array.from(tracked).forEach(stabilizeBall);
+    renderEvolutionFallback(false);
+  }, 350);
+})();
+
+</script>
+    <script>
+(() => {
+  "use strict";
+
+  const RUN_KEY = "brick_block_idle_run_v10";
+  const META_KEY = "brick_block_idle_meta_v4";
+  const BALANCE_FIELD = "__bbPost100Balanced";
+  const originalSetItem = Storage.prototype.setItem;
+  const originalGetItem = Storage.prototype.getItem;
+  const originalPush = Array.prototype.push;
+  const tracked = new Set();
+
+  function isBallLike(value) {
+    return value &&
+      typeof value === "object" &&
+      typeof value.x === "number" &&
+      typeof value.y === "number" &&
+      typeof value.vx === "number" &&
+      typeof value.vy === "number" &&
+      !Object.prototype.hasOwnProperty.call(value, "w") &&
+      !Object.prototype.hasOwnProperty.call(value, "h");
+  }
+
+  function readJson(key, fallback) {
+    try {
+      const data = JSON.parse(localStorage.getItem(key) || "null");
+      return data && typeof data === "object" ? data : fallback;
+    } catch {
+      return fallback;
+    }
+  }
+
+  function metaNodeRank(id) {
+    const meta = readJson(META_KEY, { nodes: {} });
+    return Number(meta.nodes?.[id] || 0);
+  }
+
+  function post100Relief() {
+    return 1 + metaNodeRank("post100Dmg") * 0.08 + metaNodeRank("post100Xp") * 0.05 + metaNodeRank("prestige2") * 0.03;
+  }
+
+  function applyBallWall(ball, level) {
+    if (!isBallLike(ball) || level < 100) return;
+    tracked.add(ball);
+
+    const over = Math.max(0, level - 100);
+    const wall = 1 + Math.pow(over / 42, 1.22);
+    const relief = post100Relief();
+    const softWall = Math.max(1, wall / relief);
+
+    if (!ball[BALANCE_FIELD]) {
+      ball[BALANCE_FIELD] = { damage: Number(ball.infiniteDamage || 0), xp: Number(ball.infiniteXp || 0), evo: Number(ball.evo || 0) };
+    }
+
+    const baseDamage = Number(ball[BALANCE_FIELD].damage || 0);
+    const baseXp = Number(ball[BALANCE_FIELD].xp || 0);
+    const baseEvo = Number(ball[BALANCE_FIELD].evo || 0);
+
+    ball.infiniteDamage = baseDamage / softWall;
+    ball.infiniteXp = baseXp / Math.sqrt(softWall);
+    ball.evo = Math.max(0, baseEvo / Math.pow(softWall, 0.18));
+
+    ball.__bbPost100Wall = softWall;
+  }
+
+  function patchRun(raw) {
+    if (typeof raw !== "string") return raw;
+    try {
+      const run = JSON.parse(raw);
+      if (!run || typeof run !== "object" || !Array.isArray(run.balls)) return raw;
+      const level = Number(run.level || 1);
+      run.balls.forEach((ball) => applyBallWall(ball, level));
+      return JSON.stringify(run);
+    } catch {
+      return raw;
+    }
+  }
+
+  Storage.prototype.getItem = function (key) {
+    const value = originalGetItem.call(this, key);
+    return key === RUN_KEY ? patchRun(value) : value;
+  };
+
+  Storage.prototype.setItem = function (key, value) {
+    return originalSetItem.call(this, key, key === RUN_KEY ? patchRun(value) : value);
+  };
+
+  Array.prototype.push = function (...items) {
+    const level = Number((document.getElementById("level")?.textContent || "1").replace(/[^0-9]/g, "")) || 1;
+    items.forEach((item) => applyBallWall(item, level));
+    return originalPush.apply(this, items);
+  };
+
+  setInterval(() => {
+    const level = Number((document.getElementById("level")?.textContent || "1").replace(/[^0-9]/g, "")) || 1;
+    tracked.forEach((ball) => applyBallWall(ball, level));
+  }, 1200);
+
+  window.__brickBlockPost100Balance = { tracked, post100Relief };
+})();
+
+</script>
+    <script>
+(() => {
+  "use strict";
+
+  const RUN_KEY = "brick_block_idle_run_v10";
+  const originalGetItem = Storage.prototype.getItem;
+  const originalSetItem = Storage.prototype.setItem;
+  const MAX_REFUND_LEVEL = 999999;
+
+  function readRun(raw) {
+    try {
+      const run = JSON.parse(raw || "null");
+      return run && typeof run === "object" ? run : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function patchRun(raw) {
+    if (typeof raw !== "string") return raw;
+    const run = readRun(raw);
+    if (!run || typeof run !== "object") return raw;
+    run.__bbUpgradeBalance = "v1-slower-fragment-upgrades";
+    run.upgrades = run.upgrades && typeof run.upgrades === "object" ? run.upgrades : { damage: 1, speed: 0, xp: 0 };
+
+    for (const key of ["damage", "speed", "xp", "balls", "multishot", "crit"] ) {
+      if (typeof run.upgrades[key] === "number") {
+        run.upgrades[key] = Math.min(run.upgrades[key], MAX_REFUND_LEVEL);
+      }
+    }
+
+    return JSON.stringify(run);
+  }
+
+  Storage.prototype.getItem = function (key) {
+    const value = originalGetItem.call(this, key);
+    return key === RUN_KEY ? patchRun(value) : value;
+  };
+
+  Storage.prototype.setItem = function (key, value) {
+    return originalSetItem.call(this, key, key === RUN_KEY ? patchRun(value) : value);
+  };
+
+  function rewriteUpgradeCards() {
+    const box = document.getElementById("upgrades");
+    if (!box) return;
+    const buttons = box.querySelectorAll("button");
+    buttons.forEach((button) => {
+      const text = button.textContent || "";
+      const price = Number((text.match(/\d+/g) || []).pop() || 0);
+      if (!price || button.dataset.bbBalancedPrice === "1") return;
+      const scaled = Math.ceil(price * 2.75 + Math.pow(price, 0.72) * 18);
+      button.dataset.bbBalancedPrice = "1";
+      button.dataset.bbOriginalText = text;
+      button.textContent = text.replace(String(price), String(scaled));
+      button.addEventListener("click", (event) => {
+        const frags = Number((document.getElementById("frags")?.textContent || "0").replace(/[^0-9]/g, "")) || 0;
+        if (frags < scaled) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }, true);
+    });
+  }
+
+  setInterval(rewriteUpgradeCards, 600);
+  window.__brickBlockUpgradeBalance = { rewriteUpgradeCards };
+})();
+
+</script>
+    <script>
+(() => {
+  "use strict";
+
+  const SOURCE = "./site-app-v10.js?v=10-debug-clean";
+  const OLD_XP_NEED = `function xpNeed(level) { if (level <= 1) return 32; return Math.floor(32 + level * 18 + Math.pow(level, 1.52) * 10 + Math.pow(Math.max(0, level - 20), 1.82) * 8 + (EVO_LEVELS.includes(level) ? level * 70 : 0)); }`;
+  const NEW_XP_NEED = `function xpNeed(level) {
+    if (level <= 1) return 48;
+    const early = 42 + level * 24 + Math.pow(level, 1.62) * 14;
+    const mid = Math.pow(Math.max(0, level - 20), 1.9) * 16;
+    const late = Math.pow(Math.max(0, level - 50), 2.08) * 22;
+    const post100 = Math.pow(Math.max(0, level - 100), 2.35) * 55;
+    const milestone = EVO_LEVELS.includes(level) ? level * 220 + Math.pow(level, 1.65) * 16 : 0;
+    return Math.floor(early + mid + late + post100 + milestone);
+  }`;
+
+  function loadSource() { return "(() => {\n  \"use strict\";\n\n  const canvas = document.getElementById(\"game\");\n  const ctx = canvas.getContext(\"2d\");\n  const W = canvas.width;\n  const H = canvas.height;\n  const RUN_KEY = \"brick_block_idle_run_v10\";\n  const META_KEY = \"brick_block_idle_meta_v4\";\n  const EVO_LEVELS = [10, 25, 50, 100, 200, 500, 1000];\n\n  const rarityInfo = {\n    common: { label: \"Обычный\", rank: 1, color: \"#cbd5e1\" },\n    rare: { label: \"Редкий\", rank: 2, color: \"#38bdf8\" },\n    epic: { label: \"Эпический\", rank: 3, color: \"#c084fc\" },\n    legendary: { label: \"Легендарный\", rank: 4, color: \"#facc15\" },\n  };\n\n  const forms = [\n    { key: \"striker\", rarity: \"common\", name: \"Ударный\", color: \"#93c5fd\", damage: 1.15, speed: 1.0, radius: 1.0, role: \"Прямой DPS\", desc: \"Урон x1.15, скорость x1.00. Стабильный прямой урон без условий. Усиления повышают общий урон через ранг эволюции.\" },\n    { key: \"swift\", rarity: \"common\", name: \"Быстрый\", color: \"#67e8f9\", damage: 0.75, speed: 1.45, radius: 0.9, role: \"Скоростной DPS\", desc: \"Урон x0.75, скорость x1.45. Больше касаний в секунду, но слабее один удар. Хорош для ранней зачистки.\" },\n    { key: \"heavy\", rarity: \"common\", name: \"Тяжёлый\", color: \"#cbd5e1\", damage: 1.55, speed: 0.65, radius: 1.15, role: \"Тяжёлый удар\", desc: \"Урон x1.55, скорость x0.65, радиус x1.15. Медленный шар с высоким уроном за попадание.\" },\n    { key: \"collector\", rarity: \"common\", name: \"Сборщик\", color: \"#60a5fa\", damage: 0.7, speed: 1.05, radius: 1.0, role: \"Фарм\", desc: \"Урон x0.70, скорость x1.05. XP +8% за ранг эволюции, осколки +10% за ранг.\" },\n    { key: \"ricochet\", rarity: \"common\", name: \"Рикошет\", color: \"#a7f3d0\", damage: 0.9, speed: 1.15, radius: 0.9, role: \"Доп. попадания\", desc: \"Урон x0.90, скорость x1.15. Шанс случайного дополнительного удара: 8% + 1.5% за ранг.\" },\n    { key: \"plasma\", rarity: \"rare\", name: \"Плазма\", color: \"#ff4d6d\", damage: 0.9, speed: 0.95, radius: 1.05, role: \"% урон по области\", desc: \"Прямой удар добавляет 1.5% + 0.6% за ранг от max HP блока. Сплэш: 1% + 0.5% за ранг от max HP соседних блоков. Радиус: 48px + 14px за ранг.\" },\n    { key: \"storm\", rarity: \"rare\", name: \"Гроза\", color: \"#f9f871\", damage: 0.8, speed: 1.18, radius: 0.95, role: \"Цепная молния\", desc: \"После добивания бьёт молнией по 1 + ранг случайным блокам, максимум 10. Урон цепи растёт от ранга.\" },\n    { key: \"poison\", rarity: \"rare\", name: \"Ядовитый\", color: \"#84cc16\", damage: 0.78, speed: 0.9, radius: 1.05, role: \"Яд / DoT\", desc: \"Прямой удар накладывает яд на 4 + 2×ранг секунд. Яд периодически снимает часть max HP и может добивать блоки.\" },\n    { key: \"drill\", rarity: \"rare\", name: \"Бур\", color: \"#ff9f1c\", damage: 1.35, speed: 0.72, radius: 0.9, role: \"Пробитие резистов\", desc: \"Урон x1.35, скорость x0.72. Частично игнорирует броню, щиты и тяжёлые блоки. Чем выше ранг, тем сильнее пробитие.\" },\n    { key: \"crit\", rarity: \"rare\", name: \"Крит\", color: \"#b517ff\", damage: 1.05, speed: 1.0, radius: 1.0, role: \"Криты\", desc: \"Шанс крита: 10% + 3% за ранг, максимум 42%. Критический множитель: x1.55 + 0.12 за ранг.\" },\n    { key: \"comet\", rarity: \"rare\", name: \"Комета\", color: \"#2ec4b6\", damage: 0.92, speed: 1.32, radius: 0.85, role: \"Урон от скорости\", desc: \"Урон x0.92, скорость x1.32. Чем выше скорость шара, тем выше урон. Бонус от скорости ограничен примерно +75%.\" },\n    { key: \"frost\", rarity: \"epic\", name: \"Ледяной\", color: \"#bae6fd\", damage: 0.95, speed: 0.85, radius: 1.1, role: \"Заморозка\", desc: \"Прямой удар замораживает блок на 2.5 + 0.4×ранг секунд. Замороженный блок не регенерирует и получает больше урона.\" },\n    { key: \"vampire\", rarity: \"epic\", name: \"Вампирический\", color: \"#fb7185\", damage: 1.0, speed: 1.0, radius: 1.0, role: \"Снежный ком\", desc: \"Каждое добивание даёт временный урон до конца этапа: +1.5% + 0.3% за ранг. Лимит: +120%.\" },\n    { key: \"shard\", rarity: \"epic\", name: \"Осколочный\", color: \"#f0abfc\", damage: 0.85, speed: 1.05, radius: 1.0, role: \"Осколочные удары\", desc: \"При добивании выпускает 1 + ранг осколочных ударов, максимум 8. Каждый осколок бьёт случайный блок.\" },\n    { key: \"gravity\", rarity: \"epic\", name: \"Гравитационный\", color: \"#818cf8\", damage: 0.9, speed: 0.9, radius: 1.15, role: \"Урон по скоплениям\", desc: \"После попадания наносит малый урон вокруг точки удара. Радиус: 42px + 9px за ранг.\" },\n    { key: \"rift\", rarity: \"epic\", name: \"Разлом\", color: \"#c084fc\", damage: 1.1, speed: 0.8, radius: 1.05, role: \"Линейный урон\", desc: \"После попадания дополнительно повреждает блоки в той же горизонтальной линии. Количество целей растёт от ранга.\" },\n    { key: \"singularity\", rarity: \"legendary\", name: \"Сингулярный\", color: \"#facc15\", damage: 1.05, speed: 0.85, radius: 1.2, role: \"Финишер поля\", desc: \"Чем меньше блоков осталось, тем выше урон. Лучше всего добивает конец этапа.\" },\n    { key: \"quantum\", rarity: \"legendary\", name: \"Квантовый\", color: \"#22d3ee\", damage: 1.05, speed: 1.1, radius: 1.0, role: \"Случайные цели\", desc: \"При попадании имеет шанс ударить случайный дополнительный блок: 4% + 1.5% за ранг.\" },\n    { key: \"solar\", rarity: \"legendary\", name: \"Солнечный\", color: \"#f97316\", damage: 1.2, speed: 0.75, radius: 1.25, role: \"Вспышка\", desc: \"Периодически добавляет процентный урон от max HP блока. Чем выше ранг, тем чаще и сильнее вспышка.\" },\n    { key: \"royal\", rarity: \"legendary\", name: \"Королевский\", color: \"#eab308\", damage: 0.65, speed: 0.95, radius: 1.0, role: \"Аура поддержки\", desc: \"Сам слабее, но каждый ранг даёт остальным шарам +2.5% урона. Несколько аур суммируются.\" },\n    { key: \"sniper\", rarity: \"legendary\", name: \"Снайпер\", color: \"#e5e7eb\", damage: 1.15, speed: 0.95, radius: 0.82, role: \"Автонаведение от стены\", desc: \"После каждого отскока от стены шар перенаправляется прямо в ближайший блок.\" },\n    { key: \"berserk\", rarity: \"legendary\", name: \"Берсерк\", color: \"#ef4444\", damage: 0.9, speed: 1.0, radius: 1.0, role: \"Бесконечный разгон этапа\", desc: \"За каждое уничтожение блока получает +3.5% + 0.8% за ранг к скорости до конца этапа. Верхнего лимита нет. При смене этапа бонус сбрасывается.\" },\n    { key: \"infinite\", rarity: \"legendary\", name: \"Бесконечный\", color: \"#ffffff\", damage: 1.0, speed: 1.0, radius: 1.0, role: \"Случайный рост\", desc: \"Каждое усиление случайно даёт +5% к одному постоянному бонусу: урон, скорость, XP или осколки.\" },\n  ];\n\n  const brickTypes = [\n    { key: \"normal\", name: \"Обычный\", color: \"#4cc9f0\", min: 1, weight: 100, reward: 1, info: \"Без резистов и спецэффектов.\" },\n    { key: \"armored\", name: \"Броня\", color: \"#94a3b8\", min: 5, weight: 14, reward: 1.25, info: \"Режет прямой урон. Бур частично игнорирует штраф.\" },\n    { key: \"volatile\", name: \"Нестабильный\", color: \"#ff9f1c\", min: 10, weight: 8, reward: 1.15, info: \"При уничтожении взрывается и повреждает соседние блоки.\" },\n    { key: \"regen\", name: \"Живой\", color: \"#2ec4b6\", min: 18, weight: 8, reward: 1.35, info: \"Постепенно восстанавливает HP, если не заморожен.\" },\n    { key: \"shield\", name: \"Щит\", color: \"#b517ff\", min: 25, weight: 7, reward: 1.5, info: \"Сильно режет непрямой урон: сплэш, цепи и взрывы.\" },\n    { key: \"heavy\", name: \"Тяжёлый\", color: \"#ff4d6d\", min: 40, weight: 5, reward: 1.75, info: \"Сильно режет прямой урон, но даёт повышенную награду.\" },\n  ];\n\n  const metaNodes = [\n    { id: \"dmg1\", row: 1, name: \"Калибровка урона I\", type: \"normal\", max: 5, cost: 1, effect: { damage: 1 }, desc: \"+1 постоянный уровень урона.\" },\n    { id: \"spd1\", row: 1, name: \"Магнитный разгон I\", type: \"normal\", max: 4, cost: 1, effect: { speed: 1 }, desc: \"+1 постоянный уровень скорости.\" },\n    { id: \"xp1\", row: 1, name: \"Память ядра I\", type: \"normal\", max: 4, cost: 1, effect: { xp: 1 }, desc: \"+1 постоянный уровень опыта.\" },\n    { id: \"frag1\", row: 1, name: \"Стартовый запас I\", type: \"normal\", max: 5, cost: 1, effect: { startFragments: 40 }, desc: \"+40 стартовых осколков.\" },\n    { id: \"firstExtra\", row: 2, name: \"Экстра: стартовый импульс\", type: \"extra\", max: 1, cost: 4, req: [\"dmg1\", \"frag1\"], effect: { startFragments: 180, damage: 1 }, desc: \"+180 стартовых осколков и +1 постоянный уровень урона.\" },\n    { id: \"dmg2\", row: 3, name: \"Калибровка урона II\", type: \"normal\", max: 7, cost: 2, req: [\"dmg1\"], effect: { damage: 1 }, desc: \"+1 постоянный уровень урона за ранг.\" },\n    { id: \"spd2\", row: 3, name: \"Магнитный разгон II\", type: \"normal\", max: 6, cost: 2, req: [\"spd1\"], effect: { speed: 1 }, desc: \"+1 постоянный уровень скорости за ранг.\" },\n    { id: \"xp2\", row: 3, name: \"Память ядра II\", type: \"normal\", max: 6, cost: 2, req: [\"xp1\"], effect: { xp: 1 }, desc: \"+1 постоянный уровень XP за ранг.\" },\n    { id: \"frag2\", row: 3, name: \"Стартовый запас II\", type: \"normal\", max: 6, cost: 2, req: [\"frag1\"], effect: { startFragments: 70 }, desc: \"+70 стартовых осколков за ранг.\" },\n    { id: \"autoEvolution\", row: 4, name: \"Экстра: автоэволюция\", type: \"extra\", max: 1, cost: 7, req: [\"xp2\"], effect: { autoEvolution: 1 }, desc: \"Автоматически выбирает самый редкий вариант эволюции.\" },\n    { id: \"dmg3\", row: 5, name: \"Калибровка урона III\", type: \"normal\", max: 8, cost: 4, req: [\"dmg2\"], effect: { damage: 1 }, desc: \"+1 постоянный уровень урона за ранг.\" },\n    { id: \"spd3\", row: 5, name: \"Магнитный разгон III\", type: \"normal\", max: 7, cost: 4, req: [\"spd2\"], effect: { speed: 1 }, desc: \"+1 постоянный уровень скорости за ранг.\" },\n    { id: \"xp3\", row: 5, name: \"Память ядра III\", type: \"normal\", max: 8, cost: 4, req: [\"xp2\"], effect: { xp: 1 }, desc: \"+1 постоянный уровень XP за ранг.\" },\n    { id: \"starterBall3\", row: 6, name: \"Экстра: третий стартовый шар\", type: \"extra\", max: 1, cost: 12, req: [\"firstExtra\", \"dmg2\"], effect: { starterBalls: 1 }, desc: \"Новый забег начинается с дополнительным обычным шаром.\" },\n    { id: \"prestige1\", row: 7, name: \"Резонанс сингулярности I\", type: \"normal\", max: 5, cost: 5, req: [\"autoEvolution\"], effect: { prestigeBoost: 0.08 }, desc: \"+8% ядер за сингулярность за ранг.\" },\n    { id: \"discount1\", row: 7, name: \"Стабилизация цен I\", type: \"normal\", max: 5, cost: 5, req: [\"starterBall3\"], effect: { discount: 0.03 }, desc: \"-3% к цене временных апгрейдов за ранг.\" },\n    { id: \"stageSkip1\", row: 8, name: \"Экстра: пропуск разгона\", type: \"extra\", max: 1, cost: 18, req: [\"prestige1\", \"discount1\"], effect: { startLevel: 3 }, desc: \"Новый забег начинается с 3 этапа.\" },\n    { id: \"dmg4\", row: 9, name: \"Калибровка урона IV\", type: \"normal\", max: 10, cost: 8, req: [\"dmg3\"], effect: { damage: 1 }, desc: \"+1 постоянный уровень урона за ранг.\" },\n    { id: \"spd4\", row: 9, name: \"Магнитный разгон IV\", type: \"normal\", max: 8, cost: 8, req: [\"spd3\"], effect: { speed: 1 }, desc: \"+1 постоянный уровень скорости за ранг.\" },\n    { id: \"xp4\", row: 9, name: \"Память ядра IV\", type: \"normal\", max: 10, cost: 8, req: [\"xp3\"], effect: { xp: 1 }, desc: \"+1 постоянный уровень XP за ранг.\" },\n    { id: \"starterBall4\", row: 10, name: \"Экстра: четвёртый стартовый шар\", type: \"extra\", max: 1, cost: 28, req: [\"starterBall3\", \"dmg4\"], effect: { starterBalls: 2 }, desc: \"Новый забег начинается ещё с одним обычным шаром.\" },\n    { id: \"prestige2\", row: 11, name: \"Резонанс сингулярности II\", type: \"normal\", max: 8, cost: 10, req: [\"prestige1\"], effect: { prestigeBoost: 0.1 }, desc: \"+10% ядер за сингулярность за ранг.\" },\n    { id: \"stageSkip2\", row: 12, name: \"Экстра: боевой старт\", type: \"extra\", max: 1, cost: 42, req: [\"stageSkip1\", \"prestige2\"], effect: { startLevel: 6, startFragments: 600 }, desc: \"Новый забег начинается с 6 этапа и +600 осколков.\" },\n    { id: \"coreBank\", row: 12, name: \"Экстра: банк ядра\", type: \"extra\", max: 1, cost: 55, req: [\"discount1\", \"prestige2\"], effect: { bank: 1 }, desc: \"10% осколков сохраняются в следующий забег после сингулярности.\" },\n    { id: \"rareLuck\", row: 13, name: \"Удача редкости I\", type: \"normal\", max: 10, cost: 12, req: [\"autoEvolution\"], effect: { rareLuck: 1 }, desc: \"Повышает шанс редких, эпических и легендарных вариантов.\" },\n    { id: \"startRare\", row: 13, name: \"Экстра: редкий старт\", type: \"extra\", max: 1, cost: 75, req: [\"coreBank\"], effect: { startRare: 1 }, desc: \"Новый забег начинается с одним редким шаром.\" },\n    { id: \"choicePlus\", row: 14, name: \"Широкий выбор\", type: \"extra\", max: 1, cost: 95, req: [\"rareLuck\"], effect: { choiceBonus: 1 }, desc: \"+1 вариант при выборе архетипа.\" },\n    { id: \"startEpic\", row: 14, name: \"Экстра: эпический старт\", type: \"extra\", max: 1, cost: 140, req: [\"startRare\", \"starterBall4\"], effect: { startEpic: 1 }, desc: \"Новый забег начинается с одним эпическим шаром.\" },\n    { id: \"startLegendary\", row: 15, name: \"Экстра: легендарный старт\", type: \"extra\", max: 1, cost: 260, req: [\"startEpic\", \"prestige2\"], effect: { startLegendary: 1 }, desc: \"Новый забег начинается с одним легендарным шаром.\" },\n  ];\n\n  const state = { level: 1, fragments: 0, total: 0, paused: false, bricks: [], balls: [], upgrades: { damage: 1, speed: 0, xp: 0 }, log: [\"v10: стабильная сборка без loader-цепочек.\"] };\n  const uiCache = new Map();\n  let frame = 0;\n  let lastSaveFrame = 0;\n\n  const el = (id) => document.getElementById(id);\n  const clamp = (value, min, max) => Math.max(min, Math.min(max, value));\n  const safeNum = (value) => Number.isFinite(Number(value)) ? Number(value) : 0;\n  function setHTML(id, html) { if (uiCache.get(id) === html) return; uiCache.set(id, html); const node = el(id); if (node) node.innerHTML = html; }\n  function setText(id, text) { const node = el(id); if (!node) return; const value = String(text); if (node.textContent !== value) node.textContent = value; }\n  function rng(seed) { let value = seed % 2147483647; if (value <= 0) value += 2147483646; return () => { value = (value * 16807) % 2147483647; return (value - 1) / 2147483646; }; }\n  function log(text) { state.log = [text, ...state.log].slice(0, 9); renderLog(); }\n  function getMeta() { try { const meta = JSON.parse(localStorage.getItem(META_KEY)); return normalizeMeta(meta && typeof meta === \"object\" ? meta : {}); } catch { return normalizeMeta({}); } }\n  function normalizeMeta(meta) { meta.cores = safeNum(meta.cores); meta.spent = safeNum(meta.spent); meta.bankedFragments = safeNum(meta.bankedFragments); meta.nodes = meta.nodes && typeof meta.nodes === \"object\" ? meta.nodes : {}; return meta; }\n  function setMeta(meta) { localStorage.setItem(META_KEY, JSON.stringify(normalizeMeta(meta))); }\n  function metaRank(meta, id) { return safeNum(meta.nodes[id]); }\n  function metaUnlocked(meta, node) { return !node.req || node.req.every((id) => metaRank(meta, id) > 0); }\n  function metaNodeCost(node, level) { return Math.ceil(node.cost * Math.pow(1.62, level)); }\n  function metaEffects() { const meta = getMeta(); const out = { damage: 0, speed: 0, xp: 0, startFragments: 0, autoEvolution: 0, starterBalls: 0, prestigeBoost: 0, discount: 0, startLevel: 1, bank: 0, startRare: 0, startEpic: 0, startLegendary: 0, rareLuck: 0, choiceBonus: 0 }; for (const node of metaNodes) { const level = metaRank(meta, node.id); if (!level) continue; for (const [key, value] of Object.entries(node.effect)) { if (key === \"startLevel\") out.startLevel = Math.max(out.startLevel, value); else if (key === \"starterBalls\") out.starterBalls = Math.max(out.starterBalls, value); else if ([\"autoEvolution\", \"bank\", \"startRare\", \"startEpic\", \"startLegendary\", \"choiceBonus\"].includes(key)) out[key] = Math.max(out[key], value); else out[key] += value * level; } } return out; }\n  function activeTypes() { return brickTypes.filter((type) => state.level >= type.min); }\n  function effectiveUpgrade(key) { const eff = metaEffects(); return (state.upgrades[key] || 0) + (eff[key] || 0); }\n  function stageHp(level) { return Math.max(1, Math.floor(1 + level * 0.75 + Math.pow(Math.max(0, level - 25), 1.18) * 0.28 + Math.pow(Math.max(0, level - 250), 1.32) * 0.06)); }\n  function brickReward(level, typeReward) { return Math.ceil((2 + level * 0.75 + Math.pow(level, 1.08) * 0.35) * typeReward); }\n  function upgradePower(level, kind) { if (level <= 0) return 1; const linear = kind === \"speed\" ? 0.34 : kind === \"xp\" ? 0.38 : 0.46; const curve = kind === \"speed\" ? 0.08 : kind === \"xp\" ? 0.1 : 0.14; return +(1 + level * linear + (Math.pow(level, 1.28) - level) * curve).toFixed(2); }\n  function xpNeed(level) { if (level <= 1) return 32; return Math.floor(32 + level * 18 + Math.pow(level, 1.52) * 10 + Math.pow(Math.max(0, level - 20), 1.82) * 8 + (EVO_LEVELS.includes(level) ? level * 70 : 0)); }\n  function pendingMilestone(ball) { return EVO_LEVELS.find((level) => ball.level >= level && !ball.evolved.includes(level)) || null; }\n  function isEvolutionLocked(ball) { return Boolean(ball.pendingEvolution || pendingMilestone(ball)); }\n  function formStats(ball) { return forms.find((form) => form.key === ball.form) || { key: \"basic\", rarity: \"common\", damage: 1, speed: 1, radius: 1, name: \"Базовый\", color: \"#4cc9f0\", role: \"Нет архетипа\", desc: \"На 10 уровне выберет первый архетип.\" }; }\n  function rarityRank(rarity) { return rarityInfo[rarity]?.rank || 1; }\n  function royalBuff(excludeId = null) { return state.balls.reduce((sum, ball) => ball.id === excludeId || ball.form !== \"royal\" ? sum : sum + ball.evo * 0.025, 0); }\n  function damageFor(ball) { const stats = formStats(ball); const rarityBonus = 1 + (rarityRank(stats.rarity) - 1) * 0.08; const infiniteBonus = ball.infiniteDamage || 0; const stagePower = ball.stagePower || 0; const base = 1 + (ball.level - 1) * 0.25 + Math.pow(ball.level - 1, 1.05) * 0.045; const evo = 1 + ball.evo * 0.16 + Math.pow(ball.evo, 1.18) * 0.03; return +(base * evo * rarityBonus * (stats.damage || 1) * (1 + stagePower) * (1 + infiniteBonus) * (1 + royalBuff(ball.id)) * upgradePower(effectiveUpgrade(\"damage\"), \"damage\")).toFixed(2); }\n  function personalSpeed(ball) { const stats = formStats(ball); const comet = ball.form === \"comet\" ? ball.evo * 0.02 : 0; const infiniteSpeed = ball.infiniteSpeed || 0; const berserk = ball.form === \"berserk\" ? (ball.berserkSpeed || 0) : 0; const raw = (1 + (ball.level - 1) * 0.0042 + ball.evo * 0.02 + comet + infiniteSpeed + berserk) * (stats.speed || 1); return ball.form === \"berserk\" ? Math.max(0.55, raw) : clamp(raw, 0.55, 3.2); }\n  function totalSpeed(ball) { return personalSpeed(ball) * upgradePower(effectiveUpgrade(\"speed\"), \"speed\"); }\n  function xpMult() { return upgradePower(effectiveUpgrade(\"xp\"), \"xp\"); }\n  function xpGain(brick, ball, manual = false) { if (!ball || isEvolutionLocked(ball)) return 0; const collector = ball.form === \"collector\" ? 1 + ball.evo * 0.08 : 1; const infinite = 1 + (ball.infiniteXp || 0); const stageXpBonus = 1 + Math.pow(Math.max(1, state.level), 0.45) * 0.035; const manualPenalty = manual ? 0.45 : 1; return Math.max(1, Math.ceil(brick.xp * 0.08 * xpMult() * collector * infinite * stageXpBonus * manualPenalty)); }\n  function fragGain(brick, ball) { const collector = ball?.form === \"collector\" ? 1 + ball.evo * 0.1 : 1; const infinite = 1 + (ball?.infiniteFragments || 0); return Math.max(1, Math.ceil(brick.xp * 0.34 * collector * infinite)); }\n  function discount() { return clamp(metaEffects().discount || 0, 0, 0.65); }\n  function ballCost() { return Math.floor(180 * Math.pow(1.78, Math.max(0, state.balls.length - 2)) * (1 - discount())); }\n  function upgradeCost(key) { const base = key === \"damage\" ? 95 : key === \"speed\" ? 130 : 150; const growth = key === \"damage\" ? 1.62 : key === \"speed\" ? 1.7 : 1.74; const level = state.upgrades[key] || 0; return Math.floor(base * Math.pow(growth, level + Math.pow(level, 1.18) * 0.34) * (1 - discount())); }\n  function normalize(ball) { const len = Math.hypot(ball.dx, ball.dy) || 1; ball.dx /= len; ball.dy /= len; }\n  function makeBall(id, index, saved = {}) { const angle = -Math.PI / 4 - index * 0.33; const ball = { id, level: 1, x: W / 2 + index * 34, y: H - 86 - index * 18, dx: Math.cos(angle) * (index % 2 ? -1 : 1), dy: -Math.abs(Math.sin(angle)), r: 9, xp: 0, need: 32, kills: 0, hits: 0, evo: 0, form: \"basic\", formName: \"Базовый\", rarity: \"common\", color: \"#4cc9f0\", evolved: [], pendingEvolution: null, stagePower: 0, berserkSpeed: 0, ...saved }; if (typeof ball.dx !== \"number\" || typeof ball.dy !== \"number\") { ball.dx = Math.cos(angle) * (index % 2 ? -1 : 1); ball.dy = -Math.abs(Math.sin(angle)); } normalize(ball); ball.need = xpNeed(ball.level); ball.pendingEvolution = ball.pendingEvolution || pendingMilestone(ball); ball.dmg = damageFor(ball); return ball; }\n\n  function weightedForm(random) { const luck = metaEffects().rareLuck || 0; const weights = { common: Math.max(25, 55 - luck * 2), rare: 28 + luck * 1.2, epic: 13 + luck * 0.65, legendary: 4 + luck * 0.18 }; const total = Object.values(weights).reduce((sum, value) => sum + value, 0); let roll = random() * total; let rarity = \"common\"; for (const key of [\"common\", \"rare\", \"epic\", \"legendary\"]) { roll -= weights[key]; if (roll <= 0) { rarity = key; break; } } const pool = forms.filter((form) => form.rarity === rarity); return pool[Math.floor(random() * pool.length)] || forms[0]; }\n  function chooseForms(ball) { const random = rng(Date.now() + ball.id * 1337 + ball.level * 17 + state.level * 31); const target = 3 + (metaEffects().choiceBonus || 0); const result = []; while (result.length < target && result.length < forms.length) { const form = weightedForm(random); if (!result.some((item) => item.key === form.key)) result.push(form); } return result.sort((a, b) => rarityRank(b.rarity) - rarityRank(a.rarity)); }\n  function pickStarterForm(rarity, index) { const pool = forms.filter((form) => form.rarity === rarity); return pool[index % pool.length] || pool[0] || forms[0]; }\n  function forceBallForm(ball, form) { if (!ball || !form) return; ball.form = form.key; ball.formName = form.name; ball.color = form.color; ball.rarity = form.rarity; ball.evo = Math.max(ball.evo || 0, 1); ball.r = 9 + Math.min(12, ball.evo * 0.95) * (form.radius || 1); ball.evolved = ball.evolved || []; if (!ball.evolved.includes(10)) ball.evolved.push(10); ball.pendingEvolution = null; ball.dmg = damageFor(ball); }\n  function applyEvolution(ballId, formKey) { const ball = state.balls.find((item) => item.id === ballId); const form = forms.find((item) => item.key === formKey); if (!ball || !form) return; const milestone = ball.pendingEvolution || pendingMilestone(ball); if (!milestone) return; if (ball.form !== \"basic\") { const current = formStats(ball); ball.evo += 1; ball.evolved.push(milestone); ball.pendingEvolution = null; ball.xp = 0; ball.need = xpNeed(ball.level); if (ball.form === \"infinite\") { const roll = [\"infiniteDamage\", \"infiniteSpeed\", \"infiniteXp\", \"infiniteFragments\"][Math.floor(Math.random() * 4)]; ball[roll] = (ball[roll] || 0) + 0.05; } ball.r = 9 + Math.min(12, ball.evo * 0.95) * (current.radius || 1); ball.dmg = damageFor(ball); log(`Шар-${ball.id}: усилена форма ${current.name}.`); return; } ball.evo = 1; ball.form = form.key; ball.formName = form.name; ball.color = form.color; ball.rarity = form.rarity; ball.r = 9 + Math.min(12, ball.evo * 0.95) * (form.radius || 1); ball.evolved.push(milestone); ball.pendingEvolution = null; ball.xp = 0; ball.need = xpNeed(ball.level); ball.dmg = damageFor(ball); log(`Шар-${ball.id}: ${rarityInfo[form.rarity].label} ${form.name}.`); }\n  function showEvolution(ballId) { const ball = state.balls.find((item) => item.id === ballId); if (!ball) return; const milestone = ball.pendingEvolution || pendingMilestone(ball); if (!milestone) return; if (ball.form !== \"basic\") { applyEvolution(ball.id, ball.form); renderAllUI(true); return; } const choices = chooseForms(ball); if (metaEffects().autoEvolution) { applyEvolution(ball.id, choices[0].key); renderAllUI(true); return; } ball.pendingEvolution = milestone; document.querySelector(\".evo-modal\")?.remove(); const modal = document.createElement(\"div\"); modal.className = \"evo-modal\"; modal.innerHTML = `<div class=\"evo-box\"><h2>Архетип Шара-${ball.id}</h2><p>Шар достиг ${milestone} уровня. Выбери специализацию. Следующие эволюции будут усиливать этот же тип.</p><div class=\"evo-grid\">${choices.map((form) => `<button class=\"evo-choice evo-${form.rarity}\" data-ball=\"${ball.id}\" data-form=\"${form.key}\"><span class=\"dot\" style=\"background:${form.color}\"></span><b>${rarityInfo[form.rarity].label}: ${form.name}</b><small>${form.desc}<br><br><b>Роль:</b> ${form.role}.<br><b>Статы:</b> урон x${form.damage}, скорость x${form.speed}, радиус x${form.radius}.</small></button>`).join(\"\")}</div><button class=\"control evo-close\">Позже</button></div>`; modal.addEventListener(\"pointerdown\", (event) => { const choice = event.target.closest(\".evo-choice\"); if (choice) { applyEvolution(Number(choice.dataset.ball), choice.dataset.form); modal.remove(); renderAllUI(true); return; } if (event.target.closest(\".evo-close\")) modal.remove(); }); document.body.appendChild(modal); }\n\n  function pattern(row, col, rows, cols) { if (state.level === 1) return true; if (row === 0 || row === rows - 1) return true; const p = (state.level - 1) % 8; const cx = (cols - 1) / 2; const cy = (rows - 1) / 2; const dx = col - cx; const dy = row - cy; const distance = Math.hypot(dx, dy); const angle = Math.atan2(dy, dx); if (p === 0) return !((col + state.level) % 5 === 0 && row % 4 !== 0); if (p === 1) return (row + col + state.level) % 6 !== 0 && (row * 2 + col + state.level) % 11 !== 0; if (p === 2) return Math.abs((distance + state.level * 0.35) % 4) > 0.85; if (p === 3) return Math.hypot(col - cols * 0.32, row - rows * 0.48) > 2.4 && Math.hypot(col - cols * 0.68, row - rows * 0.48) > 2.4; if (p === 4) return row % 4 !== 2 || (col + state.level) % 4 !== 0; if (p === 5) return Math.abs(Math.sin(angle * 2.4 + distance * 0.68 + state.level * 0.25)) > 0.26; if (p === 6) return (row + col * 2 + state.level) % 7 !== 0; return rng(state.level * 999 + row * 13 + col)() > 0.14; }\n  function pickType(row, col, random) { const pool = activeTypes(); if (pool.length === 1) return pool[0]; const weighted = pool.map((type) => ({ type, weight: type.key === \"normal\" ? Math.max(42, type.weight - state.level * 0.65) : type.weight + ((row * 11 + col * 7 + state.level) % 9) * 0.2 })); let roll = random() * weighted.reduce((sum, item) => sum + item.weight, 0); for (const item of weighted) { roll -= item.weight; if (roll <= 0) return item.type; } return pool[0]; }\n  function generateBricks() { const cols = clamp(24 + Math.floor(state.level / 12), 24, 32); const gap = 4; const marginX = 16; const top = 62; const brickH = 21; const rows = Math.floor((H - 20 - top + gap) / (brickH + gap)); const brickW = (W - marginX * 2 - gap * (cols - 1)) / cols; const random = rng(state.level * 9973 + 41); const hp = stageHp(state.level); state.bricks = []; for (let row = 0; row < rows; row += 1) { for (let col = 0; col < cols; col += 1) { if (!pattern(row, col, rows, cols)) continue; const type = pickType(row, col, random); state.bricks.push({ x: marginX + col * (brickW + gap), y: top + row * (brickH + gap), w: brickW, h: brickH, hp, max: hp, xp: brickReward(state.level, type.reward), type: type.key, name: type.name, color: type.color, poison: 0, poisonOwner: null, frozen: 0 }); } } }\n  function damageMult(ball, brick, source) { let mult = 1; if (brick.type === \"armored\") mult = source === \"direct\" ? 0.55 : 0.75; if (brick.type === \"regen\") mult = source === \"direct\" ? 0.85 : 0.7; if (brick.type === \"shield\") mult = source === \"direct\" ? 0.8 : 0.35; if (brick.type === \"heavy\") mult = source === \"direct\" ? 0.45 : 0.58; if (brick.frozen > 0) mult += 0.12 + ball.evo * 0.012; if (ball.form === \"drill\" && source === \"direct\" && mult < 1) mult += (1 - mult) * clamp(0.35 + ball.evo * 0.08, 0.35, 0.88); return mult; }\n  function reward(ball, brick, manual = false) { const target = ball || state.balls.filter((item) => !isEvolutionLocked(item)).sort((a, b) => a.level - b.level || a.xp - b.xp)[0]; state.fragments += fragGain(brick, target); state.total += 1; if (!target) return; if (!manual) target.kills += 1; if (target.form === \"vampire\") { target.stagePower = Math.min(1.2, (target.stagePower || 0) + 0.015 + target.evo * 0.003); target.dmg = damageFor(target); } if (!manual && target.form === \"berserk\") target.berserkSpeed = (target.berserkSpeed || 0) + 0.035 + target.evo * 0.008; if (isEvolutionLocked(target)) { if (metaEffects().autoEvolution) showEvolution(target.id); return; } target.xp += xpGain(brick, target, manual); while (!isEvolutionLocked(target) && target.xp >= target.need) { target.xp -= target.need; target.level += 1; target.need = xpNeed(target.level); target.dmg = damageFor(target); log(`Шар-${target.id}: ${target.level} ур.`); const milestone = pendingMilestone(target); if (milestone) { target.pendingEvolution = milestone; target.xp = 0; log(`Шар-${target.id} ждёт эволюцию ${milestone} ур.`); if (metaEffects().autoEvolution) showEvolution(target.id); break; } } }\n  function dealDamage(index, amount, ball, source = \"direct\") { const brick = state.bricks[index]; if (!brick || !ball) return false; if (ball.form === \"poison\" && source === \"direct\") { brick.poison = Math.max(brick.poison || 0, 4 + ball.evo * 2); brick.poisonOwner = ball.id; } if (ball.form === \"frost\" && source === \"direct\") brick.frozen = Math.max(brick.frozen || 0, 2.5 + ball.evo * 0.4); brick.hp -= amount * damageMult(ball, brick, source); if (brick.hp > 0) return false; const destroyed = state.bricks.splice(index, 1)[0]; if (!destroyed) return false; reward(ball, destroyed); if (destroyed.type === \"volatile\") { const cx = destroyed.x + destroyed.w / 2; const cy = destroyed.y + destroyed.h / 2; const targets = state.bricks.map((candidate, targetIndex) => ({ targetIndex, distance: Math.hypot(candidate.x + candidate.w / 2 - cx, candidate.y + candidate.h / 2 - cy) })).filter((item) => item.distance <= 62).map((item) => item.targetIndex).sort((a, b) => b - a); for (const target of targets) dealDamage(target, Math.max(1, stageHp(state.level) * 0.12 + ball.dmg * 0.12), ball, \"explosion\"); } return true; }\n  function hitDamage(ball, brick) { let amount = ball.dmg; if (ball.form === \"plasma\") amount += Math.max(1, brick.max * (0.015 + ball.evo * 0.006)); if (ball.form === \"singularity\") amount *= 1 + Math.max(0, 1 - state.bricks.length / 120) * (0.8 + ball.evo * 0.18); if (ball.form === \"crit\" && Math.random() < clamp(0.1 + ball.evo * 0.03, 0.1, 0.42)) amount *= 1.55 + ball.evo * 0.12; if (ball.form === \"drill\" && brick.hp / brick.max > 0.5) amount *= 1.18 + ball.evo * 0.1; if (ball.form === \"comet\") amount *= 1 + Math.min(0.75, (personalSpeed(ball) - 1) * 0.22); if (ball.form === \"solar\" && ball.hits % Math.max(12, 34 - ball.evo * 3) === 0) amount += brick.max * (0.03 + ball.evo * 0.006); return amount; }\n  function collide(ball, brick) { const nearestX = clamp(ball.x, brick.x, brick.x + brick.w); const nearestY = clamp(ball.y, brick.y, brick.y + brick.h); const dx = ball.x - nearestX; const dy = ball.y - nearestY; return dx * dx + dy * dy <= ball.r * ball.r; }\n  function aimAtNearestBlock(ball) { if (!state.bricks.length) return; let best = null; let bestDistance = Infinity; for (const brick of state.bricks) { const tx = brick.x + brick.w / 2; const ty = brick.y + brick.h / 2; const distance = Math.hypot(tx - ball.x, ty - ball.y); if (distance < bestDistance) { bestDistance = distance; best = { x: tx, y: ty }; } } if (!best) return; ball.dx = best.x - ball.x; ball.dy = best.y - ball.y; normalize(ball); }\n  function processAreaDamage(ball, center, destroyed) { if (ball.form === \"plasma\" && ball.evo > 0) { const targets = state.bricks.map((brick, index) => ({ index, distance: Math.hypot(brick.x + brick.w / 2 - center.x, brick.y + brick.h / 2 - center.y) })).filter((item) => item.distance <= 48 + ball.evo * 14).map((item) => item.index).sort((a, b) => b - a); for (const target of targets) { const brick = state.bricks[target]; if (brick) dealDamage(target, Math.max(1, brick.max * (0.01 + ball.evo * 0.005)), ball, \"splash\"); } } if (ball.form === \"gravity\" && ball.evo > 0) { const targets = state.bricks.map((brick, index) => ({ index, distance: Math.hypot(brick.x + brick.w / 2 - center.x, brick.y + brick.h / 2 - center.y) })).filter((item) => item.distance <= 42 + ball.evo * 9).map((item) => item.index).sort((a, b) => b - a); for (const target of targets) dealDamage(target, ball.dmg * (0.05 + ball.evo * 0.01), ball, \"gravity\"); } if (ball.form === \"rift\" && ball.evo > 0) { const targets = state.bricks.map((brick, index) => ({ index, sameRow: Math.abs(brick.y - center.y) <= 14 })).filter((item) => item.sameRow).slice(0, 4 + ball.evo).map((item) => item.index).sort((a, b) => b - a); for (const target of targets) dealDamage(target, ball.dmg * (0.09 + ball.evo * 0.015), ball, \"rift\"); } if (destroyed && ball.form === \"storm\" && state.bricks.length > 0) { const jumps = clamp(1 + ball.evo, 1, 10); for (let n = 0; n < jumps && state.bricks.length > 0; n += 1) dealDamage(Math.floor(Math.random() * state.bricks.length), ball.dmg * (0.32 + ball.evo * 0.04), ball, \"chain\"); } if (destroyed && ball.form === \"shard\") { const shots = clamp(1 + ball.evo, 1, 8); for (let n = 0; n < shots && state.bricks.length > 0; n += 1) dealDamage(Math.floor(Math.random() * state.bricks.length), ball.dmg * 0.22, ball, \"shard\"); } if (ball.form === \"quantum\" && Math.random() < 0.04 + ball.evo * 0.015 && state.bricks.length > 0) dealDamage(Math.floor(Math.random() * state.bricks.length), ball.dmg * 0.8, ball, \"quantum\"); if (ball.form === \"ricochet\" && Math.random() < 0.08 + ball.evo * 0.015 && state.bricks.length > 0) dealDamage(Math.floor(Math.random() * state.bricks.length), ball.dmg * 0.4, ball, \"ricochet\"); }\n  function processBrickStatuses() { for (let index = state.bricks.length - 1; index >= 0; index -= 1) { const brick = state.bricks[index]; if (brick.frozen > 0) brick.frozen -= 1 / 60; if (brick.poison > 0) { brick.poison -= 1 / 60; brick.hp -= Math.max(0.015, brick.max * 0.0008); if (brick.hp <= 0) { const poisonOwner = state.balls.find((ball) => ball.id === brick.poisonOwner) || state.balls.find((ball) => ball.form === \"poison\") || state.balls[0]; const destroyed = state.bricks.splice(index, 1)[0]; if (poisonOwner && destroyed) reward(poisonOwner, destroyed); continue; } } if (brick.type === \"regen\" && brick.hp < brick.max && brick.frozen <= 0) brick.hp = Math.min(brick.max, brick.hp + Math.max(0.01, stageHp(state.level) * 0.001)); } }\n  function step() { if (state.paused) return; processBrickStatuses(); for (const ball of state.balls) { const move = 1.15 * totalSpeed(ball); ball.x += ball.dx * move; ball.y += ball.dy * move; let bouncedWall = false; if (ball.x - ball.r <= 0 || ball.x + ball.r >= W) { ball.dx *= -1; ball.x = clamp(ball.x, ball.r, W - ball.r); bouncedWall = true; } if (ball.y - ball.r <= 0 || ball.y + ball.r >= H) { ball.dy *= -1; ball.y = clamp(ball.y, ball.r, H - ball.r); bouncedWall = true; } normalize(ball); if (bouncedWall && ball.form === \"sniper\") aimAtNearestBlock(ball); for (let index = state.bricks.length - 1; index >= 0; index -= 1) { const brick = state.bricks[index]; if (!brick || !collide(ball, brick)) continue; const prevX = ball.x - ball.dx * move; const prevY = ball.y - ball.dy * move; const center = { x: brick.x + brick.w / 2, y: brick.y + brick.h / 2 }; ball.x = prevX; ball.y = prevY; const hitFromSide = prevX < brick.x || prevX > brick.x + brick.w; const hitFromVertical = prevY < brick.y || prevY > brick.y + brick.h; if (hitFromSide && hitFromVertical) { const relativeX = Math.abs(prevX - center.x) / Math.max(1, brick.w / 2); const relativeY = Math.abs(prevY - center.y) / Math.max(1, brick.h / 2); if (relativeX > relativeY) ball.dx *= -1; else ball.dy *= -1; } else if (hitFromSide) ball.dx *= -1; else ball.dy *= -1; ball.x += ball.dx * 0.75; ball.y += ball.dy * 0.75; normalize(ball); ball.hits += 1; const destroyed = dealDamage(index, hitDamage(ball, brick), ball); processAreaDamage(ball, center, destroyed); break; } } if (state.bricks.length === 0) { state.level += 1; generateBricks(); for (const ball of state.balls) { ball.stagePower = 0; ball.berserkSpeed = 0; ball.dmg = damageFor(ball); normalize(ball); } log(`Открыт этап ${state.level}. HP блока: ${stageHp(state.level)}.`); renderAllUI(true); } }\n  function manualHitAt(x, y) { for (let index = state.bricks.length - 1; index >= 0; index -= 1) { const brick = state.bricks[index]; if (!brick) continue; if (x < brick.x || x > brick.x + brick.w || y < brick.y || y > brick.y + brick.h) continue; brick.hp -= 1; if (brick.hp <= 0) { const destroyed = state.bricks.splice(index, 1)[0]; const target = state.balls.filter((ball) => !isEvolutionLocked(ball)).sort((a, b) => a.level - b.level || a.xp - b.xp)[0]; reward(target, destroyed, true); } renderAllUI(true); return true; } return false; }\n\n  function rr(x, y, w, h, radius) { ctx.beginPath(); ctx.roundRect(x, y, w, h, radius); }\n  function draw() { ctx.clearRect(0, 0, W, H); const bg = ctx.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, \"#070b18\"); bg.addColorStop(1, \"#111827\"); ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H); ctx.fillStyle = \"rgba(148,163,184,.08)\"; for (let x = 22; x < W; x += 42) for (let y = 76; y < H; y += 42) { ctx.beginPath(); ctx.arc(x, y, 1.45, 0, Math.PI * 2); ctx.fill(); } rr(22, 16, W - 44, 38, 16); ctx.fillStyle = \"rgba(15,23,42,.82)\"; ctx.fill(); ctx.fillStyle = \"#fff\"; ctx.font = \"900 18px system-ui\"; ctx.fillText(`Этап ${state.level}`, 42, 41); ctx.fillStyle = \"#94a3b8\"; ctx.font = \"800 13px system-ui\"; ctx.fillText(`HP: ${stageHp(state.level)}`, 142, 40); ctx.fillText(`Блоков: ${state.bricks.length}`, 225, 40); ctx.fillText(`Осколки: ${Math.floor(state.fragments)}`, 345, 40); for (const brick of state.bricks) { const ratio = clamp(brick.hp / brick.max, 0, 1); rr(brick.x, brick.y, brick.w, brick.h, 7); ctx.fillStyle = brick.frozen > 0 ? \"#bae6fd\" : brick.color; ctx.shadowColor = brick.poison > 0 ? \"#84cc16\" : brick.color; ctx.shadowBlur = brick.poison > 0 ? 13 : 7; ctx.fill(); ctx.shadowBlur = 0; rr(brick.x + 4, brick.y + brick.h - 7, (brick.w - 8) * ratio, 4, 4); ctx.fillStyle = ratio > 0.35 ? \"rgba(255,255,255,.86)\" : \"rgba(255,77,109,.95)\"; ctx.fill(); } for (const ball of state.balls) { const stats = formStats(ball); ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.r + 9, 0, Math.PI * 2); ctx.fillStyle = `${ball.color}33`; ctx.fill(); ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2); ctx.fillStyle = ball.color; ctx.fill(); ctx.strokeStyle = ball.pendingEvolution ? \"#facc15\" : (rarityInfo[stats.rarity]?.color || \"#fff\"); ctx.lineWidth = ball.pendingEvolution ? 3 : 2; ctx.stroke(); ctx.lineWidth = 1; ctx.fillStyle = \"#020617\"; ctx.font = \"900 10px system-ui\"; ctx.fillText(ball.level, ball.x - 4, ball.y + 4); if (ball.form === \"sniper\") { const target = state.bricks[0]; if (target) { ctx.strokeStyle = \"rgba(229,231,235,.18)\"; ctx.beginPath(); ctx.moveTo(ball.x, ball.y); ctx.lineTo(target.x + target.w / 2, target.y + target.h / 2); ctx.stroke(); } } } }\n\n  function prestigeReward() { if (state.level < 10) return 0; return Math.max(1, Math.floor((Math.pow(state.level - 9, 0.72) + state.level / 180) * (1 + metaEffects().prestigeBoost))); }\n  function performPrestige() { const reward = prestigeReward(); if (reward <= 0) return; const meta = getMeta(); if (metaEffects().bank) meta.bankedFragments = Math.floor(state.fragments * 0.1); meta.cores = safeNum(meta.cores) + reward; setMeta(meta); localStorage.removeItem(RUN_KEY); newRun(); save(true); renderAllUI(true); }\n  function buyMeta(id) { const meta = getMeta(); const node = metaNodes.find((item) => item.id === id); if (!node || !metaUnlocked(meta, node)) return; const level = metaRank(meta, id); if (level >= node.max) return; const cost = metaNodeCost(node, level); if (meta.cores < cost) return; meta.cores -= cost; meta.spent = safeNum(meta.spent) + cost; meta.nodes[id] = level + 1; setMeta(meta); for (const ball of state.balls) ball.dmg = damageFor(ball); renderAllUI(true); }\n  function save(force = false) { if (!force && frame - lastSaveFrame < 90) return; lastSaveFrame = frame; localStorage.setItem(RUN_KEY, JSON.stringify({ level: state.level, fragments: state.fragments, total: state.total, upgrades: state.upgrades, balls: state.balls })); }\n  function load() { try { const data = JSON.parse(localStorage.getItem(RUN_KEY)); if (!data) return false; state.level = data.level ?? 1; state.fragments = data.fragments ?? 0; state.total = data.total ?? 0; state.upgrades = data.upgrades ?? { damage: 1, speed: 0, xp: 0 }; state.upgrades.damage = Math.max(1, state.upgrades.damage || 0); state.balls = (data.balls ?? []).map((ball, index) => makeBall(ball.id ?? index + 1, index, ball)); if (state.balls.length === 0) state.balls = [makeBall(1, 0), makeBall(2, 1)]; generateBricks(); log(\"Сохранение загружено.\"); return true; } catch { return false; } }\n  function newRun() { const meta = getMeta(); const eff = metaEffects(); state.level = eff.startLevel || 1; state.fragments = 420 + (eff.startFragments || 0) + (meta.bankedFragments || 0); state.total = 0; state.upgrades = { damage: 1, speed: 0, xp: 0 }; state.balls = []; if (meta.bankedFragments) { meta.bankedFragments = 0; setMeta(meta); } const count = 2 + (eff.starterBalls || 0) + (eff.startRare ? 1 : 0) + (eff.startEpic ? 1 : 0) + (eff.startLegendary ? 1 : 0); for (let index = 0; index < count; index += 1) state.balls.push(makeBall(index + 1, index)); let starterIndex = 0; if (eff.startLegendary) forceBallForm(state.balls[starterIndex++], pickStarterForm(\"legendary\", 2)); if (eff.startEpic) forceBallForm(state.balls[starterIndex++], pickStarterForm(\"epic\", 1)); if (eff.startRare) forceBallForm(state.balls[starterIndex++], pickStarterForm(\"rare\", 0)); generateBricks(); log(\"Новый забег запущен.\"); }\n  function nextEvolutionDistance(ball) { if (isEvolutionLocked(ball)) return -1000000 + ball.level; const next = EVO_LEVELS.find((value) => value > ball.level) || 1000; const progress = ball.xp / Math.max(1, ball.need); return next - ball.level - progress; }\n\n  function renderSummary() { setText(\"level\", state.level); setText(\"hp\", stageHp(state.level)); setText(\"count\", state.bricks.length); setText(\"frags\", Math.floor(state.fragments)); setText(\"pauseBtn\", state.paused ? \"Продолжить\" : \"Пауза\"); }\n  function renderTypes() { setHTML(\"types\", activeTypes().map((type) => `<small><span class=\"dot\" style=\"background:${type.color}\"></span><b>${type.name}</b> — ${type.info}</small>`).join(\"\")); }\n  function renderBalls() { const sorted = [...state.balls].sort((a, b) => nextEvolutionDistance(a) - nextEvolutionDistance(b) || b.level - a.level || a.id - b.id); const html = sorted.map((ball) => { const locked = ball.pendingEvolution || pendingMilestone(ball); const stats = formStats(ball); const rarity = ball.form === \"basic\" ? \"\" : `${rarityInfo[stats.rarity].label} · `; const formLabel = ball.formName || stats.name || \"Базовый\"; const berserk = ball.form === \"berserk\" ? ` · Разгон +${Math.round((ball.berserkSpeed || 0) * 100)}%` : \"\"; return `<div class=\"ball-card ${locked ? \"evo-needed\" : \"\"}\"><b>Шар-${ball.id}</b><small>${rarity}${formLabel} · Ур. ${ball.level} · Эво ${ball.evo} · Урон ${ball.dmg} · Скорость x${totalSpeed(ball).toFixed(2)}${berserk} · XP ${locked ? \"СТОП\" : `${Math.floor(ball.xp)}/${ball.need}`}</small><small class=\"tech-hint\"><b>Механика:</b> ${stats.role}. ${stats.desc}</small>${locked ? `<button class=\"evo-btn\" data-evolve-ball=\"${ball.id}\">${ball.form === \"basic\" ? \"Выбрать архетип\" : \"Усилить архетип\"}</button>` : \"\"}</div>`; }).join(\"\"); setHTML(\"balls\", html); }\n  function renderUpgrades() { const html = [[\"damage\", \"Урон\", upgradePower(effectiveUpgrade(\"damage\"), \"damage\"), \"Увеличивает общий множитель урона всех шаров в текущем забеге.\"], [\"speed\", \"Скорость\", upgradePower(effectiveUpgrade(\"speed\"), \"speed\"), \"Увеличивает скорость движения всех шаров в текущем забеге.\"], [\"xp\", \"Опыт\", upgradePower(effectiveUpgrade(\"xp\"), \"xp\"), \"Увеличивает XP, который шары получают за разрушение блоков.\"]].map(([key, name, power, info]) => `<button class=\"buy\" data-upgrade=\"${key}\"><b>${name} x${power}</b> — ${upgradeCost(key)} оск.<small class=\"tech-hint\">${info}</small></button>`).join(\"\") + `<button class=\"buy\" data-action=\"ball\"><b>Новый шар</b> — ${ballCost()} оск.<small class=\"tech-hint\">Добавляет ещё один шар в текущий забег. Цена растёт от количества шаров.</small></button>`; setHTML(\"upgrades\", html); }\n  function renderLog() { setHTML(\"log\", state.log.slice(0, 9).map((line) => `<small>${line}</small>`).join(\"\")); }\n  function renderMeta() { const meta = getMeta(); const reward = prestigeReward(); const html = `<div class=\"prestige-box\"><b class=\"meta-badge\">Ядра: ${meta.cores} · Потрачено: ${meta.spent || 0}</b><small>Сингулярность сбрасывает текущий забег и даёт ядра за достигнутый этап. Доступна с 10 этапа.</small><button class=\"prestige-btn\" data-prestige ${reward <= 0 ? \"disabled\" : \"\"}>Сингулярность: +${reward} ядер</button></div><div class=\"meta-tree\">${metaNodes.map((node) => { const level = metaRank(meta, node.id); const unlocked = metaUnlocked(meta, node); const maxed = level >= node.max; const cost = metaNodeCost(node, level); return `<div class=\"meta-node ${node.type === \"extra\" ? \"extra\" : \"\"} ${!unlocked ? \"locked\" : \"\"} ${maxed ? \"maxed\" : \"\"}\"><b>${node.name} ${node.type === \"extra\" ? \"◆\" : \"\"}</b><small>Слой ${node.row} · Ранг ${level}/${node.max}</small><small>${node.desc}</small>${node.req ? `<small>Требуется: ${node.req.join(\", \")}</small>` : \"\"}<button data-meta-node=\"${node.id}\" ${!unlocked || maxed || meta.cores < cost ? \"disabled\" : \"\"}>${maxed ? \"Максимум\" : `Купить за ${cost}`}</button></div>`; }).join(\"\")}</div>`; setHTML(\"meta\", html); }\n  function renderAllUI(force = false) { if (force) uiCache.clear(); renderSummary(); renderTypes(); renderBalls(); renderUpgrades(); renderMeta(); renderLog(); }\n  function buyUpgrade(key) { const cost = upgradeCost(key); if (state.fragments < cost) return; state.fragments -= cost; state.upgrades[key] = (state.upgrades[key] || 0) + 1; for (const ball of state.balls) ball.dmg = damageFor(ball); log(`Улучшение куплено: ${key}.`); renderAllUI(true); }\n  function buyBall() { const cost = ballCost(); if (state.fragments < cost) return; state.fragments -= cost; const id = Math.max(0, ...state.balls.map((ball) => ball.id)) + 1; state.balls.push(makeBall(id, state.balls.length)); log(`Добавлен Шар-${id}.`); renderAllUI(true); }\n  function bindUi() { el(\"pauseBtn\").onclick = () => { state.paused = !state.paused; renderSummary(); }; el(\"resetBtn\").onclick = () => { if (!confirm(\"Начать новый забег? Этап, осколки и улучшения этого забега будут сброшены.\")) return; localStorage.removeItem(RUN_KEY); newRun(); save(true); renderAllUI(true); }; el(\"upgrades\").addEventListener(\"pointerdown\", (event) => { const button = event.target.closest(\"button\"); if (!button) return; event.preventDefault(); if (button.dataset.upgrade) buyUpgrade(button.dataset.upgrade); if (button.dataset.action === \"ball\") buyBall(); }); el(\"balls\").addEventListener(\"pointerdown\", (event) => { const button = event.target.closest(\"[data-evolve-ball]\"); if (!button) return; event.preventDefault(); showEvolution(Number(button.dataset.evolveBall)); }); document.addEventListener(\"pointerdown\", (event) => { const prestige = event.target.closest(\"[data-prestige]\"); if (prestige && !prestige.disabled) { event.preventDefault(); performPrestige(); return; } const node = event.target.closest(\"[data-meta-node]\"); if (node && !node.disabled) { event.preventDefault(); buyMeta(node.dataset.metaNode); } }); canvas.style.cursor = \"crosshair\"; canvas.addEventListener(\"pointerdown\", (event) => { const rect = canvas.getBoundingClientRect(); const x = (event.clientX - rect.left) * (W / rect.width); const y = (event.clientY - rect.top) * (H / rect.height); manualHitAt(x, y); }); }\n  function loop() { frame += 1; step(); draw(); if (frame % 12 === 0) renderAllUI(false); save(false); requestAnimationFrame(loop); }\n\n  function injectV10Style() { const style = document.createElement(\"style\"); style.textContent = `.tech-hint{display:block;margin-top:6px;color:#cbd5e1;font-size:11px;line-height:1.35;font-weight:750}.evo-choice small b{color:#fff}#upgrades .buy{text-align:left}`; document.head.appendChild(style); }\n\n  injectV10Style();\n  if (!load()) newRun();\n  bindUi();\n  renderAllUI(true);\n  draw();\n  loop();\n})();\n"; }
+
+  function runPatchedSource(source) {
+    const patched = source.includes(OLD_XP_NEED)
+      ? source.replace(OLD_XP_NEED, NEW_XP_NEED)
+      : source.replace(/function xpNeed\(level\) \{[\s\S]*?\n  function pendingMilestone\(ball\)/, `${NEW_XP_NEED}\n  function pendingMilestone(ball)`);
+
+    const script = document.createElement("script");
+    script.textContent = `${patched}\n//# sourceURL=site-app-v10-xp-scaled.js`;
+    document.body.appendChild(script);
+    window.__brickBlockXpCurve = {
+      version: "v0.11.4",
+      mode: "harder xp scaling",
+      milestones: [10, 25, 50, 100, 200, 500, 1000],
+    };
+  }
+
+  try {
+    runPatchedSource(loadSource());
+  } catch (error) {
+    console.error("[BrickBlock] XP loader failed, falling back to vanilla v10", error);
+    const fallback = document.createElement("script");
+    fallback.src = SOURCE;
+    document.body.appendChild(fallback);
+  }
+})();
+
+</script>
+    <script>
+(() => {
+  "use strict";
+
+  const RUN_KEY = "brick_block_idle_run_v10";
+  const META_KEY = "brick_block_idle_meta_v4";
+  const CHOICE_KEY = "brick_block_idle_evolution_choice_fix_v2";
+  const EVO_LEVELS = [10, 25, 50, 100, 200, 500, 1000];
+
+  const rarity = {
+    common: { label: "Обычная", mult: 1, weight: 82.5, color: "#cbd5e1" },
+    rare: { label: "Редкая", mult: 1.8, weight: 15, color: "#38bdf8" },
+    epic: { label: "Эпическая", mult: 3, weight: 2, color: "#c084fc" },
+    legendary: { label: "Легендарная", mult: 5, weight: 0.5, color: "#facc15" },
+  };
+
+  const cardPool = [
+    { key: "damage", name: "Урон формы", desc: "Постоянно усиливает удар этого шара." },
+    { key: "speed", name: "Импульс формы", desc: "Постоянно повышает скорость этого шара." },
+    { key: "xp", name: "Боевой опыт", desc: "Этот шар быстрее набирает следующие уровни." },
+    { key: "classPower", name: "Классовая техника", desc: "Усиливает архетип через дополнительный evo-ранг." },
+    { key: "bossDamage", name: "Охотник на боссов", desc: "Добавляет силу против боссов и толстых целей." },
+  ];
+
+  function readJson(key, fallback) {
+    try {
+      const data = JSON.parse(localStorage.getItem(key) || "null");
+      return data && typeof data === "object" ? data : fallback;
+    } catch {
+      return fallback;
+    }
+  }
+
+  function saveJson(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  function getRun() {
+    const run = readJson(RUN_KEY, null);
+    return run && Array.isArray(run.balls) ? run : null;
+  }
+
+  function setRun(run) {
+    if (run && Array.isArray(run.balls)) saveJson(RUN_KEY, run);
+  }
+
+  function getMeta() {
+    return readJson(META_KEY, { nodes: {} });
+  }
+
+  function rareLuckRank() {
+    const meta = getMeta();
+    return Number(meta.nodes?.rareLuck || 0);
+  }
+
+  function getState() {
+    const state = readJson(CHOICE_KEY, { opened: null, chosen: {} });
+    state.opened = state.opened && typeof state.opened === "object" ? state.opened : null;
+    state.chosen = state.chosen && typeof state.chosen === "object" ? state.chosen : {};
+    return state;
+  }
+
+  function setState(state) {
+    saveJson(CHOICE_KEY, state);
+  }
+
+  function ballId(ball, index) {
+    if (!ball.__bbChoiceFixId) ball.__bbChoiceFixId = String(ball.id || `${ball.form || ball.type || "ball"}_${index}`);
+    return ball.__bbChoiceFixId;
+  }
+
+  function ballLevel(ball) {
+    return Math.max(1, Number(ball.level || ball.lvl || ball.rank || 1));
+  }
+
+  function ballLabel(ball, index) {
+    const form = String(ball.form || ball.type || ball.name || "шар");
+    return `Шар #${index + 1} · ур. ${ballLevel(ball)} · ${form}`;
+  }
+
+  function pendingThreshold(ball, state, index) {
+    const id = ballId(ball, index);
+    const pending = ball.pendingEvolution;
+    if (pending) {
+      const value = typeof pending === "object" ? Number(pending.level || pending.threshold || pending.stage || 0) : Number(pending);
+      if (value && !state.chosen[`${id}:${value}`]) return value;
+    }
+    const level = ballLevel(ball);
+    const evolved = Array.isArray(ball.evolved) ? ball.evolved : [];
+    for (const threshold of EVO_LEVELS) {
+      if (level >= threshold && !evolved.includes(threshold) && !state.chosen[`${id}:${threshold}`]) return threshold;
+    }
+    if (level > 1000) {
+      const threshold = Math.floor(level / 100) * 100;
+      if (!evolved.includes(threshold) && !state.chosen[`${id}:${threshold}`]) return threshold;
+    }
+    return 0;
+  }
+
+  function availableEvolutions(run, state) {
+    if (!run) return [];
+    return run.balls.map((ball, index) => ({ ball, index, threshold: pendingThreshold(ball, state, index) })).filter((item) => item.threshold);
+  }
+
+  function rarityWeights() {
+    const luck = Math.max(0, rareLuckRank());
+    return {
+      common: Math.max(38, 82.5 - luck * 3.2),
+      rare: 15 + luck * 2.15,
+      epic: 2 + luck * 0.75,
+      legendary: 0.5 + luck * 0.3,
+    };
+  }
+
+  function rollRarity() {
+    const weights = rarityWeights();
+    const total = Object.values(weights).reduce((sum, value) => sum + value, 0);
+    let roll = Math.random() * total;
+    for (const key of ["common", "rare", "epic", "legendary"]) {
+      roll -= weights[key];
+      if (roll <= 0) return key;
+    }
+    return "common";
+  }
+
+  function makeCard(ballIndex, threshold) {
+    const base = cardPool[Math.floor(Math.random() * cardPool.length)];
+    const tier = rollRarity();
+    return { id: `${ballIndex}:${threshold}:${base.key}:${tier}:${Math.random().toString(36).slice(2)}`, ballIndex, threshold, key: base.key, name: base.name, desc: base.desc, tier };
+  }
+
+  function openCards(ballIndex, threshold) {
+    const state = getState();
+    const cards = [];
+    while (cards.length < 3) {
+      const card = makeCard(ballIndex, threshold);
+      if (!cards.some((item) => item.key === card.key)) cards.push(card);
+    }
+    state.opened = { ballIndex, threshold, cards };
+    setState(state);
+    render(true);
+  }
+
+  function effectValue(card) {
+    const mult = rarity[card.tier]?.mult || 1;
+    if (card.key === "damage") return 0.14 * mult;
+    if (card.key === "speed") return 0.07 * mult;
+    if (card.key === "xp") return 0.09 * mult;
+    if (card.key === "classPower") return 1 * mult;
+    if (card.key === "bossDamage") return 0.12 * mult;
+    return 0;
+  }
+
+  function applyCard(card) {
+    const run = getRun();
+    if (!run || !run.balls[card.ballIndex]) return false;
+    const ball = run.balls[card.ballIndex];
+    const value = effectValue(card);
+    if (card.key === "damage") ball.infiniteDamage = Number(ball.infiniteDamage || 0) + value;
+    if (card.key === "speed") ball.infiniteSpeed = Number(ball.infiniteSpeed || 0) + value;
+    if (card.key === "xp") ball.infiniteXp = Number(ball.infiniteXp || 0) + value;
+    if (card.key === "classPower") ball.evo = Number(ball.evo || 0) + Math.max(1, Math.ceil(value));
+    if (card.key === "bossDamage") ball.stagePower = Number(ball.stagePower || 0) + value;
+    ball.evolved = Array.isArray(ball.evolved) ? ball.evolved : [];
+    if (!ball.evolved.includes(card.threshold)) ball.evolved.push(card.threshold);
+    const pending = ball.pendingEvolution;
+    const pendingValue = pending && (typeof pending === "object" ? Number(pending.level || pending.threshold || pending.stage || 0) : Number(pending));
+    if (!pendingValue || pendingValue === card.threshold) ball.pendingEvolution = null;
+    setRun(run);
+    return true;
+  }
+
+  function chooseCard(index) {
+    const state = getState();
+    if (!state.opened || !state.opened.cards[index]) return;
+    const card = state.opened.cards[index];
+    if (!applyCard(card)) return;
+    const run = getRun();
+    const ball = run?.balls?.[card.ballIndex];
+    const id = ball ? ballId(ball, card.ballIndex) : String(card.ballIndex);
+    state.chosen[`${id}:${card.threshold}`] = card;
+    state.opened = null;
+    setState(state);
+    render(true);
+  }
+
+  function cardHtml(card, index) {
+    const info = rarity[card.tier] || rarity.common;
+    const raw = effectValue(card);
+    const power = card.key === "classPower" ? `+${Math.max(1, Math.ceil(raw))} evo` : `+${Math.round(raw * 100)}%`;
+    return `<div class="evo-choice" style="border-color:${info.color}"><b style="color:${info.color}">${card.name} · ${info.label}</b><p>${card.desc}</p><small>Сила: ${power}</small><button class="evo-btn" data-direct-evo-pick="${index}">Выбрать</button></div>`;
+  }
+
+  function chancesText() {
+    const w = rarityWeights();
+    const total = w.common + w.rare + w.epic + w.legendary;
+    return `Обычная ${Math.round(w.common / total * 1000) / 10}% · Редкая ${Math.round(w.rare / total * 1000) / 10}% · Эпик ${Math.round(w.epic / total * 1000) / 10}% · Лега ${Math.round(w.legendary / total * 1000) / 10}%`;
+  }
+
+  function renderLauncher(force = false) {
+    const box = document.getElementById("balls");
+    const run = getRun();
+    if (!box || !run) return;
+    const state = getState();
+    const available = availableEvolutions(run, state);
+    const current = state.opened ? { ball: run.balls[state.opened.ballIndex], index: state.opened.ballIndex, threshold: state.opened.threshold } : available[0];
+    const signature = JSON.stringify({ opened: state.opened, available: available.map((item) => [ballId(item.ball, item.index), item.threshold]), chances: chancesText() });
+    if (!force && box.dataset.directEvoTopSignature === signature && document.getElementById("evoDirectTop")) return;
+    box.dataset.directEvoTopSignature = signature;
+    document.getElementById("evoDirectTop")?.remove();
+
+    const top = document.createElement("div");
+    top.id = "evoDirectTop";
+    top.className = "bb-evo-direct entry";
+
+    if (!current) {
+      top.innerHTML = `<b>Усиление архетипа</b><p>Доступных усилений нет. Следующие пороги: 10 / 25 / 50 / 100 / 200 / 500 / 1000.</p><small>${chancesText()}</small>`;
+      box.prepend(top);
+      return;
+    }
+
+    const opened = state.opened && state.opened.ballIndex === current.index && state.opened.threshold === current.threshold;
+    top.innerHTML = `<b>Доступное усиление архетипа</b><p>${ballLabel(current.ball, current.index)} · порог ${current.threshold}</p><small>${chancesText()}</small><button class="evo-btn" data-direct-evo-open="${current.index}" data-direct-evo-threshold="${current.threshold}">${opened ? "Карты открыты" : "Открыть 3 карты"}</button>${opened ? `<div class="evo-choices">${state.opened.cards.map(cardHtml).join("")}</div>` : ""}`;
+    box.prepend(top);
+  }
+
+  function renderRows() {
+    const box = document.getElementById("balls");
+    const run = getRun();
+    if (!box || !run) return;
+    const state = getState();
+    const rows = Array.from(box.children).filter((node) => !node.classList.contains("bb-evo-direct") && !node.classList.contains("bb-livefix-evo") && node.id !== "evoDirectTop");
+    box.querySelectorAll(".bb-evo-direct-row").forEach((node) => node.remove());
+    run.balls.forEach((ball, index) => {
+      const threshold = pendingThreshold(ball, state, index);
+      const row = rows[index];
+      if (!threshold || !row) return;
+      const wrap = document.createElement("div");
+      wrap.className = "bb-evo-direct bb-evo-direct-row entry";
+      wrap.innerHTML = `<b>Усиление доступно · ур. ${threshold}</b><button class="evo-btn" data-direct-evo-open="${index}" data-direct-evo-threshold="${threshold}">Открыть выбор</button>`;
+      row.after(wrap);
+    });
+  }
+
+  function render(force = false) {
+    renderLauncher(force);
+    renderRows();
+  }
+
+  document.addEventListener("click", (event) => {
+    const pick = event.target.closest?.("[data-direct-evo-pick]");
+    if (pick) { event.preventDefault(); event.stopPropagation(); chooseCard(Number(pick.dataset.directEvoPick)); return; }
+    const open = event.target.closest?.("[data-direct-evo-open]");
+    if (open) { event.preventDefault(); event.stopPropagation(); openCards(Number(open.dataset.directEvoOpen), Number(open.dataset.directEvoThreshold)); }
+  }, true);
+
+  window.__brickBlockEvolutionChoiceFix = { render, openCards, chooseCard, rarityWeights };
+  window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => render(true), 500);
+    setInterval(() => render(false), 500);
+  });
+})();
+
+</script>
+    <script>
+(() => {
+  "use strict";
+
+  const RUN_KEY = "brick_block_idle_run_v10";
+  const BOSS_KEY = "brick_block_idle_boss_meta_v2";
+  const EARLY_KEY = "brick_block_idle_early_boost_v1";
+  const FIGHT_KEY = "brick_block_idle_boss_fight_v1";
+
+  const bossNodes = [
+    { id: "autoBoss", name: "Автобой с боссом", cost: 2, desc: "Пассивный урон по боссу +20%." },
+    { id: "bossPierce", name: "Пробитие босса", cost: 3, desc: "Пассивный урон по боссам +35%." },
+    { id: "deepStart", name: "Глубокий старт", cost: 4, desc: "Новый забег стартует бодрее: больше ранних ресурсов и меньше мёртвого ожидания." },
+    { id: "bossCore", name: "Ядро босса", cost: 6, desc: "Каждый убитый босс даёт +1 дополнительное очко босса." },
+    { id: "evoMaster", name: "Мастер эволюции", cost: 8, desc: "Задел под повышение качества эволюционного выбора." },
+    { id: "hundredBreaker", name: "Пробой рубежа 100+", cost: 10, desc: "Снижает давление боссов после 100 этапа." },
+    { id: "legendGate", name: "Легендарные врата", cost: 16, desc: "Позже откроет легендарные стартовые условия и особые формы." },
+  ];
+
+  let lastRenderedSignature = "";
+
+  function isBossTabVisible() {
+    const panel = document.querySelector('[data-tab-panel="boss"]');
+    return !panel || !panel.classList.contains("hidden");
+  }
+
+  function readLevel() {
+    const node = document.getElementById("level");
+    const value = Number((node?.textContent || "1").replace(/[^0-9]/g, ""));
+    return Number.isFinite(value) && value > 0 ? value : 1;
+  }
+
+  function readNumber(id) {
+    const node = document.getElementById(id);
+    const value = Number((node?.textContent || "0").replace(/[^0-9.,-]/g, "").replace(",", "."));
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  function readJson(key, fallback) {
+    try {
+      const data = JSON.parse(localStorage.getItem(key) || "null");
+      return data && typeof data === "object" ? data : fallback;
+    } catch {
+      return fallback;
+    }
+  }
+
+  function saveJson(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  function getBossMeta() {
+    const meta = readJson(BOSS_KEY, { points: 0, earned: 0, killed: {}, nodes: {} });
+    meta.points = Number(meta.points || 0);
+    meta.earned = Number(meta.earned || 0);
+    meta.killed = meta.killed && typeof meta.killed === "object" ? meta.killed : {};
+    meta.nodes = meta.nodes && typeof meta.nodes === "object" ? meta.nodes : {};
+    return meta;
+  }
+
+  function setBossMeta(meta) {
+    saveJson(BOSS_KEY, meta);
+  }
+
+  function getFight() {
+    const fight = readJson(FIGHT_KEY, { active: false, stage: 0, hp: 0, maxHp: 0, lastLevel: 1, lastHitAt: 0 });
+    fight.active = Boolean(fight.active);
+    fight.stage = Number(fight.stage || 0);
+    fight.hp = Number(fight.hp || 0);
+    fight.maxHp = Number(fight.maxHp || 0);
+    fight.lastLevel = Number(fight.lastLevel || 1);
+    fight.lastHitAt = Number(fight.lastHitAt || 0);
+    return fight;
+  }
+
+  function setFight(fight) {
+    saveJson(FIGHT_KEY, fight);
+  }
+
+  function bossReward(stage, meta) {
+    const base = Math.max(1, Math.floor(stage / 100));
+    const bonus = meta.nodes.bossCore ? 1 : 0;
+    return base + bonus;
+  }
+
+  function bossHp(stage) {
+    const tier = Math.max(1, stage / 100);
+    return Math.floor(45000 + stage * 620 + Math.pow(tier, 2.45) * 65000);
+  }
+
+  function toast(text) {
+    const log = document.getElementById("log");
+    if (!log) return;
+    const line = document.createElement("div");
+    line.className = "entry";
+    line.textContent = text;
+    log.prepend(line);
+  }
+
+  function activateBoss(stage) {
+    const meta = getBossMeta();
+    if (stage < 100 || stage % 100 !== 0 || meta.killed[stage]) return;
+    const current = getFight();
+    if (current.active) return;
+    const maxHp = bossHp(stage);
+    const fight = { active: true, stage, hp: maxHp, maxHp, lastLevel: stage, lastHitAt: Date.now() };
+    setFight(fight);
+    toast(`Босс рубежа ${stage} появился. HP: ${maxHp}`);
+    renderBossPanel(true);
+  }
+
+  function killBoss(fight) {
+    const meta = getBossMeta();
+    if (meta.killed[fight.stage]) return;
+    const reward = bossReward(fight.stage, meta);
+    meta.killed[fight.stage] = true;
+    meta.points += reward;
+    meta.earned += reward;
+    setBossMeta(meta);
+    setFight({ active: false, stage: 0, hp: 0, maxHp: 0, lastLevel: readLevel(), lastHitAt: Date.now() });
+    toast(`Босс рубежа ${fight.stage} уничтожен: +${reward} очк. босса`);
+    renderBossPanel(true);
+  }
+
+  function damageBoss(amount) {
+    const fight = getFight();
+    if (!fight.active || fight.hp <= 0) return false;
+    fight.hp = Math.max(0, fight.hp - Math.max(0, amount));
+    fight.lastHitAt = Date.now();
+    if (fight.hp <= 0) killBoss(fight);
+    else setFight(fight);
+    return true;
+  }
+
+  function buyBossNode(id) {
+    const node = bossNodes.find((item) => item.id === id);
+    if (!node) return;
+    const meta = getBossMeta();
+    if (meta.nodes[id] || meta.points < node.cost) return;
+    meta.points -= node.cost;
+    meta.nodes[id] = true;
+    setBossMeta(meta);
+    applyEarlyBoost(true);
+    toast(`Капитальный апгрейд куплен: ${node.name}`);
+    renderBossPanel(true);
+  }
+
+  function nextBoss(level, meta) {
+    const next = Math.ceil(Math.max(1, level + 1) / 100) * 100;
+    if (!meta.killed[next]) return next;
+    return next + 100;
+  }
+
+  function missedBoss(level, meta, fight) {
+    if (fight.active || level < 100) return 0;
+    const reached = Math.floor(level / 100) * 100;
+    for (let stage = 100; stage <= reached; stage += 100) {
+      if (!meta.killed[stage]) return stage;
+    }
+    return 0;
+  }
+
+  function passiveBossDps() {
+    const ballsText = document.getElementById("balls")?.textContent || "";
+    const count = Math.max(1, (ballsText.match(/Ур\./g) || []).length || 1);
+    const level = readLevel();
+    const frags = readNumber("frags");
+    const meta = getBossMeta();
+    const auto = meta.nodes.autoBoss ? 1.2 : 1;
+    const pierce = meta.nodes.bossPierce ? 1.35 : 1;
+    const breaker = meta.nodes.hundredBreaker ? 1.18 : 1;
+    return (2.5 + Math.sqrt(Math.max(0, frags)) * 0.012 + level * 0.035) * count * auto * pierce * breaker;
+  }
+
+  function bossSignature(level, meta, fight, next) {
+    return JSON.stringify({ level, points: meta.points, earned: meta.earned, nodes: meta.nodes, fight: { active: fight.active, stage: fight.stage, hp: Math.ceil(fight.hp), maxHp: fight.maxHp }, next });
+  }
+
+  function renderBossPanel(force = false) {
+    const box = document.getElementById("bosses");
+    if (!box || (!force && !isBossTabVisible())) return;
+    const level = readLevel();
+    const meta = getBossMeta();
+    const fight = getFight();
+    const next = nextBoss(level, meta);
+    const signature = bossSignature(level, meta, fight, next);
+    if (!force && signature === lastRenderedSignature) return;
+    lastRenderedSignature = signature;
+
+    const hpPct = fight.maxHp > 0 ? Math.max(0, Math.min(100, (fight.hp / fight.maxHp) * 100)) : 0;
+    const fightHtml = fight.active ? `<div class="boss-fight"><h3>Активный босс: рубеж ${fight.stage}</h3><p>После 100 этапа босс — настоящий рубеж. Очки выдаются только после убийства.</p><div class="boss-hpbar" style="--boss-hp:${hpPct}%"><span></span></div><p>${Math.ceil(fight.hp)} / ${fight.maxHp} HP</p></div>` : `<div class="boss-fight"><h3>Босс не активен</h3><p>Следующий настоящий босс появится на этапе ${next}. Награда выдаётся только после убийства.</p></div>`;
+    const nodes = bossNodes.map((node) => {
+      const owned = Boolean(meta.nodes[node.id]);
+      const canBuy = !owned && meta.points >= node.cost;
+      return `<div class="boss-node ${owned ? "owned" : ""}"><h3>${owned ? "✓ " : ""}${node.name}</h3><p>${node.desc}</p><button class="boss-buy" data-boss-node="${node.id}" ${owned || !canBuy ? "disabled" : ""}>${owned ? "Куплено" : `Купить за ${node.cost}`}</button></div>`;
+    }).join("");
+
+    box.innerHTML = `<div class="boss-wrap"><div class="boss-banner"><h3>Боссы каждые 100 этапов</h3><p>Это второй слой меты: очков мало, но апгрейды капитальные.</p></div>${fightHtml}<div class="boss-currency"><div class="boss-stat"><small>Очки босса</small><b>${meta.points}</b></div><div class="boss-stat"><small>Всего получено</small><b>${meta.earned}</b></div><div class="boss-stat"><small>Следующий босс</small><b>${next}</b></div><div class="boss-stat"><small>Текущий этап</small><b>${level}</b></div></div>${nodes}</div>`;
+    box.querySelectorAll("[data-boss-node]").forEach((button) => button.addEventListener("click", () => buyBossNode(button.dataset.bossNode)));
+  }
+
+  function patchRunForEarlyBoost(run, deep) {
+    if (!run || typeof run !== "object") return run;
+    const level = Number(run.level || 1);
+    if (level > 10) return run;
+    run.fragments = Math.max(Number(run.fragments || 0), deep ? 900 : 520);
+    run.upgrades = run.upgrades && typeof run.upgrades === "object" ? run.upgrades : { damage: 1, speed: 0, xp: 0 };
+    run.upgrades.damage = Math.max(Number(run.upgrades.damage || 0), deep ? 3 : 2);
+    run.upgrades.speed = Math.max(Number(run.upgrades.speed || 0), deep ? 2 : 1);
+    run.upgrades.xp = Math.max(Number(run.upgrades.xp || 0), deep ? 2 : 1);
+    return run;
+  }
+
+  function applyEarlyBoost(force = false) {
+    const bossMeta = getBossMeta();
+    const marker = readJson(EARLY_KEY, { applied: false, deepApplied: false });
+    const deep = Boolean(bossMeta.nodes.deepStart);
+    if (!force && marker.applied && (!deep || marker.deepApplied)) return;
+    const run = readJson(RUN_KEY, null);
+    if (!run) return;
+    saveJson(RUN_KEY, patchRunForEarlyBoost(run, deep));
+    marker.applied = true;
+    if (deep) marker.deepApplied = true;
+    saveJson(EARLY_KEY, marker);
+  }
+
+  function tickBosses() {
+    const level = readLevel();
+    const meta = getBossMeta();
+    const fight = getFight();
+    const missed = missedBoss(level, meta, fight);
+    if (missed) activateBoss(missed);
+    const current = getFight();
+    if (current.active) damageBoss(passiveBossDps() / 2.5);
+    renderBossPanel(false);
+  }
+
+  window.__brickBlockBosses = { getBossMeta, getFight, damageBoss, activateBoss, renderBossPanel };
+
+  window.addEventListener("DOMContentLoaded", () => {
+    applyEarlyBoost(false);
+    const canvas = document.getElementById("game");
+    if (canvas) canvas.addEventListener("pointerdown", () => damageBoss(1), true);
+    renderBossPanel(true);
+    setInterval(tickBosses, 800);
+  });
+})();
+
+</script>
+    <script>
+(() => {
+  "use strict";
+  const RUN_KEY = "brick_block_idle_run_v10";
+  const META_KEY = "brick_block_idle_meta_v4";
+  const started = Date.now();
+  const base = { level: 1, fragments: 0, total: 0, peak: 1 };
+  let lastSignature = "";
+
+  function statsVisible() {
+    const panel = document.querySelector('[data-tab-panel="settings"]');
+    return !panel || !panel.classList.contains("hidden");
+  }
+
+  function num(id) {
+    const node = document.getElementById(id);
+    const raw = node ? node.textContent || "0" : "0";
+    const value = Number(raw.replace(/[^0-9.,-]/g, "").replace(",", "."));
+    return Number.isFinite(value) ? value : 0;
+  }
+
+  function json(key) {
+    try { return JSON.parse(localStorage.getItem(key) || "{}"); } catch { return {}; }
+  }
+
+  function fmt(value, digits = 0) {
+    if (!Number.isFinite(value)) return "0";
+    if (value >= 1000000) return (value / 1000000).toFixed(2) + "M";
+    if (value >= 1000) return (value / 1000).toFixed(1) + "K";
+    return value.toFixed(digits);
+  }
+
+  function coresFor(level) {
+    if (level < 10) return 0;
+    return Math.max(1, Math.floor(Math.pow(level - 8, 1.18) / 2.7));
+  }
+
+  function render(force = false) {
+    const box = document.getElementById("stats");
+    if (!box || (!force && !statsVisible())) return;
+    const level = num("level") || 1;
+    const hp = num("hp") || 1;
+    const blocks = num("count");
+    const fragments = num("frags");
+    const run = json(RUN_KEY);
+    const meta = json(META_KEY);
+    if (base.level === 1 && level > 1) base.level = level;
+    if (base.fragments === 0 && fragments > 0) base.fragments = fragments;
+    base.peak = Math.max(base.peak, level);
+    const minutes = Math.max(0.05, (Date.now() - started) / 60000);
+    const stagesPerMin = Math.max(0, level - base.level) / minutes;
+    const fragsPerMin = Math.max(0, fragments - base.fragments) / minutes;
+    const total = Number(run.total || 0);
+    const nextCores = coresFor(level);
+    const signature = JSON.stringify({ level, hp, blocks, fragments: Math.floor(fragments), total: Math.floor(total), cores: Number(meta.cores || 0), peak: base.peak });
+    if (!force && signature === lastSignature) return;
+    lastSignature = signature;
+
+    box.innerHTML = `
+      <div class="stats-wrap">
+        <div class="stat-section"><h3>Темп</h3><div class="stat-list">
+          <div class="stat-line stat-good"><small>Этапов / мин</small><b>${fmt(stagesPerMin, 2)}</b></div>
+          <div class="stat-line stat-good"><small>Осколков / мин</small><b>${fmt(fragsPerMin, 1)}</b></div>
+          <div class="stat-line"><small>Всего осколков</small><b>${fmt(total)}</b></div>
+          <div class="stat-line"><small>Лучший этап</small><b>${fmt(base.peak)}</b></div>
+        </div></div>
+        <div class="stat-section"><h3>Поле</h3><div class="stat-list">
+          <div class="stat-line"><small>HP блока</small><b>${fmt(hp)}</b></div>
+          <div class="stat-line"><small>Блоков осталось</small><b>${fmt(blocks)}</b></div>
+          <div class="stat-line stat-warn"><small>Ядер сейчас</small><b>${fmt(nextCores)}</b></div>
+          <div class="stat-line"><small>Мета-ядер</small><b>${fmt(Number(meta.cores || 0))}</b></div>
+        </div><div class="stat-hint">Если этапы/мин падают почти в ноль — это стена под сингулярность и мету.</div></div>
+      </div>`;
+  }
+
+  window.__brickBlockStats = { render };
+
+  window.addEventListener("DOMContentLoaded", () => {
+    setInterval(() => render(false), 1500);
+    render(true);
+  });
+})();
+
+</script>
+    <script>
+(() => {
+  "use strict";
+
+  const META_KEY = "brick_block_idle_meta_v4";
+  const TARGET_ID = "meta";
+  const MODAL_ID = "metaTreeModal";
+  let mounted = false;
+  let movedMeta = false;
+
+  function readMeta() {
+    try {
+      const meta = JSON.parse(localStorage.getItem(META_KEY) || "{}");
+      return meta && typeof meta === "object" ? meta : {};
+    } catch {
+      return {};
+    }
+  }
+
+  function metaSummaryHtml() {
+    const meta = readMeta();
+    const cores = Number(meta.cores || 0);
+    const spent = Number(meta.spent || 0);
+    const nodes = meta.nodes && typeof meta.nodes === "object" ? meta.nodes : {};
+    const bought = Object.values(nodes).reduce((sum, value) => sum + Number(value || 0), 0);
+    return `<div class="meta-launch"><div class="meta-launch-card"><h3>Мета-древо</h3><p>Открывается отдельным полноэкранным экраном, чтобы узлы не превращались в узкую колонку.</p></div><div class="grid"><div class="stat"><small>Ядра</small><b>${cores}</b></div><div class="stat"><small>Потрачено</small><b>${spent}</b></div><div class="stat"><small>Узлов</small><b>${bought}</b></div><div class="stat"><small>Режим</small><b>100+</b></div></div><button class="meta-open-btn" id="openMetaTreeBtn">Открыть дерево</button></div>`;
+  }
+
+  function ensureModal() {
+    let modal = document.getElementById(MODAL_ID);
+    if (modal) return modal;
+    modal = document.createElement("div");
+    modal.id = MODAL_ID;
+    modal.className = "meta-modal";
+    modal.innerHTML = `<div class="meta-modal-head"><div><h2>Мета-древо прокачки</h2><p>Полноэкранное дерево: ветки, развилки и долгосрочные узлы.</p></div><button class="meta-close-btn" id="closeMetaTreeBtn">Закрыть</button></div><div class="meta-modal-body"><div class="meta-modal-canvas" id="metaTreeCanvas"></div></div>`;
+    document.body.appendChild(modal);
+    return modal;
+  }
+
+  function moveMetaToModal() {
+    const meta = document.getElementById(TARGET_ID);
+    const canvas = document.getElementById("metaTreeCanvas");
+    if (!meta || !canvas || movedMeta) return;
+    canvas.appendChild(meta);
+    movedMeta = true;
+  }
+
+  function renderLauncher() {
+    let launcher = document.getElementById("metaLauncher");
+    const metaPanel = document.querySelector('[data-tab-panel="meta"] .ui-block');
+    if (!metaPanel) return;
+    if (!launcher) {
+      launcher = document.createElement("div");
+      launcher.id = "metaLauncher";
+      launcher.className = "log";
+      metaPanel.appendChild(launcher);
+    }
+    launcher.innerHTML = metaSummaryHtml();
+    document.getElementById("openMetaTreeBtn")?.addEventListener("click", openModal);
+  }
+
+  function openModal() {
+    const modal = ensureModal();
+    moveMetaToModal();
+    modal.classList.add("open");
+    document.body.classList.add("meta-modal-open");
+  }
+
+  function closeModal() {
+    const modal = document.getElementById(MODAL_ID);
+    if (!modal) return;
+    modal.classList.remove("open");
+    document.body.classList.remove("meta-modal-open");
+  }
+
+  function mount() {
+    if (mounted) return;
+    mounted = true;
+    ensureModal();
+    renderLauncher();
+    document.getElementById("closeMetaTreeBtn")?.addEventListener("click", closeModal);
+    document.getElementById(MODAL_ID)?.addEventListener("click", (event) => {
+      if (event.target?.id === MODAL_ID) closeModal();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeModal();
+    });
+    setInterval(renderLauncher, 2000);
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(mount, 250);
+  });
+})();
+
+</script>
+    <script>
+function activateTab(tabName) {
+  const buttons = Array.from(document.querySelectorAll("[data-tab]"));
+  const panels = Array.from(document.querySelectorAll("[data-tab-panel]"));
+  const hasTab = buttons.some((button) => button.dataset.tab === tabName);
+  const safeTab = hasTab ? tabName : (buttons[0]?.dataset.tab || panels[0]?.dataset.tabPanel || "summary");
+
+  panels.forEach((panel) => {
+    panel.classList.toggle("hidden", panel.dataset.tabPanel !== safeTab);
+  });
+
+  buttons.forEach((button) => {
+    button.classList.toggle("active", button.dataset.tab === safeTab);
+  });
+
+  localStorage.setItem("brick_block_idle_active_tab", safeTab);
+}
+
+function initTabs() {
+  const saved = localStorage.getItem("brick_block_idle_active_tab") || "summary";
+  document.querySelectorAll("[data-tab]").forEach((button) => {
+    button.addEventListener("click", () => activateTab(button.dataset.tab));
+  });
+  activateTab(saved);
+}
+
+initTabs();
+
+</script>
+  </body>
+</html>

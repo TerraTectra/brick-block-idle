@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-03",
+  "upstream_commit": "d54066acaf8be794a611e63e8cb658f95445d5f2",
+  "base_version": "0.11.5",
+  "files_inlined": [
+    "site.css",
+    "site-tabs.css",
+    "site-upgrades.css",
+    "site-evolution.css",
+    "site-meta.css",
+    "site-stats.css",
+    "site-bosses.css",
+    "site-version.css",
+    "site-space.css",
+    "site-v10-speed-x5-core.js",
+    "site-stage-speed-fix.js",
+    "site-post100-balance.js",
+    "site-upgrade-balance.js",
+    "site-app-v10-xp-loader.js",
+    "site-app-v10.js",
+    "site-evolution-choice-fix.js",
+    "site-bosses.js",
+    "site-stats.js",
+    "site-meta-modal.js",
+    "site-tabs.js"
+  ],
+  "sha256": "4311f81a8f247ca9b51e6fc03ba98861ec478646ef22e3c671706f1571b2bc1a",
+  "tested": true,
+  "verification": {
+    "date": "2026-10-03",
+    "browser": "Microsoft Edge, isolated profile",
+    "delivery": "local HTML, offline enabled",
+    "passed": [
+      "boot and autosave",
+      "seven tabs",
+      "upgrade purchase",
+      "three evolution choices",
+      "chosen evolution survives reload",
+      "reset cancellation preserves level",
+      "confirmed reset starts level 1",
+      "meta cores preserved on reset",
+      "meta modal opens and closes",
+      "mobile viewport width 390"
+    ],
+    "errors": [],
+    "remoteRequests": [],
+    "mobile": {
+      "width": 390,
+      "scrollWidth": 390
+    },
+    "limitations": [
+      "evolution and reset use synthetic saved progress",
+      "full boss progression and long-term balance not tested"
+    ]
+  }
+}
